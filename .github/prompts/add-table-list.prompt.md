@@ -138,6 +138,14 @@ Rename `children` to match your actual field (e.g. `bullets`, `options`, `cards`
 * Use `textarea` only when multi-line is explicitly needed.
 * Do not edit complex objects directly inside table cells.
 
+Optional color column pattern (only when color is part of the item model and should be editable in-table):
+
+* Add a summary `Color` column in `TableContainer`.
+* Use `ColorPicker` directly inside the row color cell for immediate updates.
+* Update the row item by `id` (not index) when color changes.
+* Keep color editing in the table lightweight; move advanced styling controls to the Drawer.
+* If color is display-only, render a small swatch instead of `ColorPicker`.
+
 Row actions must use `OptionsMenuRootButton` with icons:
 
 * `editIcon`
@@ -205,6 +213,7 @@ When refactoring:
 * [ ] No Save/Cancel buttons?
 * [ ] Live rendering reflects updated order?
 * [ ] Live uses item IDs as keys?
+* [ ] If a color column is requested, does the table row support inline `ColorPicker` updates by item `id`?
 
 
 ## Table reference
