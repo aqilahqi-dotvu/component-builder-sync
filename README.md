@@ -71,6 +71,7 @@ Slash commands you invoke in Copilot Chat. Each prompt targets a specific task i
 | `section-headings.prompt.md` | `/section-headings` | Rules and patterns for `SectionHeading` and `SubSectionHeading` — when to use each, correct CSS, and what not to do. |
 | `shadow.prompt.md` | `/shadow` | Rules and patterns for implementing shadow settings across `common.js`, `editor.js`, and `live.js` — two-level toggle structure, `resolveShadowColor` helper, and safe numeric bounds. |
 | `dropdown.prompt.md` | `/dropdown` | Rules and patterns for using `Dropdown` controls in `editor.js` — correct option shape, `onChange` wiring, pairing with `Label`, and when to use `Checkbox` instead. |
+| `form-requirement.prompt.md` | — | Feature requirements checklist for form components — fields, validation, submit behavior, success view, reset, triggers, and actions. ![WIP](https://img.shields.io/badge/status-in%20progress-yellow) |
 
 ---
 
