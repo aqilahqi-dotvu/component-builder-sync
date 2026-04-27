@@ -59,7 +59,7 @@ The style is identical to `settings-section-heading` **except**:
 
 ```css
 .settings-subsection-heading {
-  margin: 0 0 12px 0;
+  margin: 12px 0;
   color: #000000;
   font-size: 12px;
   font-weight: 700;
@@ -115,6 +115,7 @@ The style is identical to `settings-section-heading` **except**:
 - Only use a sub-section heading when a single `Section` contains **two or more distinct groups** of controls.
 - If you find yourself adding sub-section headings to every section, split into separate `Section` elements instead.
 - Keep the text short — 1–3 words, title-cased.
+- **Do not repeat the sub-section heading name inside `Label` content.** When a sub-section heading already names the group (e.g. "Button"), use short labels like `"Label"`, `"Action"`, `"URL"` — not `"Button Label"`, `"Button Action"`, `"Button URL"`.
 
 ---
 
