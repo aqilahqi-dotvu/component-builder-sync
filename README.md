@@ -19,6 +19,14 @@ This repository shares the agent, Copilot instructions, prompts, and templates u
 git clone https://github.com/aqilahqi-dotvu/component-builder-sync.git
 ```
 
+If you want to clone directly into your existing working folder, add `.` at the end:
+
+```bash
+git clone https://github.com/aqilahqi-dotvu/component-builder-sync.git .
+```
+
+All `.js` files are ignored by this repo, so cloning into your working folder will not affect your existing component work.
+
 Open the cloned folder in VS Code. The `.github/` folder will be picked up automatically by GitHub Copilot.
 
 When you're ready to start building a component, switch your Copilot Chat agent to **`dotvu-component-builder`**. This activates the custom instructions and prompt workflows defined in this repo.
