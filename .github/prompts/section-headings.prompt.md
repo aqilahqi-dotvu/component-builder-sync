@@ -60,6 +60,8 @@ The style is identical to `settings-section-heading` **except**:
 ```css
 .settings-subsection-heading {
   margin: 12px 0;
+  padding-top: 12px;
+  border-top: 1px solid #c0c0c0;
   color: #000000;
   font-size: 12px;
   font-weight: 700;

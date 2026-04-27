@@ -69,6 +69,8 @@ Slash commands you invoke in Copilot Chat. Each prompt targets a specific task i
 | `svgpicker.prompt.md` | `/svgpicker` | Add an SVG icon picker control to the editor. |
 | `checkbox.prompt.md` | `/checkbox` | Rules and patterns for using `Checkbox` controls — short labels, no `description` attribute, and when to use a `Label` with `help` instead. |
 | `section-headings.prompt.md` | `/section-headings` | Rules and patterns for `SectionHeading` and `SubSectionHeading` — when to use each, correct CSS, and what not to do. |
+| `shadow.prompt.md` | `/shadow` | Rules and patterns for implementing shadow settings across `common.js`, `editor.js`, and `live.js` — two-level toggle structure, `resolveShadowColor` helper, and safe numeric bounds. |
+| `dropdown.prompt.md` | `/dropdown` | Rules and patterns for using `Dropdown` controls in `editor.js` — correct option shape, `onChange` wiring, pairing with `Label`, and when to use `Checkbox` instead. |
 
 ---
 
