@@ -15,7 +15,7 @@ Use a `<div className="settings-section-heading">` to label a group of related c
 .settings-section-heading {
   margin: 0 0 12px 0;
   color: #000000;
-  font-size: 12px;
+  font-size: 13px;
   font-weight: 700;
   letter-spacing: 0.08em;
   line-height: 1.2;
@@ -63,7 +63,8 @@ The style is identical to `settings-section-heading` **except**:
   padding-top: 12px;
   border-top: 1px solid #c0c0c0;
   color: #000000;
-  font-size: 12px;
+  font-size: 13px;
+  letter-spacing: 0.02em;
   font-weight: 700;
   line-height: 1.2;
   text-transform: capitalize;
