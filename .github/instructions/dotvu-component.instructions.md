@@ -33,11 +33,12 @@ If the needed editor element has no allowed `@ui` component, ask the user before
 
 ## Non-negotiable rules
 
-- Use `<ScopedStyle>` for styles. Never use raw `<style>` tags.
+- Use one `<ScopedStyle>` block for component CSS. Never use raw `<style>` tags.
 - Import and use `useScaler` in `live.js`.
 - `const { s } = useScaler()` must be the first line inside `Component`.
 - Use `s()` for every pixel value in `live.js`: font sizes, margins, padding, gaps, borders, border radius, positions, shadows, media queries, and dimensions.
 - Do not call `s()` outside `Component`, including helpers and `getActionHandlers`.
+- Use component-prefixed class names in `editor.js` and `live.js`. Prefix every class with a short component identifier such as `faq-root`, `faq-title`, or `faq-settings-section-heading`. Avoid generic names like `root`, `card`, `container`, `title`, and `settings-section-heading`.
 - Use unitless `line-height` values when possible. If line height is in pixels, wrap the pixel number in `s()`.
 - Use `box-sizing: border-box` on the root and major containers.
 - The root live element must use `width: '100%'` or equivalent.
@@ -83,10 +84,10 @@ Standard tabs:
 
 Inside each tab, group controls into `<Section>` blocks. Do not leave a tab as one long flat list.
 
-Use a heading for each meaningful group:
+Use a component-prefixed heading class for each meaningful group:
 
 ```jsx
-<div className="settings-section-heading">typography</div>
+<div className="faq-settings-section-heading">typography</div>
 ```
 
 Use lowercase heading labels such as `copy`, `items`, `typography`, `colors`, `layout`, `shadow`, `responsive width`, and `motion`.
@@ -94,7 +95,7 @@ Use lowercase heading labels such as `copy`, `items`, `typography`, `colors`, `l
 Include this editor scoped style when headings are used:
 
 ```css
-.settings-section-heading {
+.faq-settings-section-heading {
   margin: 0 0 12px 0;
   color: #000000;
   font-size: 12px;
@@ -104,7 +105,7 @@ Include this editor scoped style when headings are used:
   text-transform: uppercase;
 }
 
-.settings-sub-section-heading {
+.faq-settings-sub-section-heading {
   margin: 12px 0;
   color: #000000;
   font-size: 12px;

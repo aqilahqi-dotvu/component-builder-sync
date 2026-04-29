@@ -216,7 +216,7 @@ function Settings({ state, setState }) {
   const editingIcon = state.icons.find(icon => icon.id === editingIconId)
 
   const styles = `
-    .settings-section-heading {
+    .cmp-settings-section-heading {
       margin: 0 0 12px 0;
       color: #000000;
       font-size: 12px;
@@ -226,7 +226,7 @@ function Settings({ state, setState }) {
       text-transform: uppercase;
     }
 
-    .icon-drag-handle {
+    .cmp-icon-drag-handle {
       width: 28px;
       height: 28px;
       border: none;
@@ -385,7 +385,7 @@ function Settings({ state, setState }) {
         </Tab>
         <Tab id="style" title="Styles">
           <Section>
-            <div className="settings-section-heading">Heading</div>
+            <div className="cmp-settings-section-heading">Heading</div>
             <SettingItem>
               <Label content="Font" />
               <FontSelector
@@ -423,7 +423,7 @@ function Settings({ state, setState }) {
             </SettingItem>
           </Section>
           <Section>
-            <div className="settings-section-heading">Description</div>
+            <div className="cmp-settings-section-heading">Description</div>
             <SettingItem>
               <Label content="Font" />
               <FontSelector
@@ -461,7 +461,7 @@ function Settings({ state, setState }) {
             </SettingItem>
           </Section>
           <Section>
-            <div className="settings-section-heading">Card</div>
+            <div className="cmp-settings-section-heading">Card</div>
             <SettingItem>
               <Checkbox
                 value={state.hasBackground}
@@ -567,7 +567,7 @@ function Settings({ state, setState }) {
             )}
           </Section>
           <Section>
-            <div className="settings-section-heading">Icons</div>
+            <div className="cmp-settings-section-heading">Icons</div>
             <SettingItem>
               <Label content="Size" />
               <NumberInput
@@ -618,7 +618,7 @@ function Settings({ state, setState }) {
         </Tab>
         <Tab id="animation" title="Animation">
           <Section>
-            <div className="settings-section-heading">Motion</div>
+            <div className="cmp-settings-section-heading">Motion</div>
             <SettingItem>
               <Label
                 content="Type"
@@ -650,7 +650,7 @@ function Settings({ state, setState }) {
             </SettingItem>
           </Section>
           <Section>
-            <div className="settings-section-heading">Animation Trigger</div>
+            <div className="cmp-settings-section-heading">Animation Trigger</div>
             <SettingItem>
               <Label
                 content="Start Mode"
@@ -707,7 +707,7 @@ function Settings({ state, setState }) {
         </Tab>
         <Tab id="advanced" title="Advanced">
           <Section>
-            <div className="settings-section-heading">Responsive Width</div>
+            <div className="cmp-settings-section-heading">Responsive Width</div>
             <SettingItem>
               <Checkbox
                 value={state.hasWidthBreakpoint}
@@ -1081,7 +1081,7 @@ export function Component({ state, setState, saveAudienceData, runTrigger }) {
   }, [needsAutoHeight])
 
   const styles = `
-    .card-container {
+    .cmp-card-container {
       position: relative;
       width: 100%;
       height: ${(Boolean(state.hasWidthBreakpoint) && !isCompactLayout) ? '100%' : 'auto'};
@@ -1099,7 +1099,7 @@ export function Component({ state, setState, saveAudienceData, runTrigger }) {
       transition: transform 0.2s ease, box-shadow 0.2s ease;
     }
 
-    .measurement-overlay {
+    .cmp-measurement-overlay {
       position: absolute;
       top: ${s(12)}px;
       right: ${s(12)}px;
@@ -1120,12 +1120,12 @@ export function Component({ state, setState, saveAudienceData, runTrigger }) {
       white-space: nowrap;
     }
 
-    .card-container:hover {
+    .cmp-card-container:hover {
       transform: translateY(-${s(4)}px);
       box-shadow: ${hoverBoxShadow};
     }
 
-    .icons-container {
+    .cmp-icons-container {
       display: grid;
       grid-template-columns: repeat(${visibleIconsPerRow}, minmax(0, max-content));
       column-gap: ${s(isCompactLayout ? Math.max(8, iconGap * 0.8) : iconGap)}px;
@@ -1137,7 +1137,7 @@ export function Component({ state, setState, saveAudienceData, runTrigger }) {
       box-sizing: border-box;
     }
 
-    .icon-wrapper {
+    .cmp-icon-wrapper {
       width: ${s(iconSize)}px;
       height: ${s(iconSize)}px;
       display: flex;
@@ -1146,27 +1146,27 @@ export function Component({ state, setState, saveAudienceData, runTrigger }) {
       box-sizing: border-box;
     }
 
-    .icon-wrapper svg {
+    .cmp-icon-wrapper svg {
       width: 100%;
       height: 100%;
     }
 
-    .icon-wrapper svg *[fill]:not([fill="none"]) {
+    .cmp-icon-wrapper svg *[fill]:not([fill="none"]) {
       fill: currentColor !important;
     }
 
-    .icon-wrapper svg *[stroke]:not([stroke="none"]) {
+    .cmp-icon-wrapper svg *[stroke]:not([stroke="none"]) {
       stroke: currentColor !important;
     }
 
-    .icon-wrapper svg path:not([fill="none"]):not([stroke]),
-    .icon-wrapper svg circle:not([fill="none"]):not([stroke]),
-    .icon-wrapper svg rect:not([fill="none"]):not([stroke]),
-    .icon-wrapper svg polygon:not([fill="none"]):not([stroke]) {
+    .cmp-icon-wrapper svg path:not([fill="none"]):not([stroke]),
+    .cmp-icon-wrapper svg circle:not([fill="none"]):not([stroke]),
+    .cmp-icon-wrapper svg rect:not([fill="none"]):not([stroke]),
+    .cmp-icon-wrapper svg polygon:not([fill="none"]):not([stroke]) {
       fill: currentColor !important;
     }
 
-    .heading {
+    .cmp-heading {
       font-family: ${state.headingFont};
       font-size: ${s(isCompactLayout ? Math.max(16, state.headingFontSize - 2) : state.headingFontSize)}px;
       font-weight: ${state.headingFontWeight};
@@ -1175,7 +1175,7 @@ export function Component({ state, setState, saveAudienceData, runTrigger }) {
       line-height: 1.3;
     }
 
-    .description {
+    .cmp-description {
       font-family: ${state.descriptionFont};
       font-size: ${s(isCompactLayout ? Math.max(14, state.descriptionFontSize - 1) : state.descriptionFontSize)}px;
       font-weight: ${state.descriptionFontWeight};
@@ -1185,7 +1185,7 @@ export function Component({ state, setState, saveAudienceData, runTrigger }) {
       line-height: 1.5;
     }
 
-    .anim-pulse {
+    .cmp-anim-pulse {
       animation-name: pulse;
       animation-duration: 1.2s;
       animation-timing-function: ease-in-out;
@@ -1194,7 +1194,7 @@ export function Component({ state, setState, saveAudienceData, runTrigger }) {
       animation-fill-mode: both;
     }
 
-    .anim-bounce {
+    .cmp-anim-bounce {
       animation-name: bounce;
       animation-duration: 1.2s;
       animation-timing-function: ease-in-out;
@@ -1217,7 +1217,7 @@ export function Component({ state, setState, saveAudienceData, runTrigger }) {
     }
   `
 
-  const animationClass = state.animationType !== 'none' ? `anim-${state.animationType}` : ''
+  const animationClass = state.animationType !== 'none' ? `cmp-anim-${state.animationType}` : ''
 
   useEffect(() => {
     const didAnimationStart = !previousAnimationActive.current && isLoadingActive && state.animationType !== 'none'
@@ -1259,14 +1259,14 @@ export function Component({ state, setState, saveAudienceData, runTrigger }) {
   return (
     <>
       <ScopedStyle>{styles}</ScopedStyle>
-      <div ref={containerRef} className="card-container" onClick={handleCardClick}>
-        {measurementLabel && <div className="measurement-overlay">{measurementLabel}</div>}
+      <div ref={containerRef} className="cmp-card-container" onClick={handleCardClick}>
+        {measurementLabel && <div className="cmp-measurement-overlay">{measurementLabel}</div>}
         {state.icons && state.icons.length > 0 && (
-          <div className="icons-container">
+          <div className="cmp-icons-container">
             {state.icons.map((icon, index) => (
               <div
                 key={`${icon.id}-${state.animationRepeat === 'once' ? state.animationRunId ?? 0 : 'loop'}`}
-                className={`icon-wrapper ${isLoadingActive ? animationClass : ''}`}
+                className={`cmp-icon-wrapper ${isLoadingActive ? animationClass : ''}`}
                 style={{
                   color: icon.color,
                   '--animation-iteration-count': animationIterationCount,
@@ -1278,8 +1278,8 @@ export function Component({ state, setState, saveAudienceData, runTrigger }) {
             ))}
           </div>
         )}
-        <h2 className="heading">{state.heading}</h2>
-        <p className="description">{state.description}</p>
+        <h2 className="cmp-heading">{state.heading}</h2>
+        <p className="cmp-description">{state.description}</p>
       </div>
     </>
   )

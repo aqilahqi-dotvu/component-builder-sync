@@ -66,7 +66,7 @@ Use tabs and sections:
 - Animation tab only when animation is requested
 - Advanced tab only for BREAKPOINT_AWARE components
 
-Every settings group needs a concise `.settings-section-heading`.
+Every settings group needs a concise component-prefixed heading class such as `.faq-settings-section-heading`.
 
 ## Step 5 - Pre-submit checklist
 
@@ -80,7 +80,8 @@ Check every relevant item before completing.
 - [ ] `const { s } = useScaler()` is the first line inside `Component`?
 - [ ] `s()` only appears inside `Component`?
 - [ ] Every px value in `live.js` is wrapped in `s()`?
-- [ ] `<ScopedStyle>` used and no raw `<style>` tags?
+- [ ] Exactly one `<ScopedStyle>` block used for component CSS and no raw `<style>` tags?
+- [ ] All class names are component-prefixed instead of generic names like `root` or `card`?
 - [ ] `box-sizing: border-box` on root and major containers?
 - [ ] Root uses `width: '100%'`?
 - [ ] Every label/input pair uses `<SettingItem>`?

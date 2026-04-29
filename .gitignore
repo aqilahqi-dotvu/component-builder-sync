@@ -2,3 +2,5 @@ common.js
 editor.js
 live.js
 .DS_Store
+DS_Store
+node_modules

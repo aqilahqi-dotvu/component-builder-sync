@@ -1,11 +1,11 @@
 ---
-agent: dotvu-component-builder
-description: Feature requirements checklist for Dot.vu form components
+name: form-component
+description: 'Feature checklist and requirements for Dot.vu form components — input fields with labels and placeholders, validation before submit, data field exposure, submit/loading/success states, reset behavior, triggers (onSubmit, onError, onSuccessAction), and inbound actions (resetForm, confirmSubmit). Use when building or reviewing any form component.'
 ---
 
 # Form — Feature Requirements
 
-Use this as a checklist when building or reviewing any form component. Every section below is a required feature area unless marked optional.
+Use this skill as a checklist when building or reviewing any form component. Every section below is a required feature area unless marked optional.
 
 ---
 
@@ -51,9 +51,7 @@ Required validation checks:
 
 ## 3. Exposed data fields
 
-All input values must be registered in `getDataFields` so they are accessible in the Dot.vu studio (e.g. for use in conditional logic, personalization, or passing to other components).
-
-Expose per field:
+All input values must be registered in `getDataFields`:
 
 ```js
 export function getDataFields(state) {
@@ -67,7 +65,7 @@ export function getDataFields(state) {
 
 Rules:
 - Use the same key names as the state fields
-- Always expose `isSubmitted` so studio logic can react to submission
+- Always expose `isSubmitted`
 - Expose all user-entered values, not just the ones used in the trigger payload
 
 ---
@@ -79,8 +77,6 @@ Rules:
 - On failure: set `isSubmitting: false`, set `formError` to a user-friendly message, keep form visible
 - Optional: post form data to an external URL (`submitUrl`) before firing the trigger
 
-Submit button state:
-
 | State | Button label | Disabled |
 |---|---|---|
 | Idle | `state.submitLabel` (editable) | No |
@@ -91,22 +87,12 @@ Submit button state:
 
 ## 5. After-submit view
 
-When `isSubmitted` is `true`, replace the form with a success view. The form must not be visible after a successful submission.
-
-The success view must include:
+When `isSubmitted` is `true`, replace the form with a success view:
 
 - **Success heading** — editable string
 - **Success message** — editable string
-- **Reset button** — shown by default; label editable (e.g. `'Submit another response'`); calls the `resetForm` action
-- **Optional extra CTA button** — toggle in editor; editable label and fires an outbound trigger (`onSuccessAction`) so the studio can wire it to navigation, another component, etc.
-
-Success view example layout:
-
-```
-[ Success heading ]
-[ Success message ]
-[ Reset button ]           [ Extra CTA button (optional) ]
-```
+- **Reset button** — shown by default; label editable; calls the `resetForm` action
+- **Optional extra CTA button** — toggle in editor; editable label; fires `onSuccessAction` trigger
 
 ---
 
@@ -120,7 +106,6 @@ The `resetForm` action clears the form back to its initial input state:
 - `formError` → `''`
 
 Reset can be triggered two ways:
-
 1. The reset button in the success view (always present)
 2. The `resetForm` inbound action (so the studio can reset the form externally)
 
@@ -141,7 +126,7 @@ Reset can be triggered two ways:
 | Name | What it does |
 |---|---|
 | `resetForm` | Clears all input values, resets `isSubmitted`, `isSubmitting`, `formError` |
-| `confirmSubmit` | Marks the form as successfully submitted from outside — sets `isSubmitted: true`, clears `formError` and `isSubmitting`. Use when an external tool (e.g. an automation platform or webhook handler) processes the submission and signals back that it succeeded. |
+| `confirmSubmit` | Sets `isSubmitted: true`, clears `formError` and `isSubmitting`. Use when an external tool signals submission success. Does not re-fire `onSubmit`. |
 
 ---
 
@@ -157,7 +142,7 @@ copy
 fields
   Per field: label, placeholder, required toggle
 
-confirmation (shown only when opt-in checkbox field is included)
+confirmation (only when opt-in checkbox field is included)
   Checkbox label
 
 submission
@@ -221,7 +206,7 @@ layout       →  Field border radius, button border radius, field gap, form pad
 
 - [ ] `confirmSubmit` action declared in `getActions`
 - [ ] `confirmSubmit` sets `isSubmitted: true`, clears `isSubmitting` and `formError`
-- [ ] `confirmSubmit` does not re-fire the `onSubmit` trigger (the external tool already handled submission)
+- [ ] `confirmSubmit` does not re-fire the `onSubmit` trigger
 
 ### Implementation
 
@@ -239,15 +224,8 @@ layout       →  Field border radius, button border radius, field gap, form pad
 
 ```
 ❌ Field value not in getDataFields — studio cannot read or use it
-
 ❌ No reset button after submit — user is stuck on the success screen
-
 ❌ Validation inside Component — put it in getActionHandlers
-
 ❌ Form stays visible after isSubmitted is true — replace it with the success view
-
 ❌ No formError shown — user has no idea why the submit did nothing
-
-❌ Submit button stays active while isSubmitting — user can double-submit
 ```
-

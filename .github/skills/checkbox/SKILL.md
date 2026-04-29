@@ -1,6 +1,6 @@
 ---
-agent: dotvu-component-builder
-description: Rules and patterns for using Checkbox controls in editor.js
+name: checkbox
+description: 'Rules and patterns for using Checkbox controls in editor.js — short labels only, no description prop, use Label with help for context, grouping pattern. Use when adding toggle controls to editor settings.'
 ---
 
 # Checkbox — Usage Rule

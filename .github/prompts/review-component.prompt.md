@@ -32,7 +32,7 @@ Read first:
 ### Editor settings
 
 - Uses `Tabs`, `Tab`, `Section`, `SettingItem`, and `Label` consistently
-- Settings are grouped into meaningful sections with `.settings-section-heading`
+- Settings are grouped into meaningful sections with component-prefixed heading classes such as `.faq-settings-section-heading`
 - Dependent controls are hidden until the parent toggle is enabled
 - No `Checkbox description` prop
 - Every `Button` has `style="primary"` or `style="secondary"`
@@ -49,8 +49,9 @@ Read first:
 
 ### Live rendering
 
-- `live.js` uses `ScopedStyle`
+- `live.js` uses exactly one `ScopedStyle` block
 - No raw `<style>` tags
+- Class names are component-prefixed rather than generic names like `root`, `card`, or `container`
 - `useScaler` imported and used
 - `const { s } = useScaler()` is the first line inside `Component`
 - Every pixel value is wrapped in `s()`

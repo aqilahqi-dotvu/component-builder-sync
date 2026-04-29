@@ -1,6 +1,6 @@
 # Dot.vu Component Builder Sync
 
-This repository shares the agent, Copilot instructions, prompts, and templates used to build Dot.vu components. The goal is to streamline our workflow and ensure every component follows the same standards — consistent structure, editor UX, and code patterns — regardless of who builds it.
+This repository shares the Copilot instructions, prompts, skills, and templates used to build Dot.vu components. The goal is to streamline our workflow and ensure every component follows the same standards — consistent structure, editor UX, and code patterns — regardless of who builds it.
 
 ---
 
@@ -29,7 +29,7 @@ All `.js` files are ignored by this repo, so cloning into your working folder wi
 
 Open the cloned folder in VS Code. The `.github/` folder will be picked up automatically by GitHub Copilot.
 
-When you're ready to start building a component, switch your Copilot Chat agent to **`dotvu-component-builder`**. This activates the custom instructions and prompt workflows defined in this repo.
+No agent switching required — the instructions apply to **Ask**, **Edit**, and **Agent** modes automatically.
 
 ---
 
@@ -37,64 +37,69 @@ When you're ready to start building a component, switch your Copilot Chat agent 
 
 ### `.github/`
 
-Contains everything that configures the Copilot agent's behaviour in this repo.
-
-#### `.github/agents/`
-
-| File | Purpose |
-|---|---|
-| `dotvu-component-builder.agent.md` | Defines the custom agent mode. Sets the model, tool access, and links to the component instructions. Switch to this agent in Copilot Chat before building. |
+Contains everything that configures Copilot's behaviour in this repo.
 
 #### `.github/instructions/`
 
+Always-on rules loaded automatically when working on component files.
+
 | File | Purpose |
 |---|---|
-| `dotvu-component.instructions.md` | The core coding rules for all component files (`common.js`, `editor.js`, `live.js`). Applied automatically when editing those files. Covers state field conventions, tab/section structure, animation patterns, and what the Dot.vu runtime supports. |
+| `dotvu-component.instructions.md` | Core coding rules for all component files (`common.js`, `editor.js`, `live.js`). Covers state field conventions, tab/section structure, animation patterns, and what the Dot.vu runtime supports. |
+| `component-structure.instructions.md` | Enforces a consistent top-down code structure in component files, especially in `live.js`. |
 
 #### `.github/prompts/`
 
-Slash commands you invoke in Copilot Chat. Each prompt targets a specific task in the component workflow.
+Slash commands for the main workflow tasks. Type `/` in Copilot Chat to invoke them.
 
 | Prompt | Command | Purpose |
 |---|---|---|
 | `build-plan.prompt.md` | `/build-plan` | **Plan before you build.** The agent asks clarifying questions, produces a written plan covering tabs, state fields, and behaviors, and waits for your approval before any code is written. |
-| `new-component.prompt.md` | `/new-component` | Scaffold a brand-new component from scratch using the boilerplate patterns. |
+| `new-component.prompt.md` | `/new-component` | Scaffold a brand-new component from scratch. |
 | `edit-component.prompt.md` | `/edit-component` | Modify an existing component safely, preserving existing state and structure. |
-| `review-component.prompt.md` | `/review-component` | Check a component for compliance with the coding standards. |
-| `fix-component.prompt.md` | `/fix-component` | Debug or repair a broken component. |
-| `add-table-list.prompt.md` | `/add-table-list` | Add a dynamic, reorderable list to an existing component. |
-| `convert-to-breakpoint-aware.prompt.md` | `/convert-to-breakpoint-aware` | Add responsive height/breakpoint behavior to a component. |
-| `dotvu-api-reference.prompt.md` | `/dotvu-api-reference` | The full API and pattern reference. Useful for checking what the runtime supports. |
-| `output-three-files.prompt.md` | `/output-three-files` | Output the final `common.js`, `editor.js`, and `live.js` files. |
-| `svgpicker.prompt.md` | `/svgpicker` | Add an SVG icon picker control to the editor. |
-| `checkbox.prompt.md` | `/checkbox` | Rules and patterns for using `Checkbox` controls — short labels, no `description` attribute, and when to use a `Label` with `help` instead. |
-| `section-headings.prompt.md` | `/section-headings` | Rules and patterns for `SectionHeading` and `SubSectionHeading` — when to use each, correct CSS, and what not to do. |
-| `shadow.prompt.md` | `/shadow` | Rules and patterns for implementing shadow settings across `common.js`, `editor.js`, and `live.js` — two-level toggle structure, `resolveShadowColor` helper, and safe numeric bounds. |
-| `dropdown.prompt.md` | `/dropdown` | Rules and patterns for using `Dropdown` controls in `editor.js` — correct option shape, `onChange` wiring, pairing with `Label`, and when to use `Checkbox` instead. |
-| `form-requirement.prompt.md` | — | Feature requirements checklist for form components — fields, validation, submit behavior, success view, reset, triggers, and actions. ![WIP](https://img.shields.io/badge/status-in%20progress-yellow) |
+| `review-component.prompt.md` | `/review-component` | Audit a component for compliance with team standards. |
+| `fix-component.prompt.md` | `/fix-component` | Debug and repair a broken component. |
+| `troubleshoot-component.prompt.md` | `/troubleshoot-component` | Diagnose errors without applying fixes. Use when a component throws an error or produces unexpected output. |
+| `update-component-info.prompt.md` | `/update-component-info` | Update the `getSettings` help article to reflect the current component's tabs and controls. |
+
+#### `.github/skills/`
+
+On-demand expertise loaded automatically when relevant, or invoked with `/` in chat. Skills are for specific features and UI patterns — they don't run unless the task calls for them.
+
+| Skill | Command | Purpose |
+|---|---|---|
+| `dotvu-api/` | `/dotvu-api` | API signatures, allowed imports, and boilerplate skeletons for all three height patterns. |
+| `add-table-list/` | `/add-table-list` | Add a reorderable, editable list using TableContainer + Drawer. |
+| `breakpoint-height/` | `/breakpoint-height` | Implement or convert BREAKPOINT_AWARE height — ResizeObserver, getSizeTypes, `.dot-component` height override. |
+| `width-breakpoint-layout/` | `/width-breakpoint-layout` | Add layout stacking based on component width without changing height mode. |
+| `form-component/` | `/form-component` | Feature checklist for form components — validation, submit, success view, reset, triggers, actions. |
+| `checkbox/` | `/checkbox` | Rules for `Checkbox` controls — short labels, no `description` prop, Label with help pattern. |
+| `dropdown/` | `/dropdown` | Rules for `Dropdown` controls — `{ value, text }` shape, `onChange` wiring, Label pairing. |
+| `section-headings/` | `/section-headings` | Rules and CSS for section and sub-section headings in the editor. |
+| `shadow/` | `/shadow` | Shadow settings — `hasShadow` gating, `resolveShadowColor` helper, hover-only shadow. |
+| `svgpicker/` | `/svgpicker` | Normalize SvgPicker icons for `currentColor` support and responsive sizing. |
 
 ---
 
 ### `templates/`
 
-Reference templates and boilerplate used by the prompts when generating new components.
+Reference templates and boilerplate used when generating new components.
 
 | File | Purpose |
 |---|---|
-| `boilerplate.md` | The standard icon card boilerplate. Contains the full patterns for ResizeObserver, the animation system, shadow controls, drag-to-reorder, and breakpoint handling. New components are built from this. |
-| `list-component.md` | A boilerplate specifically for list-style components with reorderable items. |
+| `boilerplate.md` | The standard icon card boilerplate. Contains full patterns for ResizeObserver, animation, shadow controls, drag-to-reorder, and breakpoint handling. |
+| `list-component.md` | A boilerplate for list-style components with reorderable items. |
 
 ---
 
-## How the Agent Works
+## How the Workflow Works
 
-The `dotvu-component-builder` agent is **plan-first by default**. Every prompt workflow includes a planning phase — the agent will ask clarifying questions and produce a written plan before writing any code.
+Copilot picks up the instructions and skills automatically — no agent switching needed. Just use the standard Ask, Edit, or Agent modes.
 
-**You must explicitly tell the agent to start building.** It will not write code until you approve the plan or say "Build this."
+Type `/` in Copilot Chat to see all available prompts and skills.
 
-If you want to skip straight to building, include that intent in your initial message:
-
-> "Build this immediately — [description]"
+**Prompts** handle workflow tasks (plan, build, edit, review, fix).
+**Skills** handle specific features (lists, shadows, forms, breakpoints, etc.) — they load automatically when the task calls for them, or you can invoke them directly with `/skill-name`.
 
 ---
 
@@ -104,7 +109,7 @@ Use `/build-plan` when you want to think through a component before committing t
 
 ### How to invoke it
 
-In Copilot Chat (with the `dotvu-component-builder` agent active), type:
+In Copilot Chat, type:
 
 ```
 /build-plan I want to create a testimonial card that displays a customer quote, their name, and a profile image. The editor should control the background color, text colors, spacing, and whether to show a star rating.
@@ -113,8 +118,6 @@ In Copilot Chat (with the `dotvu-component-builder` agent active), type:
 Or describe your idea informally and then say:
 
 > "Let's plan this first."
-
-The agent will respond with the `/build-plan` prompt flow.
 
 ### The workflow in action
 
@@ -127,7 +130,48 @@ User:   Approves or requests changes
 Agent:  Hands off to /new-component or builds directly on request
 ```
 
-This forces a pause before code is written, catches ambiguities early, and ensures you and the agent are aligned on what's being built before a single file is touched.
+This forces a pause before code is written, catches ambiguities early, and ensures you and the agent are aligned on what's being built.
+
+---
+
+## ESLint
+
+This repo includes an ESLint config that checks `common.js`, `editor.js`, and `live.js` for errors and style issues before you publish or hand off a component.
+
+### What it checks
+
+- Standard JavaScript errors (undefined variables, unreachable code, etc.)
+- React-specific rules: unused JSX variables, inline styles, and consistent prop ordering
+- Security: warns on `no-eval`
+
+### Prerequisites
+
+- **Node.js** v18 or later — [nodejs.org/en/download](https://nodejs.org/en/download)
+- **npm** is included with Node.js
+
+Verify your versions:
+
+```bash
+node -v
+npm -v
+```
+
+### Install
+
+Run this once from the root of the repo:
+
+```bash
+npm install
+```
+
+### Usage
+
+| Command | What it does |
+|---|---|
+| `npm run lint` | Report all errors and warnings |
+| `npm run lint-fix` | Auto-fix safe issues and report the rest |
+
+Run lint before handing off any component. The `/troubleshoot-component` prompt runs lint as its first step — paste any terminal errors into chat and it will diagnose and fix them.
 
 ---
 

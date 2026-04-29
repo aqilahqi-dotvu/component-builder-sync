@@ -1,10 +1,11 @@
 ---
-description: Dot.vu component API reference and implementation patterns
+name: dotvu-api
+description: 'Dot.vu component API reference — allowed imports, boilerplate skeletons for common.js, editor.js, and live.js (CONTENT_BASED, RESIZABLE, BREAKPOINT_AWARE), UI component notes, and the shadow color helper. Use when building a new component, looking up API signatures, or copying implementation patterns.'
 ---
 
 # Dot.vu API Reference
 
-Use this file as the reference for component API signatures, allowed imports, and common implementation patterns. Rules and constraints live in `.github/instructions/dotvu-component.instructions.md`.
+Use this skill as the reference for component API signatures, allowed imports, and common implementation patterns. Rules and constraints live in `.github/instructions/dotvu-component.instructions.md`.
 
 ## common.js
 
@@ -32,7 +33,7 @@ function Settings({ state, setState }) {
     <Tabs defaultActiveTab="content">
       <Tab id="content" title="Content">
         <Section>
-          <div className="settings-section-heading">copy</div>
+          <div className="cmp-settings-section-heading">copy</div>
           <SettingItem>
             <Label content="Heading" />
             <TextInput value={state.heading} onChange={heading => setState({ ...state, heading })} />
@@ -112,17 +113,17 @@ export function Component({ state, setState, runTrigger }) {
   return (
     <div style={{ width: '100%', height: 'auto', boxSizing: 'border-box' }}>
       <ScopedStyle>{`
-        .root, .root * {
+        .cmp-root, .cmp-root * {
           box-sizing: border-box;
         }
-        .root {
+        .cmp-root {
           width: 100%;
           padding: ${s(24)}px;
           font-size: ${s(16)}px;
           line-height: 1.5;
         }
       `}</ScopedStyle>
-      <div className="root">
+      <div className="cmp-root">
         {state.heading}
       </div>
     </div>
@@ -150,16 +151,16 @@ export function Component({ state, setState, runTrigger }) {
   return (
     <div style={{ width: '100%', height: '100%', boxSizing: 'border-box' }}>
       <ScopedStyle>{`
-        .root, .root * {
+        .cmp-root, .cmp-root * {
           box-sizing: border-box;
         }
-        .root {
+        .cmp-root {
           width: 100%;
           height: 100%;
           padding: ${s(24)}px;
         }
       `}</ScopedStyle>
-      <div className="root">
+      <div className="cmp-root">
         {state.heading}
       </div>
     </div>
@@ -199,7 +200,7 @@ export function getSizeTypes(state) {
 ```jsx
 <Tab id="advanced" title="Advanced">
   <Section>
-    <div className="settings-section-heading">responsive width</div>
+    <div className="cmp-settings-section-heading">responsive width</div>
     <SettingItem>
       <Checkbox
         value={state.hasWidthBreakpoint}
@@ -342,10 +343,10 @@ export function Component({ state, setState, runTrigger }) {
       }}
     >
       <ScopedStyle>{`
-        .root, .root * {
+        .cmp-root, .cmp-root * {
           box-sizing: border-box;
         }
-        .measurement-overlay {
+        .cmp-measurement-overlay {
           position: absolute;
           top: ${s(12)}px;
           right: ${s(12)}px;
@@ -359,12 +360,14 @@ export function Component({ state, setState, runTrigger }) {
           pointer-events: none;
         }
       `}</ScopedStyle>
-      {measurementLabel && <div className="measurement-overlay">{measurementLabel}</div>}
-      <div className="root">{state.heading}</div>
+      {measurementLabel && <div className="cmp-measurement-overlay">{measurementLabel}</div>}
+      <div className="cmp-root">{state.heading}</div>
     </div>
   )
 }
 ```
+
+Replace the `cmp-` prefix with a short identifier for the current component, and keep all component CSS in a single `<ScopedStyle>` block.
 
 ## UI component notes
 

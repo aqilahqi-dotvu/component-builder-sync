@@ -1,0 +1,27 @@
+{
+  "name": "component-builder-sync",
+  "version": "1.0.0",
+  "description": "This repository shares the agent, Copilot instructions, prompts, and templates used to build Dot.vu components. The goal is to streamline our workflow and ensure every component follows the same standards — consistent structure, editor UX, and code patterns — regardless of who builds it.",
+  "main": "common.js",
+  "scripts": {
+    "lint": "eslint .",
+    "lint-fix": "eslint . --fix"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/aqilahqi-dotvu/component-builder-sync.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/aqilahqi-dotvu/component-builder-sync/issues"
+  },
+  "homepage": "https://github.com/aqilahqi-dotvu/component-builder-sync#readme",
+  "devDependencies": {
+    "@eslint/js": "^9.39.4",
+    "eslint": "^9.39.4",
+    "eslint-plugin-react": "^7.37.5"
+  }
+}
