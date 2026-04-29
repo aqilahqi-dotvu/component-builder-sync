@@ -28,23 +28,25 @@ Type `/` in chat to invoke the matching prompt:
 - `fix-component` — repair a broken component
 - `troubleshoot-component` — diagnose errors without applying fixes
 - `update-component-info` — update the help article in `getSettings`
+- `update-readme` — sync README.md after adding, removing, or renaming a skill, prompt, or instruction
 
 ## Skills — use for specific features and patterns
 
 Type `/` in chat or describe what you need and the agent will load the right skill:
 
-| Skill | Use when |
-|---|---|
-| `dotvu-api` | Looking up API signatures, allowed imports, or copying boilerplate skeletons |
-| `add-table-list` | Adding or refactoring a reorderable editable list (TableContainer + Drawer) |
-| `breakpoint-height` | Adding BREAKPOINT_AWARE height or converting an existing component to responsive height |
-| `width-breakpoint-layout` | Adding layout stacking based on component width without changing height mode |
-| `form-component` | Building or reviewing a form component (validation, submit, reset, triggers) |
-| `checkbox` | Adding toggle controls to editor settings |
-| `dropdown` | Adding single-choice select controls to editor settings |
-| `section-headings` | Adding section or sub-section headings to editor tabs |
-| `shadow` | Adding shadow settings (hasShadow, resolveShadowColor, hover shadow) |
-| `svgpicker` | Adding an icon picker with currentColor support and viewBox normalization |
+| Skill                     | Use when                                                                                |
+| ------------------------- | --------------------------------------------------------------------------------------- |
+| `dotvu-api`               | Looking up API signatures, allowed imports, or copying boilerplate skeletons            |
+| `add-table-list`          | Adding or refactoring a reorderable editable list (TableContainer + Drawer)             |
+| `breakpoint-height`       | Adding BREAKPOINT_AWARE height or converting an existing component to responsive height |
+| `width-breakpoint-layout` | Adding layout stacking based on component width without changing height mode            |
+| `form-component`          | Building or reviewing a form component (validation, submit, reset, triggers)            |
+| `checkbox`                | Adding toggle controls to editor settings                                               |
+| `dropdown`                | Adding single-choice select controls to editor settings                                 |
+| `section-headings`        | Adding section or sub-section headings to editor tabs                                   |
+| `shadow`                  | Adding shadow settings (hasShadow, resolveShadowColor, hover shadow)                    |
+| `svgpicker`               | Adding an icon picker with currentColor support and viewBox normalization               |
+| `textarea`                | Adding a multi-line text input (native HTML textarea) when TextInput is too narrow      |
 
 ## General behavior
 

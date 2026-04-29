@@ -43,41 +43,43 @@ Contains everything that configures Copilot's behaviour in this repo.
 
 Always-on rules loaded automatically when working on component files.
 
-| File | Purpose |
-|---|---|
-| `dotvu-component.instructions.md` | Core coding rules for all component files (`common.js`, `editor.js`, `live.js`). Covers state field conventions, tab/section structure, animation patterns, and what the Dot.vu runtime supports. |
-| `component-structure.instructions.md` | Enforces a consistent top-down code structure in component files, especially in `live.js`. |
+| File                                  | Purpose                                                                                                                                                                                           |
+| ------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `dotvu-component.instructions.md`     | Core coding rules for all component files (`common.js`, `editor.js`, `live.js`). Covers state field conventions, tab/section structure, animation patterns, and what the Dot.vu runtime supports. |
+| `component-structure.instructions.md` | Enforces a consistent top-down code structure in component files, especially in `live.js`.                                                                                                        |
 
 #### `.github/prompts/`
 
 Slash commands for the main workflow tasks. Type `/` in Copilot Chat to invoke them.
 
-| Prompt | Command | Purpose |
-|---|---|---|
-| `build-plan.prompt.md` | `/build-plan` | **Plan before you build.** The agent asks clarifying questions, produces a written plan covering tabs, state fields, and behaviors, and waits for your approval before any code is written. |
-| `new-component.prompt.md` | `/new-component` | Scaffold a brand-new component from scratch. |
-| `edit-component.prompt.md` | `/edit-component` | Modify an existing component safely, preserving existing state and structure. |
-| `review-component.prompt.md` | `/review-component` | Audit a component for compliance with team standards. |
-| `fix-component.prompt.md` | `/fix-component` | Debug and repair a broken component. |
-| `troubleshoot-component.prompt.md` | `/troubleshoot-component` | Diagnose errors without applying fixes. Use when a component throws an error or produces unexpected output. |
-| `update-component-info.prompt.md` | `/update-component-info` | Update the `getSettings` help article to reflect the current component's tabs and controls. |
+| Prompt                             | Command                   | Purpose                                                                                                                                                                                     |
+| ---------------------------------- | ------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `build-plan.prompt.md`             | `/build-plan`             | **Plan before you build.** The agent asks clarifying questions, produces a written plan covering tabs, state fields, and behaviors, and waits for your approval before any code is written. |
+| `new-component.prompt.md`          | `/new-component`          | Scaffold a brand-new component from scratch.                                                                                                                                                |
+| `edit-component.prompt.md`         | `/edit-component`         | Modify an existing component safely, preserving existing state and structure.                                                                                                               |
+| `review-component.prompt.md`       | `/review-component`       | Audit a component for compliance with team standards.                                                                                                                                       |
+| `fix-component.prompt.md`          | `/fix-component`          | Debug and repair a broken component.                                                                                                                                                        |
+| `troubleshoot-component.prompt.md` | `/troubleshoot-component` | Diagnose errors without applying fixes. Use when a component throws an error or produces unexpected output.                                                                                 |
+| `update-component-info.prompt.md`  | `/update-component-info`  | Update the `getSettings` help article to reflect the current component's tabs and controls.                                                                                                 |
+| `update-readme.prompt.md`          | `/update-readme`          | Sync README.md after adding, removing, or renaming a skill, prompt, or instruction file.                                                                                                    |
 
 #### `.github/skills/`
 
 On-demand expertise loaded automatically when relevant, or invoked with `/` in chat. Skills are for specific features and UI patterns — they don't run unless the task calls for them.
 
-| Skill | Command | Purpose |
-|---|---|---|
-| `dotvu-api/` | `/dotvu-api` | API signatures, allowed imports, and boilerplate skeletons for all three height patterns. |
-| `add-table-list/` | `/add-table-list` | Add a reorderable, editable list using TableContainer + Drawer. |
-| `breakpoint-height/` | `/breakpoint-height` | Implement or convert BREAKPOINT_AWARE height — ResizeObserver, getSizeTypes, `.dot-component` height override. |
-| `width-breakpoint-layout/` | `/width-breakpoint-layout` | Add layout stacking based on component width without changing height mode. |
-| `form-component/` | `/form-component` | Feature checklist for form components — validation, submit, success view, reset, triggers, actions. |
-| `checkbox/` | `/checkbox` | Rules for `Checkbox` controls — short labels, no `description` prop, Label with help pattern. |
-| `dropdown/` | `/dropdown` | Rules for `Dropdown` controls — `{ value, text }` shape, `onChange` wiring, Label pairing. |
-| `section-headings/` | `/section-headings` | Rules and CSS for section and sub-section headings in the editor. |
-| `shadow/` | `/shadow` | Shadow settings — `hasShadow` gating, `resolveShadowColor` helper, hover-only shadow. |
-| `svgpicker/` | `/svgpicker` | Normalize SvgPicker icons for `currentColor` support and responsive sizing. |
+| Skill                      | Command                    | Purpose                                                                                                        |
+| -------------------------- | -------------------------- | -------------------------------------------------------------------------------------------------------------- |
+| `dotvu-api/`               | `/dotvu-api`               | API signatures, allowed imports, and boilerplate skeletons for all three height patterns.                      |
+| `add-table-list/`          | `/add-table-list`          | Add a reorderable, editable list using TableContainer + Drawer.                                                |
+| `breakpoint-height/`       | `/breakpoint-height`       | Implement or convert BREAKPOINT_AWARE height — ResizeObserver, getSizeTypes, `.dot-component` height override. |
+| `width-breakpoint-layout/` | `/width-breakpoint-layout` | Add layout stacking based on component width without changing height mode.                                     |
+| `form-component/`          | `/form-component`          | Feature checklist for form components — validation, submit, success view, reset, triggers, actions.            |
+| `checkbox/`                | `/checkbox`                | Rules for `Checkbox` controls — short labels, no `description` prop, Label with help pattern.                  |
+| `dropdown/`                | `/dropdown`                | Rules for `Dropdown` controls — `{ value, text }` shape, `onChange` wiring, Label pairing.                     |
+| `section-headings/`        | `/section-headings`        | Rules and CSS for section and sub-section headings in the editor.                                              |
+| `shadow/`                  | `/shadow`                  | Shadow settings — `hasShadow` gating, `resolveShadowColor` helper, hover-only shadow.                          |
+| `svgpicker/`               | `/svgpicker`               | Normalize SvgPicker icons for `currentColor` support and responsive sizing.                                    |
+| `textarea/`                | `/textarea`                | Rules for native HTML `<textarea>` — when to use it over `TextInput`, consistent styling, newline handling.    |
 
 ---
 
@@ -85,10 +87,10 @@ On-demand expertise loaded automatically when relevant, or invoked with `/` in c
 
 Reference templates and boilerplate used when generating new components.
 
-| File | Purpose |
-|---|---|
-| `boilerplate.md` | The standard icon card boilerplate. Contains full patterns for ResizeObserver, animation, shadow controls, drag-to-reorder, and breakpoint handling. |
-| `list-component.md` | A boilerplate for list-style components with reorderable items. |
+| File                | Purpose                                                                                                                                              |
+| ------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `boilerplate.md`    | The standard icon card boilerplate. Contains full patterns for ResizeObserver, animation, shadow controls, drag-to-reorder, and breakpoint handling. |
+| `list-component.md` | A boilerplate for list-style components with reorderable items.                                                                                      |
 
 ---
 
@@ -166,9 +168,9 @@ npm install
 
 ### Usage
 
-| Command | What it does |
-|---|---|
-| `npm run lint` | Report all errors and warnings |
+| Command            | What it does                             |
+| ------------------ | ---------------------------------------- |
+| `npm run lint`     | Report all errors and warnings           |
 | `npm run lint-fix` | Auto-fix safe issues and report the rest |
 
 Run lint before handing off any component. The `/troubleshoot-component` prompt runs lint as its first step — paste any terminal errors into chat and it will diagnose and fix them.
@@ -179,10 +181,10 @@ Run lint before handing off any component. The `/troubleshoot-component` prompt 
 
 Every component is implemented with exactly three files:
 
-| File | Purpose |
-|---|---|
+| File        | Purpose                                |
+| ----------- | -------------------------------------- |
 | `common.js` | Shared state schema and default values |
-| `editor.js` | Editor UI — tabs, sections, controls |
-| `live.js` | The rendered live component |
+| `editor.js` | Editor UI — tabs, sections, controls   |
+| `live.js`   | The rendered live component            |
 
 Do not add extra files or package dependencies unless the Dot.vu runtime explicitly supports them.
