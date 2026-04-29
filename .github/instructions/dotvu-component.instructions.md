@@ -33,7 +33,7 @@ If the needed editor element has no allowed `@ui` component, ask the user before
 
 ## Non-negotiable rules
 
-- Use one `<ScopedStyle>` block for component CSS. Never use raw `<style>` tags.
+- Use one `<ScopedStyle>` block for component CSS. Never use raw `<style>` tags. In components with many design tokens, two blocks are permitted when performance requires a structural/theme split — see the Performance section.
 - Import and use `useScaler` in `live.js`.
 - `const { s } = useScaler()` must be the first line inside `Component`.
 - Use `s()` for every pixel value in `live.js`: font sizes, margins, padding, gaps, borders, border radius, positions, shadows, media queries, and dimensions.
@@ -62,10 +62,10 @@ In `common.js`, add new defaults before `...state` so saved state wins:
 ```js
 export function getInitialState(state) {
   return {
-    heading: 'Component Title',
-    description: 'Add a useful default description.',
-    ...state
-  }
+    heading: "Component Title",
+    description: "Add a useful default description.",
+    ...state,
+  };
 }
 ```
 
@@ -159,6 +159,69 @@ Must include:
 
 Do not add BREAKPOINT_AWARE infrastructure to ordinary content-based components.
 
+## Performance — preventing editor freezes
+
+TextInput fires `onChange` on every keystroke. In components with many state fields or a large `ScopedStyle` block, this causes expensive re-renders that feel like a page freeze. The freeze is always caused by render cost, not by `TextInput` itself.
+
+### What causes high render cost
+
+- **Templated `ScopedStyle`**: every interpolation (`${state.color}`, `${s(size)}px`) forces the entire CSS string to be rebuilt and re-injected into the DOM on every render. A 200-line style block with 30 interpolations is the largest single cost.
+- **`setState` in a `useEffect` dependency array**: if a `useEffect` lists `setState` as a dependency and the platform provides a new `setState` reference on each render, the effect tears down and rebuilds (ResizeObserver, setInterval, rAF chains) on every keystroke.
+- **Large state spreads**: `setState({ ...state, field })` allocates a new 50+ field object on every keystroke.
+- **Unmemoized settings panel**: the entire editor `Settings` component, including hidden tabs and all controls, re-renders on every keystroke with no bailout.
+
+### Preferred fix — CSS custom properties
+
+For components with 10 or more design tokens (colors, sizes, font families), move all visual values out of the `ScopedStyle` template and onto the root element as CSS custom properties.
+
+```jsx
+// ScopedStyle — fully static, no interpolations, injected once
+<ScopedStyle>{`
+  .nl-input {
+    height: var(--nl-field-height);
+    border-color: var(--nl-field-border);
+    font-size: var(--nl-input-font-size);
+  }
+`}</ScopedStyle>
+
+// Root element carries all tokens — React diffs only what changed
+<div
+  className="nl-root"
+  style={{
+    '--nl-field-height': s(fieldHeight) + 'px',
+    '--nl-field-border': state.fieldBorderColor,
+    '--nl-input-font-size': s(inputFontSize) + 'px',
+  }}
+>
+```
+
+When a text field changes, none of the CSS custom properties change. React's style reconciler skips them entirely. The CSS is never re-injected.
+
+### `useEffect` and `setState`
+
+Never list `setState` as a `useEffect` dependency when the effect registers long-running observers or intervals. Use a ref instead:
+
+```js
+const setStateRef = useRef(setState);
+useEffect(() => {
+  setStateRef.current = setState;
+}, [setState]);
+
+useEffect(() => {
+  // use setStateRef.current(...) inside here
+  // dependency array: []  — mounts once, never torn down on re-render
+}, []);
+```
+
+### Alternative — two memoized `ScopedStyle` blocks
+
+If CSS custom properties are not viable, split into exactly two memoized `ScopedStyle` blocks:
+
+- **Structural** — layout rules with no state dependencies, memoized on `[s]`. Contains flex/grid, gap, margin, box-sizing, transitions, and static pseudo-class rules.
+- **Theme** — visual rules memoized on only the state fields that affect CSS. Exclude text-only fields (`heading`, `description`, `buttonLabel`, labels, placeholders) from the deps array so typing in those fields returns the cached string immediately.
+
+This prevents text field edits from triggering CSS rebuilds, but does not eliminate the injection cost when visual settings (colors, sizes) actually change. The CSS custom properties approach is still preferred for the lowest possible cost.
+
 ## Dynamic lists and tables
 
 For any editable array/list setting, use the master-detail pattern:
@@ -233,6 +296,7 @@ Use it to understand and apply established patterns such as:
 - animation setup when relevant
 
 When creating or editing a component:
+
 - read the current component files first if they exist
 - consult `/templates/boilerplate.md` only for patterns that are relevant to the requested feature
 - adapt the pattern to the current component’s domain
