@@ -34,7 +34,6 @@ export default [
     rules: {
       'no-eval': 'warn',
       'react/jsx-uses-vars': 'error',
-      'react/jsx-no-inline-styles': 'warn',
       'react/jsx-sort-props': [
         'warn',
         {
