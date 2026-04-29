@@ -47,6 +47,7 @@ Type `/` in chat or describe what you need and the agent will load the right ski
 | `shadow`                  | Adding shadow settings (hasShadow, resolveShadowColor, hover shadow)                    |
 | `svgpicker`               | Adding an icon picker with currentColor support and viewBox normalization               |
 | `textarea`                | Adding a multi-line text input (native HTML textarea) when TextInput is too narrow      |
+| `resizable-both`          | Making a component resizable in all directions (width, height, and diagonally)          |
 
 ## General behavior
 

@@ -8,7 +8,9 @@ const browserGlobals = {
   IntersectionObserver: 'readonly',
   ResizeObserver: 'readonly',
   requestAnimationFrame: 'readonly',
-  cancelAnimationFrame: 'readonly'
+  cancelAnimationFrame: 'readonly',
+  setInterval: 'readonly',
+  clearInterval: 'readonly'
 }
 
 export default [
