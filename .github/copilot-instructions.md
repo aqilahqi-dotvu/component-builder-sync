@@ -77,3 +77,7 @@ Type `/` in chat or describe what you need and the agent will load the right ski
 - Use `BREAKPOINT_AWARE` only when the user asks for responsive height behavior.
 - Use `TableContainer` plus `Drawer` for editable lists.
 - Do not use Dynamic Values, Action Sets, or Audience Data unless explicitly requested.
+
+## Known behaviors
+
+- The `width` field inside `getSettings` controls the pixel width of the Settings Panel in the Dot.vu editor. If a user reports the settings panel is too narrow, controls are cramped, or the help icon is not visible, increase this value.
