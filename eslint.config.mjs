@@ -4,6 +4,7 @@ import react from 'eslint-plugin-react'
 const browserGlobals = {
   window: 'readonly',
   document: 'readonly',
+  URL: 'readonly',
   IntersectionObserver: 'readonly',
   ResizeObserver: 'readonly',
   requestAnimationFrame: 'readonly',
