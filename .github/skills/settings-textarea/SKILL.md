@@ -1,5 +1,5 @@
 ---
-name: textarea
+name: settings-textarea
 description: "Rules and patterns for using a native HTML textarea in editor.js — when to prefer it over TextInput, consistent styling, onChange handler, newline handling, and rows sizing. Use when an editor field needs multi-line text input."
 ---
 

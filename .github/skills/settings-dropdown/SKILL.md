@@ -1,6 +1,6 @@
 ---
-name: dropdown
-description: 'Rules and patterns for using Dropdown controls in editor.js — { value, text } option shape, onChange receives value directly (not event), always pair with Label, extract reused option arrays as named consts. Use when adding single-choice select controls to editor settings.'
+name: settings-dropdown
+description: "Rules and patterns for using Dropdown controls in editor.js — { value, text } option shape, onChange receives value directly (not event), always pair with Label, extract reused option arrays as named consts. Use when adding single-choice select controls to editor settings."
 ---
 
 # Dropdown — Usage Rule
@@ -29,11 +29,11 @@ Use `Dropdown` when the user must choose exactly one value from a fixed set of o
   <Dropdown
     value={state.animationType}
     options={[
-      { value: 'none', text: 'None' },
-      { value: 'pulse', text: 'Pulse' },
-      { value: 'bounce', text: 'Bounce' }
+      { value: "none", text: "None" },
+      { value: "pulse", text: "Pulse" },
+      { value: "bounce", text: "Bounce" },
     ]}
-    onChange={animationType => setState({ ...state, animationType })}
+    onChange={(animationType) => setState({ ...state, animationType })}
   />
 </SettingItem>
 ```
@@ -49,10 +49,10 @@ Use `Dropdown` when the user must choose exactly one value from a fixed set of o
   <Dropdown
     value={state.loadingMode}
     options={[
-      { value: 'onLoad', text: 'On Load' },
-      { value: 'manual', text: 'Manual' }
+      { value: "onLoad", text: "On Load" },
+      { value: "manual", text: "Manual" },
     ]}
-    onChange={loadingMode => setState({ ...state, loadingMode })}
+    onChange={(loadingMode) => setState({ ...state, loadingMode })}
   />
 </SettingItem>
 ```
@@ -61,33 +61,43 @@ Use `Dropdown` when the user must choose exactly one value from a fixed set of o
 
 ```jsx
 const fontWeightOptions = [
-  { value: '100', text: 'Thin - 100' },
-  { value: '400', text: 'Regular - 400' },
-  { value: '700', text: 'Bold - 700' },
-  { value: '900', text: 'Black - 900' }
-]
+  { value: "100", text: "Thin - 100" },
+  { value: "400", text: "Regular - 400" },
+  { value: "700", text: "Bold - 700" },
+  { value: "900", text: "Black - 900" },
+];
 
 function Settings({ state, setState }) {
   return (
     <>
       <SettingItem>
-        <Label content="Heading Weight" help="Some fonts may not include every weight shown here." />
+        <Label
+          content="Heading Weight"
+          help="Some fonts may not include every weight shown here."
+        />
         <Dropdown
           value={state.headingFontWeight}
           options={fontWeightOptions}
-          onChange={headingFontWeight => setState({ ...state, headingFontWeight })}
+          onChange={(headingFontWeight) =>
+            setState({ ...state, headingFontWeight })
+          }
         />
       </SettingItem>
       <SettingItem>
-        <Label content="Body Weight" help="Some fonts may not include every weight shown here." />
+        <Label
+          content="Body Weight"
+          help="Some fonts may not include every weight shown here."
+        />
         <Dropdown
           value={state.descriptionFontWeight}
           options={fontWeightOptions}
-          onChange={descriptionFontWeight => setState({ ...state, descriptionFontWeight })}
+          onChange={(descriptionFontWeight) =>
+            setState({ ...state, descriptionFontWeight })
+          }
         />
       </SettingItem>
     </>
-  )
+  );
 }
 ```
 
@@ -97,14 +107,16 @@ function Settings({ state, setState }) {
 <Dropdown
   value={state.loadingMode}
   options={[
-    { value: 'onLoad', text: 'On Load' },
-    { value: 'manual', text: 'Manual' }
+    { value: "onLoad", text: "On Load" },
+    { value: "manual", text: "Manual" },
   ]}
-  onChange={loadingMode => setState({
-    ...state,
-    loadingMode,
-    hasStartedLoading: loadingMode === 'onLoad'
-  })}
+  onChange={(loadingMode) =>
+    setState({
+      ...state,
+      loadingMode,
+      hasStartedLoading: loadingMode === "onLoad",
+    })
+  }
 />
 ```
 
@@ -112,12 +124,12 @@ function Settings({ state, setState }) {
 
 ## Quick reference
 
-| Situation | Pattern |
-|---|---|
-| Simple single-choice selection | `Dropdown` with inline options and short `Label` |
-| Choice needs a sentence of context | `Label` with `help`, then `Dropdown` |
+| Situation                               | Pattern                                             |
+| --------------------------------------- | --------------------------------------------------- |
+| Simple single-choice selection          | `Dropdown` with inline options and short `Label`    |
+| Choice needs a sentence of context      | `Label` with `help`, then `Dropdown`                |
 | Same options used in multiple dropdowns | Extract options as a named `const` above `Settings` |
-| Selection affects other state fields | Compute derived values inside `onChange` |
+| Selection affects other state fields    | Compute derived values inside `onChange`            |
 
 ---
 

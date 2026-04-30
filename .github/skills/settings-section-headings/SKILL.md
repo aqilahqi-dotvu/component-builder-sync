@@ -1,5 +1,5 @@
 ---
-name: section-headings
+name: settings-section-headings
 description: "Rules and CSS for SectionHeading and SubSectionHeading in editor.js — uppercase with letter-spacing for section labels, capitalize without letter-spacing for sub-groups. Use when adding headings to editor tabs or sections."
 ---
 

@@ -1,6 +1,6 @@
 ---
-name: svgpicker
-description: 'Normalize SvgPicker icons so selected SVGs always support dynamic color via currentColor and scale with wrapper size. Covers normalization rules, live CSS overrides for fill/stroke, and viewBox preservation. Use when adding an icon picker to a component.'
+name: settings-svgpicker
+description: "Normalize SvgPicker icons so selected SVGs always support dynamic color via currentColor and scale with wrapper size. Covers normalization rules, live CSS overrides for fill/stroke, and viewBox preservation. Use when adding an icon picker to a component."
 ---
 
 # SVG Picker Normalization
@@ -60,7 +60,7 @@ Common failure mode: The component adds an `iconColor` field, but the SVG still 
 Good stored SVG:
 
 ```js
-'<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="..." fill="currentColor"/></svg>'
+'<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="..." fill="currentColor"/></svg>';
 ```
 
 Good live CSS pattern:
@@ -90,7 +90,7 @@ Good live CSS pattern:
 Avoid:
 
 ```js
-'<svg width="24" height="24"><path fill="#000" d="..."/></svg>'
+'<svg width="24" height="24"><path fill="#000" d="..."/></svg>';
 ```
 
 ---

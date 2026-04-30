@@ -1,5 +1,5 @@
 ---
-name: font-settings
+name: settings-font
 description: "Standard typography settings block for Dot.vu editor.js — Font Family, Font Weight, Font Size, Line Height in a 2×2 grid under a Typography heading, followed by Text Alignment, then Color and Inactive Color (hover, etc.) in a 2×2 grid. Use whenever a component has a TextInput or textarea and needs font styling controls."
 ---
 

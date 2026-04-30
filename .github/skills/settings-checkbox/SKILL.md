@@ -1,6 +1,6 @@
 ---
 name: settings-checkbox
-description: "Rules and patterns for using Checkbox controls in editor.js — value prop (not checked), onChange receives boolean directly (not event), required label prop, short labels only, use Label with help for context. Use when adding toggle controls to editor settings."
+description: 'Rules and patterns for using Checkbox controls in editor.js — value prop (not checked), onChange receives boolean directly (not event), required label prop, short labels only, use Label with help for context. Use when adding toggle controls to editor settings.'
 ---
 
 # Checkbox — Usage Rule
@@ -34,7 +34,7 @@ When a checkbox needs extra context, place a `Label` with a `help` attribute **a
 <SettingItem>
   <Checkbox
     value={state.hasShadow}
-    onChange={(hasShadow) => setState({ ...state, hasShadow })}
+    onChange={hasShadow => setState({ ...state, hasShadow })}
     label="Show shadow"
   />
 </SettingItem>
@@ -50,7 +50,7 @@ When a checkbox needs extra context, place a `Label` with a `help` attribute **a
   />
   <Checkbox
     value={state.autoStart}
-    onChange={(autoStart) => setState({ ...state, autoStart })}
+    onChange={autoStart => setState({ ...state, autoStart })}
     label="Start on load"
   />
 </SettingItem>
@@ -85,10 +85,10 @@ When a checkbox needs extra context, place a `Label` with a `help` attribute **a
 
 ## Quick reference
 
-| Situation                                | Pattern                                                           |
-| ---------------------------------------- | ----------------------------------------------------------------- |
-| Simple toggle, obvious meaning           | Checkbox with short `label` only                                  |
-| Toggle needs a sentence of context       | `Label` with `help`, then `Checkbox` with short `label`           |
+| Situation | Pattern |
+|---|---|
+| Simple toggle, obvious meaning | Checkbox with short `label` only |
+| Toggle needs a sentence of context | `Label` with `help`, then `Checkbox` with short `label` |
 | Group of toggles sharing one explanation | Single `Label` with `help`, then one `Checkbox` per `SettingItem` |
 
 ---
