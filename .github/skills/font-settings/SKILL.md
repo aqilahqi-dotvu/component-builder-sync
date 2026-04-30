@@ -1,6 +1,6 @@
 ---
 name: font-settings
-description: "Standard typography settings block for Dot.vu editor.js — Font Family, Font Weight, Font Size, Line Height in a 2×2 grid under a Typography heading, followed by Text Alignment and Color pickers. Use whenever a component has a TextInput or textarea and needs font styling controls."
+description: "Standard typography settings block for Dot.vu editor.js — Font Family, Font Weight, Font Size, Line Height in a 2×2 grid under a Typography heading, followed by Text Alignment, then Color and Inactive Color (hover, etc.) in a 2×2 grid. Use whenever a component has a TextInput or textarea and needs font styling controls."
 ---
 
 # Font Settings Skill
@@ -17,8 +17,8 @@ fontSize: 16,
 fontWeight: 400,
 lineHeight: 1.5,
 textAlign: 'left',
-textColor: '#000000',
-// Only add if the component has a secondary/inactive text state:
+color: '#000000',
+// Only add if the component has a secondary/inactive state (hover, unrevealed, etc.):
 // inactiveColor: '#e0e0e0',
 ```
 
@@ -118,23 +118,26 @@ Place this block as a `Section` inside the **Style** `Tab`. If the tab already h
       onChange={(value) => setState({ ...state, textAlign: value })}
     />
   </SettingItem>
-  <SettingItem>
-    <Label content="Text Color" />
-    <ColorPicker
-      value={state.textColor}
-      onChange={(color) => setState({ ...state, textColor: color })}
-    />
-  </SettingItem>
-  {/* Add below if the component has an inactive/unrevealed text state */}
-  {/*
-  <SettingItem>
-    <Label content="Inactive Color" help="Color of the text before it is revealed" />
-    <ColorPicker
-      value={state.inactiveColor}
-      onChange={color => setState({ ...state, inactiveColor: color })}
-    />
-  </SettingItem>
-  */}
+  {/* Color row — always show Color; add inactiveColor when the component has a secondary state */}
+  <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "12px" }}>
+    <SettingItem>
+      <Label content="Color" />
+      <ColorPicker
+        value={state.color}
+        onChange={(color) => setState({ ...state, color })}
+      />
+    </SettingItem>
+    {/* Uncomment when the component has an inactive/hover/unrevealed state */}
+    {/*
+    <SettingItem>
+      <Label content="Inactive Color" help="Color when inactive, hovered, or unrevealed" />
+      <ColorPicker
+        value={state.inactiveColor}
+        onChange={(inactiveColor) => setState({ ...state, inactiveColor })}
+      />
+    </SettingItem>
+    */}
+  </div>
 </Section>
 ```
 
@@ -148,7 +151,7 @@ font-size: ${s(state.fontSize)}px;
 font-weight: ${state.fontWeight};
 line-height: ${state.lineHeight};
 text-align: ${state.textAlign};
-color: ${state.textColor};
+color: ${state.color};
 ```
 
 ---
@@ -157,8 +160,11 @@ color: ${state.textColor};
 
 - Always use `s()` from `useScaler` when outputting `fontSize` in the CSS template string in `live.js`.
 - The 2×2 grid order is fixed: **Font Family → Font Weight → Font Size → Line Height**.
-- Alignment and Color pickers always appear **below** the grid, never inside it.
-- If a component has both an active and inactive text color (e.g. scroll reveal), replace the single `textColor` picker with `activeColor` + `inactiveColor` pickers, in that order.
-- Do not add `Inactive Color` unless the component explicitly has a two-state text color.
+- Alignment always appears **below** the font grid, as a full-width row.
+- Color pickers always appear **below** Alignment, in their own 2-column grid.
+- The active color field is named `color` (state key) and labelled **"Color"** in the editor.
+- Inactive Color occupies the second cell of the color grid. Its label and `help` text should describe the specific secondary state (hover, unrevealed, inactive, etc.).
+- Do not add `Inactive Color` unless the component explicitly has a two-state color (e.g. hover, scroll reveal, inactive).
+- When both colors are present, use `color` + `inactiveColor` as the state field names.
 - Default `fontWeight` is `400` for body text components, `700` for heading-style components.
 - The section heading `"Typography"` is always present when this block is used.
