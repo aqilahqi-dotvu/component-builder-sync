@@ -10,7 +10,9 @@ const browserGlobals = {
   requestAnimationFrame: 'readonly',
   cancelAnimationFrame: 'readonly',
   setInterval: 'readonly',
-  clearInterval: 'readonly'
+  clearInterval: 'readonly',
+  setTimeout: 'readonly',
+  clearTimeout: 'readonly'
 }
 
 export default [
@@ -36,6 +38,8 @@ export default [
     },
     rules: {
       'no-eval': 'warn',
+      'no-unused-vars': ['error', { argsIgnorePattern: '^_' }],
+      'react/jsx-uses-react': 'error',
       'react/jsx-uses-vars': 'error',
       'react/jsx-sort-props': [
         'warn',

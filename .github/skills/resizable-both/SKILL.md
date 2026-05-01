@@ -48,19 +48,32 @@ The first line of `live.js` must declare the height pattern:
 
 ---
 
-## live.js — root element CSS
+## live.js — root and card CSS
 
-The root element must fill the platform container in both dimensions:
+Use a two-layer structure: a centering flex root that fills the platform container, and a card inside that also fills the root. This keeps all content centered as the user resizes in any direction.
 
 ```css
 .my-root {
+  position: relative;
   width: 100%;
   height: 100%;
   box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: auto;
+}
+
+.my-card {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  box-sizing: border-box;
+  overflow: hidden;
 }
 ```
 
-Do **not** set a fixed pixel height on the root. The platform controls the height by resizing the container — the component must respond by filling it.
+Do **not** set a fixed pixel height on either element. The platform controls the container size — both layers must respond by filling it.
 
 ---
 
@@ -68,21 +81,31 @@ Do **not** set a fixed pixel height on the root. The platform controls the heigh
 
 ```js
 // HEIGHT_PATTERN: RESIZABLE
-import { useEffect, useRef } from "react";
 import { ScopedStyle } from "@utils";
 import { useScaler } from "@hooks";
 import { getInitialState } from "@common/index";
 export { getInitialState };
 
-export function Component({ state, setState }) {
+export function Component({ state }) {
   const { s } = useScaler();
 
   const styles = `
     .my-root {
+      position: relative;
       width: 100%;
       height: 100%;
       box-sizing: border-box;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: auto;
+    }
+
+    .my-card {
       position: relative;
+      width: 100%;
+      height: 100%;
+      box-sizing: border-box;
       overflow: hidden;
     }
   `;
@@ -90,13 +113,15 @@ export function Component({ state, setState }) {
   return (
     <>
       <ScopedStyle>{styles}</ScopedStyle>
-      <div className="my-root">{/* component content */}</div>
+      <div className="my-root">
+        <div className="my-card">{/* component content */}</div>
+      </div>
     </>
   );
 }
 ```
 
-Replace `my-root` with a component-prefixed class name.
+Replace `my-root` and `my-card` with component-prefixed class names.
 
 ---
 
