@@ -156,6 +156,21 @@ color: ${state.color};
 
 ---
 
+## Responsive font size with width breakpoint
+
+If the component already implements the width-breakpoint pattern, font size can use a responsive editor format instead of a single static input.
+
+- Keep the overall layout on one parent 2-column grid. Do not nest a second 2-column grid inside the typography grid.
+- Let each responsive font-size control contribute exactly two sibling cells to that grid.
+- Keep the main font size input, hint text, and manual override checkbox grouped in the left cell.
+- Keep the hint short and place it directly under the main input. Preferred copy: `Auto: 20px below breakpoint.`
+- Show the compact font-size input in the right cell on the same row only when the manual override checkbox is enabled.
+- When manual override is off, keep the right cell empty so the layout stays capped at 2 columns.
+- Do not expose responsive font size controls unless the component already has `hasWidthBreakpoint` and `widthBreakpoint` support.
+- Reuse the shared `ResponsiveNumberSetting` / `ResponsiveFontSize` pattern from the `width-breakpoint-layout` skill instead of creating a second responsive typography flow.
+
+---
+
 ## Rules
 
 - Always use `s()` from `useScaler` when outputting `fontSize` in the CSS template string in `live.js`.
@@ -168,3 +183,4 @@ color: ${state.color};
 - When both colors are present, use `color` + `inactiveColor` as the state field names.
 - Default `fontWeight` is `400` for body text components, `700` for heading-style components.
 - The section heading `"Typography"` is always present when this block is used.
+- When responsive font size is enabled through width-breakpoint support, keep the control on a single 2-column parent grid: left cell for base input, hint, and override; right cell for compact input or an empty placeholder.

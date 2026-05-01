@@ -66,48 +66,127 @@ Add this reusable component above `getControlValue`. It handles the number input
 
 ```jsx
 const hintTextStyle = {
-  fontSize: '11px',
-  color: '#9ca3af',
+  fontSize: "11px",
+  color: "#9ca3af",
   lineHeight: 1.4,
-  marginTop: '4px'
-}
+  marginTop: "4px",
+};
 
-function ResponsiveNumberSetting({ label, value, min, max, step, compactValue, hasCompact, onChangeValue, onChangeCompactValue, onChangeHasCompact, hasBreakpoint }) {
-  return (
-    <>
+const responsiveGridStyle = {
+  display: "grid",
+  gridTemplateColumns: "1fr 1fr",
+  gap: "12px",
+};
+
+const responsiveCellStyle = {
+  display: "flex",
+  flexDirection: "column",
+  gap: "8px",
+};
+
+const responsivePlaceholderStyle = {
+  minHeight: "1px",
+};
+
+function ResponsiveNumberSetting({
+  label,
+  value,
+  min,
+  max,
+  step,
+  compactValue,
+  hasCompact,
+  onChangeValue,
+  onChangeCompactValue,
+  onChangeHasCompact,
+  hasBreakpoint,
+}) {
+  if (!hasBreakpoint) {
+    return (
       <SettingItem>
         <Label content={label} />
-        <NumberInput value={value} min={min} max={max} step={step || 1} onChange={onChangeValue} />
+        <NumberInput
+          value={value}
+          min={min}
+          max={max}
+          step={step || 1}
+          onChange={onChangeValue}
+        />
       </SettingItem>
-      {hasBreakpoint && (
-        <>
-          {!hasCompact && (
-            <div style={hintTextStyle}>Will change to <strong>{compactValue}px</strong> when the component becomes smaller than the breakpoint.</div>
-          )}
+    );
+  }
+
+  return (
+    <>
+      <div style={responsiveCellStyle}>
+        <SettingItem>
+          <Label content={label} />
+          <NumberInput
+            value={value}
+            min={min}
+            max={max}
+            step={step || 1}
+            onChange={onChangeValue}
+          />
+        </SettingItem>
+        {!hasCompact && (
+          <div style={hintTextStyle}>
+            Auto: <strong>{compactValue}px</strong> below breakpoint.
+          </div>
+        )}
+        <SettingItem>
+          <Checkbox
+            label="Set compact size manually"
+            value={Boolean(hasCompact)}
+            onChange={onChangeHasCompact}
+          />
+        </SettingItem>
+      </div>
+      <div style={responsiveCellStyle}>
+        {hasCompact ? (
           <SettingItem>
-            <Checkbox
-              label={`Override ${label.toLowerCase()} below breakpoint`}
-              value={Boolean(hasCompact)}
-              onChange={onChangeHasCompact}
+            <Label content={`${label} (compact)`} />
+            <NumberInput
+              value={compactValue}
+              min={min}
+              max={max}
+              step={step || 1}
+              onChange={onChangeCompactValue}
             />
           </SettingItem>
-          {hasCompact && (
-            <SettingItem>
-              <Label content={`${label} (compact)`} />
-              <NumberInput value={compactValue} min={min} max={max} step={step || 1} onChange={onChangeCompactValue} />
-            </SettingItem>
-          )}
-        </>
-      )}
+        ) : (
+          <div style={responsivePlaceholderStyle} />
+        )}
+      </div>
     </>
-  )
+  );
 }
 ```
+
+Layout rules for this pattern:
+
+- Keep one parent 2-column grid. Each responsive numeric control should contribute exactly two sibling cells to that grid.
+- Left cell: base input, short hint text, and override checkbox.
+- Right cell: compact input only when manual override is enabled; otherwise render an empty placeholder to preserve the 2-column layout.
+- Keep the hint short. Preferred wording: `Auto: 20px below breakpoint.`
+- Use this same layout for responsive font size so typography controls behave like other responsive numeric controls.
+- For standalone uses, wrap the control in `responsiveGridStyle` at the call site. For multiple responsive controls in one section, reuse the same parent 2-column grid rather than nesting another grid per control.
 
 For font size, wrap as `ResponsiveFontSize`:
 
 ```jsx
-function ResponsiveFontSize({ value, min, max, step, compactValue, hasCompact, onChangeSize, onChangeCompactSize, onChangeHasCompact, hasBreakpoint }) {
+function ResponsiveFontSize({
+  value,
+  min,
+  max,
+  step,
+  compactValue,
+  hasCompact,
+  onChangeSize,
+  onChangeCompactSize,
+  onChangeHasCompact,
+  hasBreakpoint,
+}) {
   return (
     <ResponsiveNumberSetting
       label="Size"
@@ -122,7 +201,7 @@ function ResponsiveFontSize({ value, min, max, step, compactValue, hasCompact, o
       onChangeHasCompact={onChangeHasCompact}
       hasBreakpoint={hasBreakpoint}
     />
-  )
+  );
 }
 ```
 
@@ -131,12 +210,20 @@ function ResponsiveFontSize({ value, min, max, step, compactValue, hasCompact, o
 ```jsx
 <ResponsiveFontSize
   value={state.headingFontSize}
-  min={12} max={120}
+  min={12}
+  max={120}
   compactValue={state.headingFontSizeCompact}
   hasCompact={state.hasHeadingFontSizeCompact}
-  onChangeSize={value => updateStateField('headingFontSize', value)}
-  onChangeCompactSize={value => updateStateField('headingFontSizeCompact', value)}
-  onChangeHasCompact={value => updateStateField('hasHeadingFontSizeCompact', Boolean(getControlValue(value)))}
+  onChangeSize={(value) => updateStateField("headingFontSize", value)}
+  onChangeCompactSize={(value) =>
+    updateStateField("headingFontSizeCompact", value)
+  }
+  onChangeHasCompact={(value) =>
+    updateStateField(
+      "hasHeadingFontSizeCompact",
+      Boolean(getControlValue(value)),
+    )
+  }
   hasBreakpoint={Boolean(state.hasWidthBreakpoint)}
 />
 ```
@@ -147,12 +234,16 @@ function ResponsiveFontSize({ value, min, max, step, compactValue, hasCompact, o
 <ResponsiveNumberSetting
   label="Padding Top / Bottom"
   value={state.paddingY}
-  min={0} max={240} step={4}
+  min={0}
+  max={240}
+  step={4}
   compactValue={state.paddingYCompact}
   hasCompact={state.hasPaddingYCompact}
-  onChangeValue={value => updateStateField('paddingY', value)}
-  onChangeCompactValue={value => updateStateField('paddingYCompact', value)}
-  onChangeHasCompact={value => updateStateField('hasPaddingYCompact', Boolean(getControlValue(value)))}
+  onChangeValue={(value) => updateStateField("paddingY", value)}
+  onChangeCompactValue={(value) => updateStateField("paddingYCompact", value)}
+  onChangeHasCompact={(value) =>
+    updateStateField("hasPaddingYCompact", Boolean(getControlValue(value)))
+  }
   hasBreakpoint={Boolean(state.hasWidthBreakpoint)}
 />
 ```
@@ -166,20 +257,36 @@ function ResponsiveFontSize({ value, min, max, step, compactValue, hasCompact, o
     <Checkbox
       label="Enable width breakpoint"
       value={Boolean(state.hasWidthBreakpoint)}
-      onChange={value => updateStateField('hasWidthBreakpoint', Boolean(getControlValue(value)))}
+      onChange={(value) =>
+        updateStateField("hasWidthBreakpoint", Boolean(getControlValue(value)))
+      }
     />
   </SettingItem>
   {state.hasWidthBreakpoint && (
     <>
       <SettingItem>
-        <Label content="Breakpoint Width" help="When the component width is at or below this value, the layout stacks and compact sizes apply." />
-        <NumberInput value={state.widthBreakpoint} min={120} max={2000} step={1} onChange={value => updateStateField('widthBreakpoint', value)} />
+        <Label
+          content="Breakpoint Width"
+          help="When the component width is at or below this value, the layout stacks and compact sizes apply."
+        />
+        <NumberInput
+          value={state.widthBreakpoint}
+          min={120}
+          max={2000}
+          step={1}
+          onChange={(value) => updateStateField("widthBreakpoint", value)}
+        />
       </SettingItem>
       <SettingItem>
         <Checkbox
           label="Preview current width in live view"
           value={Boolean(state.previewWidthInLiveView)}
-          onChange={value => updateStateField('previewWidthInLiveView', Boolean(getControlValue(value)))}
+          onChange={(value) =>
+            updateStateField(
+              "previewWidthInLiveView",
+              Boolean(getControlValue(value)),
+            )
+          }
         />
       </SettingItem>
     </>
@@ -196,47 +303,53 @@ Do **not** change `getSizeTypes` — height behavior stays the same.
 Add `containerRef` and `measuredWidth` after `useScaler()`:
 
 ```js
-const [measuredWidth, setMeasuredWidth] = useState(0)
-const containerRef = useRef(null)
+const [measuredWidth, setMeasuredWidth] = useState(0);
+const containerRef = useRef(null);
 ```
 
 Add the ResizeObserver effect:
 
 ```js
-useEffect(function() {
-  const el = containerRef.current
-  if (!el) return
+useEffect(
+  function () {
+    const el = containerRef.current;
+    if (!el) return;
 
-  function measure() {
-    const w = Math.round(Math.max(0, el.clientWidth))
-    setMeasuredWidth(w)
-    setState(function(prev) {
-      if (prev.currentComponentWidth === w) return prev
-      return Object.assign({}, prev, { currentComponentWidth: w })
-    })
-  }
+    function measure() {
+      const w = Math.round(Math.max(0, el.clientWidth));
+      setMeasuredWidth(w);
+      setState(function (prev) {
+        if (prev.currentComponentWidth === w) return prev;
+        return Object.assign({}, prev, { currentComponentWidth: w });
+      });
+    }
 
-  measure()
-  const frameId = window.requestAnimationFrame(measure)
+    measure();
+    const frameId = window.requestAnimationFrame(measure);
 
-  let observer
-  if (typeof window !== 'undefined' && window.ResizeObserver) {
-    observer = new window.ResizeObserver(measure)
-    observer.observe(el)
-  }
+    let observer;
+    if (typeof window !== "undefined" && window.ResizeObserver) {
+      observer = new window.ResizeObserver(measure);
+      observer.observe(el);
+    }
 
-  return function() {
-    window.cancelAnimationFrame(frameId)
-    if (observer) observer.disconnect()
-  }
-}, [setState])
+    return function () {
+      window.cancelAnimationFrame(frameId);
+      if (observer) observer.disconnect();
+    };
+  },
+  [setState],
+);
 ```
 
 Derive `isCompactLayout`:
 
 ```js
-const breakpointWidth = Math.max(120, Number(state.widthBreakpoint) || 768)
-const isCompactLayout = Boolean(state.hasWidthBreakpoint) && measuredWidth > 0 && measuredWidth <= breakpointWidth
+const breakpointWidth = Math.max(120, Number(state.widthBreakpoint) || 768);
+const isCompactLayout =
+  Boolean(state.hasWidthBreakpoint) &&
+  measuredWidth > 0 &&
+  measuredWidth <= breakpointWidth;
 ```
 
 Attach `ref={containerRef}` to the outermost div returned by `Component`.
@@ -257,10 +370,14 @@ Pattern: `isCompactLayout && state.hasXxxCompact ? compactValue : defaultValue`.
 #### Layout stacking
 
 ```js
-const flexDir = isCompactLayout ? 'column'
-  : section.imagePosition === 'right' ? 'row-reverse'
-  : 'row'
-const isRow = !isCompactLayout && (section.imagePosition === 'left' || section.imagePosition === 'right')
+const flexDir = isCompactLayout
+  ? "column"
+  : section.imagePosition === "right"
+    ? "row-reverse"
+    : "row";
+const isRow =
+  !isCompactLayout &&
+  (section.imagePosition === "left" || section.imagePosition === "right");
 ```
 
 When stacked, center image and copy:
@@ -276,11 +393,28 @@ style={isCompactLayout ? { alignItems: 'center', textAlign: 'center' } : {}}
 #### Measurement overlay
 
 ```jsx
-{Boolean(state.previewWidthInLiveView) && measuredWidth > 0 && (
-  <div style={{ position: 'absolute', top: s(12), right: s(12), zIndex: 10, background: 'rgba(17,24,39,0.78)', color: '#ffffff', fontSize: `${s(12)}px`, fontWeight: 600, padding: `${s(6)}px ${s(12)}px`, borderRadius: s(999), pointerEvents: 'none', lineHeight: 1 }}>
-    {measuredWidth}px
-  </div>
-)}
+{
+  Boolean(state.previewWidthInLiveView) && measuredWidth > 0 && (
+    <div
+      style={{
+        position: "absolute",
+        top: s(12),
+        right: s(12),
+        zIndex: 10,
+        background: "rgba(17,24,39,0.78)",
+        color: "#ffffff",
+        fontSize: `${s(12)}px`,
+        fontWeight: 600,
+        padding: `${s(6)}px ${s(12)}px`,
+        borderRadius: s(999),
+        pointerEvents: "none",
+        lineHeight: 1,
+      }}
+    >
+      {measuredWidth}px
+    </div>
+  );
+}
 ```
 
 ---
