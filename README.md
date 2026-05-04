@@ -82,6 +82,7 @@ On-demand expertise loaded automatically when relevant, or invoked with `/` in c
 | `settings-actionset/`      | `/settings-actionset`      | Add ActionSet UI and `runActionSet` runtime wiring for URL vs Trigger actions, and ask first whether a trigger path should execute an ActionSet or stay an outbound trigger. |
 | `textarea/`                | `/textarea`                | Rules for native HTML `<textarea>` — when to use it over `TextInput`, consistent styling, newline handling.                                                                  |
 | `animation-settings/`      | `/animation-settings`      | Animation controls — Type, Duration, Start Animation setting or Preview button, Triggers (Animation Starts, Animation Ends), and the Start Animation inbound action.         |
+| `scroll-runtime/`          | `/scroll-runtime`          | Patterns for scroll-reliant components — resolve the active scroll container, compute progress against that viewport, and keep builder behavior aligned with Preview Mode.   |
 | `dynamic-text/`            | `/dynamic-text`            | Make a component's text updatable at runtime — Update Text action, `getDataFields` exposure, and `getActionHandlers` in live.js.                                             |
 
 ---

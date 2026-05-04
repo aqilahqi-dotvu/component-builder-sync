@@ -51,6 +51,7 @@ Type `/` in chat or describe what you need and the agent will load the right ski
 | `resizable-both`            | Making a component resizable in all directions (width, height, and diagonally)                                                                                                                                  |
 | `settings-font`             | Adding the standard Typography settings block (Font Family, Weight, Size, Line Height, Alignment, Color) in a 2×2 grid whenever a component has a TextInput or textarea                                         |
 | `settings-animation`        | Adding animation controls (Type, Duration, Start Animation), Triggers (Animation Starts, Animation Ends), and the Start Animation action — or a Preview Animation button for ambient/scroll-driven animations   |
+| `scroll-runtime`            | Making scroll-reliant components work in both the AI builder and Preview Mode by resolving the active scroll container and computing progress against that viewport                                             |
 | `dynamic-text`              | Making a component's text field updatable at runtime via an Update Text inbound action, getDataFields exposure, and getActionHandlers in live.js                                                                |
 
 ## General behavior
