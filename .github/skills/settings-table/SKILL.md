@@ -63,6 +63,8 @@ const [draggedChildId, setDraggedChildId] = useState(null);
 const [dropTargetChildId, setDropTargetChildId] = useState(null);
 ```
 
+Clear both drag and drop-target state in the matching `handleDragEnd` helper and after a successful drop so the highlight does not linger.
+
 ---
 
 ## Standard operations
@@ -87,6 +89,8 @@ For nested lists:
 - `handleDuplicateChildItem`
 - `handleDeleteChildItem`
 - `moveChildItem`
+
+When you use `handleDragStart`, `handleDragOver`, and `handleDrop`, prefer curried helpers that accept the item id and return the event handler. This keeps the row JSX compact and makes it easier to attach the same handlers to both the drag handle and the summary cell.
 
 ---
 
@@ -149,8 +153,9 @@ Optional color column: Add a `ColorPicker` directly in the row color cell for im
 - On drag start, set `event.dataTransfer.effectAllowed = 'move'` and store the item id with `event.dataTransfer.setData('text/plain', itemId)`.
 - On drag over, call `event.preventDefault()` and set `event.dataTransfer.dropEffect = 'move'`.
 - On drop, prefer `event.dataTransfer.getData('text/plain')` and fall back to local dragged id state.
-- Apply drag-over styling to the handle or the primary summary cell so the drop target is obvious.
+- Apply drag-over styling to the primary summary cell so the drop target is obvious.
 - A good default is to attach `onDragOver` and `onDrop` to both the drag handle and the primary summary cell.
+- Keep a dedicated `dropTargetId` state for the active row and use it to toggle an `is-drop-target` class on the summary cell.
 - A good default handle style is:
 
 ```js
@@ -181,6 +186,10 @@ Optional color column: Add a `ColorPicker` directly in the row color cell for im
 - A good default handle CSS is:
 
 ```css
+.component-drag-cell {
+  padding-left: 12px;
+}
+
 .component-drag-handle {
   display: inline-flex;
   align-items: center;
@@ -209,6 +218,30 @@ Optional color column: Add a `ColorPicker` directly in the row color cell for im
   display: block;
   pointer-events: none;
 }
+
+.component-table-summary {
+  padding: 8px 10px;
+  border: 1px solid transparent;
+  border-radius: 8px;
+}
+
+.component-table-summary.is-drop-target {
+  border-color: #f57b37;
+  background: rgba(245, 123, 55, 0.08);
+}
+```
+
+- A good default summary cell shape is:
+
+```js
+<div
+  className={`component-table-summary${dropTargetId === item.id ? " is-drop-target" : ""}`}
+  key={`summary-${item.id}`}
+  onDragOver={handleDragOver(item.id)}
+  onDrop={handleDrop(item.id)}
+>
+  <div style={{ fontWeight: 600 }}>{item.title || "Untitled item"}</div>
+</div>
 ```
 
 ---

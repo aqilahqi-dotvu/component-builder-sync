@@ -1,6 +1,6 @@
 ---
 name: settings-section-headings
-description: "Rules and CSS for SectionHeading and SubSectionHeading in editor.js — uppercase with letter-spacing for section labels, capitalize without letter-spacing for sub-groups. Use when adding headings to editor tabs or sections."
+description: "Rules and CSS for SectionHeading and SubSectionHeading in editor.js — uppercase with letter-spacing for section labels, capitalize without letter-spacing for sub-groups. Includes drawer-specific guidance when Drawer content is portaled outside ScopedStyle."
 ---
 
 # Section Headings — Usage Rule
@@ -124,6 +124,85 @@ Same as the section heading style **except**:
 
 ---
 
+## Drawers
+
+When headings are used inside `Drawer` / `DrawerSection`, first verify whether the component library renders the drawer content **inside the same DOM subtree** as the editor panel or into a portal.
+
+### If Drawer content stays inside the scoped tree
+
+Use the same component-prefixed classes as normal sections:
+
+```jsx
+<DrawerSection>
+  <div className="faq-settings-section-heading">Question details</div>
+  <div className="faq-settings-subsection-heading">Copy</div>
+  <SettingItem>
+    <Label content="Question text" />
+    <TextInput ... />
+  </SettingItem>
+</DrawerSection>
+```
+
+### If Drawer content is portaled outside `ScopedStyle`
+
+Class-based styles defined in `ScopedStyle` may not apply to drawer content even though the class names are present. In that case, use small inline heading helpers for the drawer only.
+
+**Recommended pattern:**
+
+```jsx
+const drawerSectionHeadingStyle = {
+  margin: "0 0 12px 0",
+  color: "#000000",
+  fontSize: "13px",
+  fontWeight: 700,
+  letterSpacing: "0.08em",
+  lineHeight: 1.2,
+  textTransform: "uppercase",
+};
+
+const drawerSubsectionHeadingStyle = {
+  margin: "16px 0",
+  paddingTop: "16px",
+  color: "#000000",
+  fontSize: "14px",
+  letterSpacing: "0.02em",
+  fontWeight: 700,
+  lineHeight: 1.2,
+  textTransform: "capitalize",
+};
+
+function DrawerSectionHeading({ children }) {
+  return <div style={drawerSectionHeadingStyle}>{children}</div>;
+}
+
+function DrawerSubsectionHeading({ children }) {
+  return <div style={drawerSubsectionHeadingStyle}>{children}</div>;
+}
+```
+
+**Usage in a drawer:**
+
+```jsx
+<DrawerSection>
+  <DrawerSectionHeading>Question details</DrawerSectionHeading>
+  <DrawerSubsectionHeading>Copy</DrawerSubsectionHeading>
+  <SettingItem>
+    <Label content="Question text" />
+    <TextInput ... />
+  </SettingItem>
+</DrawerSection>
+```
+
+### Drawer rules
+
+- Treat each `DrawerSection` like a normal `Section`: one section heading maximum, first child.
+- Use sub-section headings only when a single `DrawerSection` contains two or more distinct control groups.
+- Prefer splitting large drawers into multiple `DrawerSection` blocks before adding many sub-section headings.
+- If headings are visible in tabs but not in drawers, assume a portal/scoping issue before changing the copy or markup.
+- Do not duplicate the same heading text in `Label` content immediately below it.
+
+---
+
 ## What not to do
 
 ```jsx
@@ -138,4 +217,7 @@ Same as the section heading style **except**:
 
 // ❌ Sub-section heading used when a new Section would be cleaner
 // (avoid if you have only 1–2 controls per sub-group)
+
+// ❌ Relying on ScopedStyle drawer classes without checking portal behavior
+// If the Drawer is portaled, the class names may exist but the styles still will not apply.
 ```

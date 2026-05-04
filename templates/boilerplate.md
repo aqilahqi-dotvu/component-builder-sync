@@ -1,34 +1,36 @@
 FILE: /common/index.js
+
 ```javascript
 export function getInitialState(state) {
   const baseState = {
-    heading: 'Component Title',
-    description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Add your own content, icons, and styling to turn this into a production-ready component.',
+    heading: "Component Title",
+    description:
+      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Add your own content, icons, and styling to turn this into a production-ready component.",
     icons: [
       {
-        id: '1',
+        id: "1",
         svg: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><path d="M12 8v8"></path><path d="M8 12h8"></path></svg>',
-        color: '#2563eb'
+        color: "#2563eb",
       },
       {
-        id: '2',
+        id: "2",
         svg: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l7 4v5c0 5-3.5 8.5-7 9-3.5-.5-7-4-7-9V7l7-4z"></path></svg>',
-        color: '#0f766e'
+        color: "#0f766e",
       },
       {
-        id: '3',
+        id: "3",
         svg: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7h16"></path><path d="M7 3h10"></path><path d="M6 11h12"></path><path d="M8 15h8"></path><path d="M10 19h4"></path></svg>',
-        color: '#ea580c'
+        color: "#ea580c",
       },
       {
-        id: '4',
+        id: "4",
         svg: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="16" rx="2"></rect><path d="M7 8h10"></path><path d="M7 12h6"></path><path d="M7 16h8"></path></svg>',
-        color: '#7c3aed'
-      }
+        color: "#7c3aed",
+      },
     ],
-    animationType: 'pulse',
-    animationRepeat: 'always',
-    loadingMode: 'onLoad',
+    animationType: "pulse",
+    animationRepeat: "always",
+    loadingMode: "onLoad",
     exposeOnCardClick: false,
     exposeOnAnimationStart: false,
     exposeOnAnimationEnd: false,
@@ -39,12 +41,12 @@ export function getInitialState(state) {
     iconGap: 15,
     iconHeadingGap: 20,
     hasBackground: true,
-    bgColor: '#ffffff',
+    bgColor: "#ffffff",
     cardPadding: 30,
     borderRadius: 12,
     hasShadow: true,
     shadowOnHover: false,
-    shadowColor: 'rgba(15, 23, 42, 0.16)',
+    shadowColor: "rgba(15, 23, 42, 0.16)",
     shadowOffsetX: 0,
     shadowOffsetY: 12,
     shadowBlur: 32,
@@ -54,32 +56,34 @@ export function getInitialState(state) {
     previewWidthInLiveView: false,
     currentComponentWidth: 0,
     currentComponentHeight: 0,
-    ...state
-  }
+    ...state,
+  };
 
-  const baseFont = baseState.font ?? 'Helvetica'
-  const baseTextColor = baseState.textColor ?? '#1f2937'
+  const baseFont = baseState.font ?? "Helvetica";
+  const baseTextColor = baseState.textColor ?? "#1f2937";
 
   return {
     ...baseState,
     headingFont: baseState.headingFont ?? baseFont,
-    headingFontWeight: baseState.headingFontWeight ?? '700',
+    headingFontWeight: baseState.headingFontWeight ?? "700",
     headingFontSize: baseState.headingFontSize ?? 24,
     headingColor: baseState.headingColor ?? baseTextColor,
     descriptionFont: baseState.descriptionFont ?? baseFont,
-    descriptionFontWeight: baseState.descriptionFontWeight ?? '400',
+    descriptionFontWeight: baseState.descriptionFontWeight ?? "400",
     descriptionFontSize: baseState.descriptionFontSize ?? 16,
     descriptionColor: baseState.descriptionColor ?? baseTextColor,
     font: baseFont,
-    textColor: baseTextColor
-  }
+    textColor: baseTextColor,
+  };
 }
 ```
+
 END
 
 FILE: /editor/index.js
+
 ```javascript
-import React, { useState } from 'react'
+import React, { useState } from "react";
 import {
   TextInput,
   NumberInput,
@@ -96,124 +100,126 @@ import {
   TableContainer,
   OptionsMenuRootButton,
   Drawer,
-  DrawerSection
-} from '@ui'
-import { SizeType } from '@constants'
-import { getUniqueId, ScopedStyle } from '@utils'
-import { deleteIcon, duplicateIcon, editIcon } from '@icons'
-import { getInitialState } from '@common/index'
-export { getInitialState }
+  DrawerSection,
+} from "@ui";
+import { SizeType } from "@constants";
+import { getUniqueId, ScopedStyle } from "@utils";
+import { deleteIcon, duplicateIcon, editIcon } from "@icons";
+import { getInitialState } from "@common/index";
+export { getInitialState };
 
 const fontWeightOptions = [
-  { value: '100', text: 'Thin - 100' },
-  { value: '200', text: 'Extra Light - 200' },
-  { value: '300', text: 'Light - 300' },
-  { value: '400', text: 'Regular - 400' },
-  { value: '500', text: 'Medium - 500' },
-  { value: '600', text: 'Semi Bold - 600' },
-  { value: '700', text: 'Bold - 700' },
-  { value: '800', text: 'Extra Bold - 800' },
-  { value: '900', text: 'Black - 900' }
-]
+  { value: "100", text: "Thin - 100" },
+  { value: "200", text: "Extra Light - 200" },
+  { value: "300", text: "Light - 300" },
+  { value: "400", text: "Regular - 400" },
+  { value: "500", text: "Medium - 500" },
+  { value: "600", text: "Semi Bold - 600" },
+  { value: "700", text: "Bold - 700" },
+  { value: "800", text: "Extra Bold - 800" },
+  { value: "900", text: "Black - 900" },
+];
 
 function Settings({ state, setState }) {
-  const [drawerOpen, setDrawerOpen] = useState(false)
-  const [editingIconId, setEditingIconId] = useState(null)
-  const [draggedIconId, setDraggedIconId] = useState(null)
-  const [dropTargetIconId, setDropTargetIconId] = useState(null)
+  const [drawerOpen, setDrawerOpen] = useState(false);
+  const [editingIconId, setEditingIconId] = useState(null);
+  const [draggedIconId, setDraggedIconId] = useState(null);
+  const [dropTargetIconId, setDropTargetIconId] = useState(null);
 
   const handleAddIcon = () => {
     const newIcon = {
       id: getUniqueId(),
       svg: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><path d="M12 8v8"></path><path d="M8 12h8"></path></svg>',
-      color: '#2563eb'
-    }
-    setState({ ...state, icons: [...state.icons, newIcon] })
-  }
+      color: "#2563eb",
+    };
+    setState({ ...state, icons: [...state.icons, newIcon] });
+  };
 
   const handleDeleteIcon = (id) => {
-    setState({ ...state, icons: state.icons.filter(icon => icon.id !== id) })
-  }
+    setState({ ...state, icons: state.icons.filter((icon) => icon.id !== id) });
+  };
 
   const handleDuplicateIcon = (id) => {
-    const iconIndex = state.icons.findIndex(icon => icon.id === id)
+    const iconIndex = state.icons.findIndex((icon) => icon.id === id);
 
     if (iconIndex === -1) {
-      return
+      return;
     }
 
     const duplicatedIcon = {
       ...state.icons[iconIndex],
-      id: getUniqueId()
-    }
+      id: getUniqueId(),
+    };
 
-    const nextIcons = [...state.icons]
-    nextIcons.splice(iconIndex + 1, 0, duplicatedIcon)
-    setState({ ...state, icons: nextIcons })
-  }
+    const nextIcons = [...state.icons];
+    nextIcons.splice(iconIndex + 1, 0, duplicatedIcon);
+    setState({ ...state, icons: nextIcons });
+  };
 
   const handleEditIcon = (id) => {
-    setEditingIconId(id)
-    setDrawerOpen(true)
-  }
+    setEditingIconId(id);
+    setDrawerOpen(true);
+  };
 
   const updateEditingIcon = (updates) => {
     setState({
       ...state,
-      icons: state.icons.map(icon => icon.id === editingIconId ? { ...icon, ...updates } : icon)
-    })
-  }
+      icons: state.icons.map((icon) =>
+        icon.id === editingIconId ? { ...icon, ...updates } : icon,
+      ),
+    });
+  };
 
   const moveIcon = (sourceId, targetId) => {
     if (!sourceId || !targetId || sourceId === targetId) {
-      return
+      return;
     }
 
-    const sourceIndex = state.icons.findIndex(icon => icon.id === sourceId)
-    const targetIndex = state.icons.findIndex(icon => icon.id === targetId)
+    const sourceIndex = state.icons.findIndex((icon) => icon.id === sourceId);
+    const targetIndex = state.icons.findIndex((icon) => icon.id === targetId);
 
     if (sourceIndex === -1 || targetIndex === -1) {
-      return
+      return;
     }
 
-    const nextIcons = [...state.icons]
-    const [movedIcon] = nextIcons.splice(sourceIndex, 1)
-    const insertIndex = sourceIndex < targetIndex ? targetIndex : targetIndex
+    const nextIcons = [...state.icons];
+    const [movedIcon] = nextIcons.splice(sourceIndex, 1);
+    const insertIndex = sourceIndex < targetIndex ? targetIndex : targetIndex;
 
-    nextIcons.splice(insertIndex, 0, movedIcon)
-    setState({ ...state, icons: nextIcons })
-  }
+    nextIcons.splice(insertIndex, 0, movedIcon);
+    setState({ ...state, icons: nextIcons });
+  };
 
   const handleDragStart = (iconId) => (event) => {
-    setDraggedIconId(iconId)
-    event.dataTransfer.effectAllowed = 'move'
-    event.dataTransfer.setData('text/plain', iconId)
-  }
+    setDraggedIconId(iconId);
+    event.dataTransfer.effectAllowed = "move";
+    event.dataTransfer.setData("text/plain", iconId);
+  };
 
   const handleDragOver = (iconId) => (event) => {
-    event.preventDefault()
-    event.dataTransfer.dropEffect = 'move'
+    event.preventDefault();
+    event.dataTransfer.dropEffect = "move";
 
     if (iconId !== draggedIconId) {
-      setDropTargetIconId(iconId)
+      setDropTargetIconId(iconId);
     }
-  }
+  };
 
   const handleDrop = (iconId) => (event) => {
-    event.preventDefault()
-    const sourceId = draggedIconId || event.dataTransfer.getData('text/plain')
+    event.preventDefault();
+    const sourceId = draggedIconId || event.dataTransfer.getData("text/plain");
 
-    moveIcon(sourceId, iconId)
-    setDraggedIconId(null)
-    setDropTargetIconId(null)
-  }
+    moveIcon(sourceId, iconId);
+    setDraggedIconId(null);
+    setDropTargetIconId(null);
+  };
 
   const handleDragEnd = () => {
-    setDraggedIconId(null)
-    setDropTargetIconId(null)
-  }
+    setDraggedIconId(null);
+    setDropTargetIconId(null);
+  };
 
-  const editingIcon = state.icons.find(icon => icon.id === editingIconId)
+  const editingIcon = state.icons.find((icon) => icon.id === editingIconId);
 
   const styles = `
     .cmp-settings-section-heading {
@@ -294,7 +300,7 @@ function Settings({ state, setState }) {
       line-height: 1.45;
     }
 
-  `
+  `;
 
   return (
     <>
@@ -306,14 +312,18 @@ function Settings({ state, setState }) {
               <Label content="Heading" />
               <TextInput
                 value={state.heading}
-                onChange={e => setState({ ...state, heading: e.currentTarget.value })}
+                onChange={(e) =>
+                  setState({ ...state, heading: e.currentTarget.value })
+                }
               />
             </SettingItem>
             <SettingItem>
               <Label content="Description" />
               <TextInput
                 value={state.description}
-                onChange={e => setState({ ...state, description: e.currentTarget.value })}
+                onChange={(e) =>
+                  setState({ ...state, description: e.currentTarget.value })
+                }
               />
             </SettingItem>
             <SettingItem>
@@ -322,15 +332,15 @@ function Settings({ state, setState }) {
                 addButtonText="Add Icon"
                 emptyMessage="No icons added."
                 columns={[
-                  { content: '', compact: true },
-                  { content: 'Icon' },
-                  { content: '', compact: true }
+                  { content: "", compact: true },
+                  { content: "Icon" },
+                  { content: "", compact: true },
                 ]}
                 onAdd={handleAddIcon}
                 rows={state.icons.map((icon) => [
                   <button
                     type="button"
-                    className={`icon-drag-handle ${dropTargetIconId === icon.id ? 'icon-row-drop-target' : ''}`}
+                    className={`icon-drag-handle ${dropTargetIconId === icon.id ? "icon-row-drop-target" : ""}`}
                     draggable
                     onDragStart={handleDragStart(icon.id)}
                     onDragOver={handleDragOver(icon.id)}
@@ -341,8 +351,8 @@ function Settings({ state, setState }) {
                     <span className="icon-drag-grip" />
                   </button>,
                   <div
-                    className={`editor-icon-preview ${dropTargetIconId === icon.id ? 'icon-row-drop-target' : ''}`}
-                    style={{ width: '24px', height: '24px', color: icon.color }}
+                    className={`editor-icon-preview ${dropTargetIconId === icon.id ? "icon-row-drop-target" : ""}`}
+                    style={{ width: "24px", height: "24px", color: icon.color }}
                     onDragOver={handleDragOver(icon.id)}
                     onDrop={handleDrop(icon.id)}
                     dangerouslySetInnerHTML={{ __html: icon.svg }}
@@ -351,34 +361,36 @@ function Settings({ state, setState }) {
                     key={icon.id}
                     options={[
                       {
-                        text: 'Edit',
-                        tip: 'Edit this icon',
+                        text: "Edit",
+                        tip: "Edit this icon",
                         icon: editIcon,
-                        type: 'onClick',
-                        onClick: () => handleEditIcon(icon.id)
+                        type: "onClick",
+                        onClick: () => handleEditIcon(icon.id),
                       },
                       {
-                        text: 'Duplicate',
-                        tip: 'Duplicate this icon',
+                        text: "Duplicate",
+                        tip: "Duplicate this icon",
                         icon: duplicateIcon,
-                        type: 'onClick',
-                        onClick: () => handleDuplicateIcon(icon.id)
+                        type: "onClick",
+                        onClick: () => handleDuplicateIcon(icon.id),
                       },
                       {
-                        text: 'Delete',
-                        tip: 'Delete this icon',
+                        text: "Delete",
+                        tip: "Delete this icon",
                         icon: deleteIcon,
-                        type: 'onClick',
-                        onClick: () => handleDeleteIcon(icon.id)
-                      }
+                        type: "onClick",
+                        onClick: () => handleDeleteIcon(icon.id),
+                      },
                     ]}
-                  />
+                  />,
                 ])}
               />
             </SettingItem>
             <SettingItem>
               <div className="settings-note-banner">
-                Current layout is {state.iconsPerRow} {state.iconsPerRow === 1 ? 'icon' : 'icons'} per row. To change it, go to the Styles tab.
+                Current layout is {state.iconsPerRow}{" "}
+                {state.iconsPerRow === 1 ? "icon" : "icons"} per row. To change
+                it, go to the Styles tab.
               </div>
             </SettingItem>
           </Section>
@@ -390,7 +402,7 @@ function Settings({ state, setState }) {
               <Label content="Font" />
               <FontSelector
                 value={state.headingFont}
-                onChange={headingFont => setState({ ...state, headingFont })}
+                onChange={(headingFont) => setState({ ...state, headingFont })}
               />
             </SettingItem>
             <SettingItem>
@@ -401,7 +413,9 @@ function Settings({ state, setState }) {
               <Dropdown
                 value={state.headingFontWeight}
                 options={fontWeightOptions}
-                onChange={headingFontWeight => setState({ ...state, headingFontWeight })}
+                onChange={(headingFontWeight) =>
+                  setState({ ...state, headingFontWeight })
+                }
               />
             </SettingItem>
             <SettingItem>
@@ -411,14 +425,18 @@ function Settings({ state, setState }) {
                 min={10}
                 max={72}
                 step={1}
-                onChange={headingFontSize => setState({ ...state, headingFontSize })}
+                onChange={(headingFontSize) =>
+                  setState({ ...state, headingFontSize })
+                }
               />
             </SettingItem>
             <SettingItem>
               <Label content="Color" />
               <ColorPicker
                 value={state.headingColor}
-                onChange={headingColor => setState({ ...state, headingColor })}
+                onChange={(headingColor) =>
+                  setState({ ...state, headingColor })
+                }
               />
             </SettingItem>
           </Section>
@@ -428,7 +446,9 @@ function Settings({ state, setState }) {
               <Label content="Font" />
               <FontSelector
                 value={state.descriptionFont}
-                onChange={descriptionFont => setState({ ...state, descriptionFont })}
+                onChange={(descriptionFont) =>
+                  setState({ ...state, descriptionFont })
+                }
               />
             </SettingItem>
             <SettingItem>
@@ -439,7 +459,9 @@ function Settings({ state, setState }) {
               <Dropdown
                 value={state.descriptionFontWeight}
                 options={fontWeightOptions}
-                onChange={descriptionFontWeight => setState({ ...state, descriptionFontWeight })}
+                onChange={(descriptionFontWeight) =>
+                  setState({ ...state, descriptionFontWeight })
+                }
               />
             </SettingItem>
             <SettingItem>
@@ -449,14 +471,18 @@ function Settings({ state, setState }) {
                 min={10}
                 max={48}
                 step={1}
-                onChange={descriptionFontSize => setState({ ...state, descriptionFontSize })}
+                onChange={(descriptionFontSize) =>
+                  setState({ ...state, descriptionFontSize })
+                }
               />
             </SettingItem>
             <SettingItem>
               <Label content="Color" />
               <ColorPicker
                 value={state.descriptionColor}
-                onChange={descriptionColor => setState({ ...state, descriptionColor })}
+                onChange={(descriptionColor) =>
+                  setState({ ...state, descriptionColor })
+                }
               />
             </SettingItem>
           </Section>
@@ -465,7 +491,9 @@ function Settings({ state, setState }) {
             <SettingItem>
               <Checkbox
                 value={state.hasBackground}
-                onChange={hasBackground => setState({ ...state, hasBackground })}
+                onChange={(hasBackground) =>
+                  setState({ ...state, hasBackground })
+                }
                 label="Show background"
               />
             </SettingItem>
@@ -475,7 +503,7 @@ function Settings({ state, setState }) {
                   <Label content="Color" />
                   <ColorPicker
                     value={state.bgColor}
-                    onChange={bgColor => setState({ ...state, bgColor })}
+                    onChange={(bgColor) => setState({ ...state, bgColor })}
                   />
                 </SettingItem>
                 <SettingItem>
@@ -485,7 +513,9 @@ function Settings({ state, setState }) {
                     min={0}
                     max={120}
                     step={1}
-                    onChange={cardPadding => setState({ ...state, cardPadding })}
+                    onChange={(cardPadding) =>
+                      setState({ ...state, cardPadding })
+                    }
                   />
                 </SettingItem>
                 <SettingItem>
@@ -495,7 +525,9 @@ function Settings({ state, setState }) {
                     min={0}
                     max={80}
                     step={1}
-                    onChange={borderRadius => setState({ ...state, borderRadius })}
+                    onChange={(borderRadius) =>
+                      setState({ ...state, borderRadius })
+                    }
                   />
                 </SettingItem>
               </>
@@ -503,7 +535,7 @@ function Settings({ state, setState }) {
             <SettingItem>
               <Checkbox
                 value={state.hasShadow}
-                onChange={hasShadow => setState({ ...state, hasShadow })}
+                onChange={(hasShadow) => setState({ ...state, hasShadow })}
                 label="Show shadow"
               />
             </SettingItem>
@@ -512,7 +544,9 @@ function Settings({ state, setState }) {
                 <SettingItem>
                   <Checkbox
                     value={state.shadowOnHover}
-                    onChange={shadowOnHover => setState({ ...state, shadowOnHover })}
+                    onChange={(shadowOnHover) =>
+                      setState({ ...state, shadowOnHover })
+                    }
                     label="Show shadow on hover"
                   />
                 </SettingItem>
@@ -520,7 +554,9 @@ function Settings({ state, setState }) {
                   <Label content="Color" />
                   <ColorPicker
                     value={state.shadowColor}
-                    onChange={shadowColor => setState({ ...state, shadowColor })}
+                    onChange={(shadowColor) =>
+                      setState({ ...state, shadowColor })
+                    }
                   />
                 </SettingItem>
                 <SettingItem>
@@ -530,7 +566,9 @@ function Settings({ state, setState }) {
                     min={-100}
                     max={100}
                     step={1}
-                    onChange={shadowOffsetX => setState({ ...state, shadowOffsetX })}
+                    onChange={(shadowOffsetX) =>
+                      setState({ ...state, shadowOffsetX })
+                    }
                   />
                 </SettingItem>
                 <SettingItem>
@@ -540,7 +578,9 @@ function Settings({ state, setState }) {
                     min={-100}
                     max={100}
                     step={1}
-                    onChange={shadowOffsetY => setState({ ...state, shadowOffsetY })}
+                    onChange={(shadowOffsetY) =>
+                      setState({ ...state, shadowOffsetY })
+                    }
                   />
                 </SettingItem>
                 <SettingItem>
@@ -550,7 +590,9 @@ function Settings({ state, setState }) {
                     min={0}
                     max={120}
                     step={1}
-                    onChange={shadowBlur => setState({ ...state, shadowBlur })}
+                    onChange={(shadowBlur) =>
+                      setState({ ...state, shadowBlur })
+                    }
                   />
                 </SettingItem>
                 <SettingItem>
@@ -560,7 +602,9 @@ function Settings({ state, setState }) {
                     min={-50}
                     max={50}
                     step={1}
-                    onChange={shadowSpread => setState({ ...state, shadowSpread })}
+                    onChange={(shadowSpread) =>
+                      setState({ ...state, shadowSpread })
+                    }
                   />
                 </SettingItem>
               </>
@@ -575,7 +619,7 @@ function Settings({ state, setState }) {
                 min={16}
                 max={160}
                 step={1}
-                onChange={iconSize => setState({ ...state, iconSize })}
+                onChange={(iconSize) => setState({ ...state, iconSize })}
               />
             </SettingItem>
             <SettingItem>
@@ -585,7 +629,7 @@ function Settings({ state, setState }) {
                 min={1}
                 max={8}
                 step={1}
-                onChange={iconsPerRow => setState({ ...state, iconsPerRow })}
+                onChange={(iconsPerRow) => setState({ ...state, iconsPerRow })}
               />
             </SettingItem>
             <SettingItem>
@@ -598,7 +642,9 @@ function Settings({ state, setState }) {
                 min={0}
                 max={120}
                 step={1}
-                onChange={iconHeadingGap => setState({ ...state, iconHeadingGap })}
+                onChange={(iconHeadingGap) =>
+                  setState({ ...state, iconHeadingGap })
+                }
               />
             </SettingItem>
             <SettingItem>
@@ -611,7 +657,7 @@ function Settings({ state, setState }) {
                 min={0}
                 max={120}
                 step={1}
-                onChange={iconGap => setState({ ...state, iconGap })}
+                onChange={(iconGap) => setState({ ...state, iconGap })}
               />
             </SettingItem>
           </Section>
@@ -627,11 +673,13 @@ function Settings({ state, setState }) {
               <Dropdown
                 value={state.animationType}
                 options={[
-                  { value: 'none', text: 'None' },
-                  { value: 'pulse', text: 'Pulse' },
-                  { value: 'bounce', text: 'Bounce' }
+                  { value: "none", text: "None" },
+                  { value: "pulse", text: "Pulse" },
+                  { value: "bounce", text: "Bounce" },
                 ]}
-                onChange={animationType => setState({ ...state, animationType })}
+                onChange={(animationType) =>
+                  setState({ ...state, animationType })
+                }
               />
             </SettingItem>
             <SettingItem>
@@ -642,15 +690,19 @@ function Settings({ state, setState }) {
               <Dropdown
                 value={state.animationRepeat}
                 options={[
-                  { value: 'once', text: 'Once' },
-                  { value: 'always', text: 'Always' }
+                  { value: "once", text: "Once" },
+                  { value: "always", text: "Always" },
                 ]}
-                onChange={animationRepeat => setState({ ...state, animationRepeat })}
+                onChange={(animationRepeat) =>
+                  setState({ ...state, animationRepeat })
+                }
               />
             </SettingItem>
           </Section>
           <Section>
-            <div className="cmp-settings-section-heading">Animation Trigger</div>
+            <div className="cmp-settings-section-heading">
+              Animation Trigger
+            </div>
             <SettingItem>
               <Label
                 content="Start Mode"
@@ -659,20 +711,23 @@ function Settings({ state, setState }) {
               <Dropdown
                 value={state.loadingMode}
                 options={[
-                  { value: 'onLoad', text: 'On Load' },
-                  { value: 'manual', text: 'Manual' }
+                  { value: "onLoad", text: "On Load" },
+                  { value: "manual", text: "Manual" },
                 ]}
-                onChange={loadingMode => setState({
-                  ...state,
-                  loadingMode,
-                  hasStartedLoading: loadingMode === 'onLoad'
-                })}
+                onChange={(loadingMode) =>
+                  setState({
+                    ...state,
+                    loadingMode,
+                    hasStartedLoading: loadingMode === "onLoad",
+                  })
+                }
               />
             </SettingItem>
-            {state.loadingMode === 'manual' && (
+            {state.loadingMode === "manual" && (
               <SettingItem>
                 <div className="settings-note-banner">
-                  The action "Start Animation" is now enabled and can be found when selecting a component to add an action.
+                  The action "Start Animation" is now enabled and can be found
+                  when selecting a component to add an action.
                 </div>
               </SettingItem>
             )}
@@ -685,21 +740,27 @@ function Settings({ state, setState }) {
             <SettingItem>
               <Checkbox
                 value={state.exposeOnCardClick}
-                onChange={exposeOnCardClick => setState({ ...state, exposeOnCardClick })}
+                onChange={(exposeOnCardClick) =>
+                  setState({ ...state, exposeOnCardClick })
+                }
                 label="On Card Click"
               />
             </SettingItem>
             <SettingItem>
               <Checkbox
                 value={state.exposeOnAnimationStart}
-                onChange={exposeOnAnimationStart => setState({ ...state, exposeOnAnimationStart })}
+                onChange={(exposeOnAnimationStart) =>
+                  setState({ ...state, exposeOnAnimationStart })
+                }
                 label="On Animation Start"
               />
             </SettingItem>
             <SettingItem>
               <Checkbox
                 value={state.exposeOnAnimationEnd}
-                onChange={exposeOnAnimationEnd => setState({ ...state, exposeOnAnimationEnd })}
+                onChange={(exposeOnAnimationEnd) =>
+                  setState({ ...state, exposeOnAnimationEnd })
+                }
                 label="On Animation End"
               />
             </SettingItem>
@@ -711,7 +772,9 @@ function Settings({ state, setState }) {
             <SettingItem>
               <Checkbox
                 value={state.hasWidthBreakpoint}
-                onChange={hasWidthBreakpoint => setState({ ...state, hasWidthBreakpoint })}
+                onChange={(hasWidthBreakpoint) =>
+                  setState({ ...state, hasWidthBreakpoint })
+                }
                 label="Enable width breakpoint"
               />
             </SettingItem>
@@ -727,13 +790,17 @@ function Settings({ state, setState }) {
                     min={120}
                     max={2000}
                     step={1}
-                    onChange={widthBreakpoint => setState({ ...state, widthBreakpoint })}
+                    onChange={(widthBreakpoint) =>
+                      setState({ ...state, widthBreakpoint })
+                    }
                   />
                 </SettingItem>
                 <SettingItem>
                   <Checkbox
                     value={state.previewWidthInLiveView}
-                    onChange={previewWidthInLiveView => setState({ ...state, previewWidthInLiveView })}
+                    onChange={(previewWidthInLiveView) =>
+                      setState({ ...state, previewWidthInLiveView })
+                    }
                     label="Preview current width in live view"
                   />
                 </SettingItem>
@@ -754,340 +821,409 @@ function Settings({ state, setState }) {
               <Label content="Icon SVG" />
               <SvgPicker
                 value={editingIcon.svg}
-                onChange={svg => updateEditingIcon({ svg })}
+                onChange={(svg) => updateEditingIcon({ svg })}
               />
             </SettingItem>
             <SettingItem>
               <Label content="Icon Color" />
               <ColorPicker
                 value={editingIcon.color}
-                onChange={color => updateEditingIcon({ color })}
+                onChange={(color) => updateEditingIcon({ color })}
               />
             </SettingItem>
           </DrawerSection>
         )}
       </Drawer>
     </>
-  )
+  );
 }
 
 export function getSettings(state) {
   return {
     settings: {
-      name: 'Boilerplate Card Settings',
+      name: "Boilerplate Card Settings",
       Setting: Settings,
       width: 500,
       help: () => ({
-        title: 'Boilerplate Card Help',
+        title: "Boilerplate Card Help",
         content: (
           <>
             <h1>Boilerplate Card Component</h1>
-            <p>This starter component includes a heading, description, and a managed SVG icon list that you can reorder, duplicate, edit, and style.</p>
-            <p>Use the Content tab to change copy and manage icons, the Styles tab to adjust typography and card styling, the Animation tab to define how icons animate and which animation triggers are exposed, and the Advanced tab for responsive width behavior.</p>
-            <p>Responsive Width uses the component's own width as the breakpoint trigger rather than the page or viewport width. When the component narrows to or below the breakpoint, it automatically switches from resizable height to content-based height and applies a compact layout.</p>
-            <p>Animation can either start automatically on load or be started manually. When Start Mode is set to Manual in the Animation tab, the Start Animation action can be used to trigger the icon sequence at any time. You can also choose whether On Animation Start and On Animation End are exposed for external use.</p>
+            <p>
+              This starter component includes a heading, description, and a
+              managed SVG icon list that you can reorder, duplicate, edit, and
+              style.
+            </p>
+            <p>
+              Use the Content tab to change copy and manage icons. In the Style
+              tab, keep the same mental map by styling the content areas first,
+              then place shared card or layout controls after those
+              section-specific groups. Use the Animation tab to define how icons
+              animate and which animation triggers are exposed, and the Advanced
+              tab for responsive width behavior.
+            </p>
+            <p>
+              Responsive Width uses the component's own width as the breakpoint
+              trigger rather than the page or viewport width. When the component
+              narrows to or below the breakpoint, it automatically switches from
+              resizable height to content-based height and applies a compact
+              layout.
+            </p>
+            <p>
+              Animation can either start automatically on load or be started
+              manually. When Start Mode is set to Manual in the Animation tab,
+              the Start Animation action can be used to trigger the icon
+              sequence at any time. You can also choose whether On Animation
+              Start and On Animation End are exposed for external use.
+            </p>
           </>
-        )
-      })
-    }
-  }
+        ),
+      }),
+    },
+  };
 }
 
 export function getDataFields(state) {
   return {
-    heading: { name: 'Heading', type: 'text' }
-  }
+    heading: { name: "Heading", type: "text" },
+  };
 }
 
 export function getActions(state) {
   return {
     startAnimation: {
-      name: 'Start Animation',
-      info: { text: 'Starts the animation when start mode is set to manual' },
+      name: "Start Animation",
+      info: { text: "Starts the animation when start mode is set to manual" },
       state: {},
       Setting() {
-        return null
-      }
-    }
-  }
+        return null;
+      },
+    },
+  };
 }
 
 export function getTriggers(state) {
   return {
-    ...(state.exposeOnCardClick ? { onCardClick: { name: 'On Card Click' } } : {}),
-    ...(state.exposeOnAnimationStart ? { onAnimationStart: { name: 'On Animation Start' } } : {}),
-    ...(state.exposeOnAnimationEnd ? { onAnimationEnd: { name: 'On Animation End' } } : {})
-  }
+    ...(state.exposeOnCardClick
+      ? { onCardClick: { name: "On Card Click" } }
+      : {}),
+    ...(state.exposeOnAnimationStart
+      ? { onAnimationStart: { name: "On Animation Start" } }
+      : {}),
+    ...(state.exposeOnAnimationEnd
+      ? { onAnimationEnd: { name: "On Animation End" } }
+      : {}),
+  };
 }
 
 export function getFonts(state) {
-  return [state.headingFont, state.descriptionFont].filter(Boolean)
+  return [state.headingFont, state.descriptionFont].filter(Boolean);
 }
 
 export function getSizeTypes(state) {
-  const isNarrow = Boolean(state.hasWidthBreakpoint) && Number(state.currentComponentWidth) > 0 && Number(state.currentComponentWidth) <= Math.max(120, Number(state.widthBreakpoint) || 120)
-  const needsResizableHeight = Boolean(state.hasWidthBreakpoint) && !isNarrow
+  const isNarrow =
+    Boolean(state.hasWidthBreakpoint) &&
+    Number(state.currentComponentWidth) > 0 &&
+    Number(state.currentComponentWidth) <=
+      Math.max(120, Number(state.widthBreakpoint) || 120);
+  const needsResizableHeight = Boolean(state.hasWidthBreakpoint) && !isNarrow;
   return {
     width: SizeType.RESIZABLE,
-    height: needsResizableHeight ? SizeType.RESIZABLE : SizeType.CONTENT_BASED
-  }
+    height: needsResizableHeight ? SizeType.RESIZABLE : SizeType.CONTENT_BASED,
+  };
 }
 
 export function getLiveState(state) {
-  return state
+  return state;
 }
 ```
+
 END
 
 FILE: /live/index.js
+
 ```javascript
 // HEIGHT PATTERN: CONTENT_BASED | RESIZABLE | BREAKPOINT_AWARE
 // Change this comment when the pattern changes so the agent reads it correctly.
 // HEIGHT_PATTERN: CONTENT_BASED
 
-import React, { useEffect, useRef, useState } from 'react'
-import { ScopedStyle } from '@utils'
-import { useScaler } from '@hooks'
-import { getInitialState } from '@common/index'
-export { getInitialState }
+import React, { useEffect, useRef, useState } from "react";
+import { ScopedStyle } from "@utils";
+import { useScaler } from "@hooks";
+import { getInitialState } from "@common/index";
+export { getInitialState };
 
 export function getActionHandlers() {
   return {
     async startAnimation({ setComponentState }) {
-      setComponentState(prev => ({
+      setComponentState((prev) => ({
         ...prev,
         hasStartedLoading: true,
-        animationRunId: (prev.animationRunId ?? 0) + 1
-      }))
-    }
-  }
+        animationRunId: (prev.animationRunId ?? 0) + 1,
+      }));
+    },
+  };
 }
 
 function resolveShadowColor(color, opacity) {
-  const normalizedColor = String(color || '').trim()
+  const normalizedColor = String(color || "").trim();
 
   if (!normalizedColor) {
-    return 'rgba(0, 0, 0, 0.18)'
+    return "rgba(0, 0, 0, 0.18)";
   }
 
-  if (!normalizedColor.startsWith('#')) {
-    return normalizedColor
+  if (!normalizedColor.startsWith("#")) {
+    return normalizedColor;
   }
 
-  const normalizedHex = normalizedColor.replace('#', '')
+  const normalizedHex = normalizedColor.replace("#", "");
 
   if (![3, 6].includes(normalizedHex.length)) {
-    return `rgba(0, 0, 0, ${opacity})`
+    return `rgba(0, 0, 0, ${opacity})`;
   }
 
-  const expandedHex = normalizedHex.length === 3
-    ? normalizedHex.split('').map(value => `${value}${value}`).join('')
-    : normalizedHex
+  const expandedHex =
+    normalizedHex.length === 3
+      ? normalizedHex
+          .split("")
+          .map((value) => `${value}${value}`)
+          .join("")
+      : normalizedHex;
 
-  const red = parseInt(expandedHex.slice(0, 2), 16)
-  const green = parseInt(expandedHex.slice(2, 4), 16)
-  const blue = parseInt(expandedHex.slice(4, 6), 16)
+  const red = parseInt(expandedHex.slice(0, 2), 16);
+  const green = parseInt(expandedHex.slice(2, 4), 16);
+  const blue = parseInt(expandedHex.slice(4, 6), 16);
 
-  if ([red, green, blue].some(value => Number.isNaN(value))) {
-    return `rgba(0, 0, 0, ${opacity})`
+  if ([red, green, blue].some((value) => Number.isNaN(value))) {
+    return `rgba(0, 0, 0, ${opacity})`;
   }
 
-  return `rgba(${red}, ${green}, ${blue}, ${opacity})`
+  return `rgba(${red}, ${green}, ${blue}, ${opacity})`;
 }
 
 function getMeasuredSize(element) {
   return {
     width: Math.max(0, element.clientWidth),
-    height: Math.max(0, element.clientHeight)
-  }
+    height: Math.max(0, element.clientHeight),
+  };
 }
 
 export function Component({ state, setState, saveAudienceData, runTrigger }) {
-  const { s } = useScaler()
-  const previousLoadingMode = useRef(state.loadingMode)
-  const previousAnimationActive = useRef(false)
-  const completedAnimationRunId = useRef(null)
-  const containerRef = useRef(null)
-  const platformHeightRef = useRef(null)
-  const [measuredSize, setMeasuredSize] = useState({ width: 0, height: 0 })
+  const { s } = useScaler();
+  const previousLoadingMode = useRef(state.loadingMode);
+  const previousAnimationActive = useRef(false);
+  const completedAnimationRunId = useRef(null);
+  const containerRef = useRef(null);
+  const platformHeightRef = useRef(null);
+  const [measuredSize, setMeasuredSize] = useState({ width: 0, height: 0 });
 
   useEffect(() => {
-    const containerElement = containerRef.current
+    const containerElement = containerRef.current;
 
     if (!containerElement) {
-      return undefined
+      return undefined;
     }
 
-    const resizeObserverConstructor = typeof window !== 'undefined' ? window.ResizeObserver : undefined
+    const resizeObserverConstructor =
+      typeof window !== "undefined" ? window.ResizeObserver : undefined;
 
     const syncMeasuredSize = (width, height) => {
-      const nextWidth = Math.round(width)
-      const nextHeight = Math.round(height)
+      const nextWidth = Math.round(width);
+      const nextHeight = Math.round(height);
 
       setMeasuredSize((prev) => {
         if (prev.width === nextWidth && prev.height === nextHeight) {
-          return prev
+          return prev;
         }
 
         return {
           width: nextWidth,
-          height: nextHeight
-        }
-      })
+          height: nextHeight,
+        };
+      });
 
       setState((prev) => {
-        if (prev.currentComponentWidth === nextWidth && prev.currentComponentHeight === nextHeight) {
-          return prev
+        if (
+          prev.currentComponentWidth === nextWidth &&
+          prev.currentComponentHeight === nextHeight
+        ) {
+          return prev;
         }
 
         return {
           ...prev,
           currentComponentWidth: nextWidth,
-          currentComponentHeight: nextHeight
-        }
-      })
-    }
+          currentComponentHeight: nextHeight,
+        };
+      });
+    };
 
     const measureNow = () => {
-      const measuredSize = getMeasuredSize(containerElement)
-      syncMeasuredSize(measuredSize.width, measuredSize.height)
-    }
+      const measuredSize = getMeasuredSize(containerElement);
+      syncMeasuredSize(measuredSize.width, measuredSize.height);
+    };
 
-    measureNow()
+    measureNow();
 
-    let observer
-    let intervalId
-    let frameId
-    let secondFrameId
+    let observer;
+    let intervalId;
+    let frameId;
+    let secondFrameId;
 
     if (resizeObserverConstructor) {
       observer = new resizeObserverConstructor((entries) => {
-        const nextEntry = entries[0]
+        const nextEntry = entries[0];
 
         if (!nextEntry) {
-          return
+          return;
         }
 
-        const measuredSize = getMeasuredSize(containerElement)
-        syncMeasuredSize(measuredSize.width, measuredSize.height)
-      })
+        const measuredSize = getMeasuredSize(containerElement);
+        syncMeasuredSize(measuredSize.width, measuredSize.height);
+      });
 
-      observer.observe(containerElement)
+      observer.observe(containerElement);
     } else {
-      intervalId = window.setInterval(measureNow, 250)
+      intervalId = window.setInterval(measureNow, 250);
     }
 
-    frameId = window.requestAnimationFrame(measureNow)
+    frameId = window.requestAnimationFrame(measureNow);
     secondFrameId = window.requestAnimationFrame(() => {
-      window.requestAnimationFrame(measureNow)
-    })
+      window.requestAnimationFrame(measureNow);
+    });
 
     return () => {
-      if (typeof frameId === 'number') {
-        window.cancelAnimationFrame(frameId)
+      if (typeof frameId === "number") {
+        window.cancelAnimationFrame(frameId);
       }
 
-      if (typeof secondFrameId === 'number') {
-        window.cancelAnimationFrame(secondFrameId)
+      if (typeof secondFrameId === "number") {
+        window.cancelAnimationFrame(secondFrameId);
       }
 
-      if (typeof intervalId === 'number') {
-        window.clearInterval(intervalId)
+      if (typeof intervalId === "number") {
+        window.clearInterval(intervalId);
       }
 
       if (observer) {
-        observer.disconnect()
+        observer.disconnect();
       }
-    }
-  }, [setState])
+    };
+  }, [setState]);
 
   useEffect(() => {
-    const switchedToManual = previousLoadingMode.current !== 'manual' && state.loadingMode === 'manual'
+    const switchedToManual =
+      previousLoadingMode.current !== "manual" &&
+      state.loadingMode === "manual";
 
-    previousLoadingMode.current = state.loadingMode
+    previousLoadingMode.current = state.loadingMode;
 
-    if (state.loadingMode === 'onLoad' && !state.hasStartedLoading) {
-      setState(prev => ({
+    if (state.loadingMode === "onLoad" && !state.hasStartedLoading) {
+      setState((prev) => ({
         ...prev,
         hasStartedLoading: true,
-        animationRunId: prev.animationRepeat === 'once' ? (prev.animationRunId ?? 0) + 1 : prev.animationRunId
-      }))
+        animationRunId:
+          prev.animationRepeat === "once"
+            ? (prev.animationRunId ?? 0) + 1
+            : prev.animationRunId,
+      }));
     }
 
     if (switchedToManual && state.hasStartedLoading) {
-      setState(prev => ({ ...prev, hasStartedLoading: false }))
+      setState((prev) => ({ ...prev, hasStartedLoading: false }));
     }
-  }, [state.loadingMode, state.hasStartedLoading, setState])
+  }, [state.loadingMode, state.hasStartedLoading, setState]);
 
-  const isLoadingActive = state.loadingMode === 'onLoad' || state.hasStartedLoading
-  const animationIterationCount = state.animationRepeat === 'once' ? '1' : 'infinite'
-  const sequentialDelayStep = s(180) / 1000
-  const liveMeasuredWidth = Math.max(0, Number(measuredSize.width) || 0)
-  const liveMeasuredHeight = Math.max(0, Number(measuredSize.height) || 0)
-  const measuredWidth = Math.max(0, liveMeasuredWidth || Number(state.currentComponentWidth) || 0)
-  const responsiveBreakpointWidth = Math.max(120, Number(state.widthBreakpoint) || 120)
-  const isCompactLayout = Boolean(state.hasWidthBreakpoint) && measuredWidth > 0 && measuredWidth <= responsiveBreakpointWidth
-  const baseIconsPerRow = Math.max(1, Number(state.iconsPerRow) || 1)
+  const isLoadingActive =
+    state.loadingMode === "onLoad" || state.hasStartedLoading;
+  const animationIterationCount =
+    state.animationRepeat === "once" ? "1" : "infinite";
+  const sequentialDelayStep = s(180) / 1000;
+  const liveMeasuredWidth = Math.max(0, Number(measuredSize.width) || 0);
+  const liveMeasuredHeight = Math.max(0, Number(measuredSize.height) || 0);
+  const measuredWidth = Math.max(
+    0,
+    liveMeasuredWidth || Number(state.currentComponentWidth) || 0,
+  );
+  const responsiveBreakpointWidth = Math.max(
+    120,
+    Number(state.widthBreakpoint) || 120,
+  );
+  const isCompactLayout =
+    Boolean(state.hasWidthBreakpoint) &&
+    measuredWidth > 0 &&
+    measuredWidth <= responsiveBreakpointWidth;
+  const baseIconsPerRow = Math.max(1, Number(state.iconsPerRow) || 1);
   const iconsPerRow = isCompactLayout
     ? Math.max(2, Math.min(baseIconsPerRow, 2))
-    : baseIconsPerRow
-  const visibleIconsPerRow = Math.max(1, Math.min(iconsPerRow, state.icons.length || 1))
-  const iconSize = Math.max(16, Number(state.iconSize) || 48)
-  const iconGap = Math.max(0, Number(state.iconGap) || 0)
-  const iconHeadingGap = Math.max(0, Number(state.iconHeadingGap) || 0)
-  const cardPadding = Math.max(0, Number(state.cardPadding) || 0)
-  const borderRadius = Math.max(0, Number(state.borderRadius) || 0)
-  const shadowOffsetX = Number(state.shadowOffsetX) || 0
-  const shadowOffsetY = Number(state.shadowOffsetY) || 0
-  const shadowBlur = Math.max(0, Number(state.shadowBlur) || 0)
-  const shadowSpread = Number(state.shadowSpread) || 0
-  const legacyShadowOpacity = Math.min(1, Math.max(0, Number(state.shadowOpacity) || 0.18))
+    : baseIconsPerRow;
+  const visibleIconsPerRow = Math.max(
+    1,
+    Math.min(iconsPerRow, state.icons.length || 1),
+  );
+  const iconSize = Math.max(16, Number(state.iconSize) || 48);
+  const iconGap = Math.max(0, Number(state.iconGap) || 0);
+  const iconHeadingGap = Math.max(0, Number(state.iconHeadingGap) || 0);
+  const cardPadding = Math.max(0, Number(state.cardPadding) || 0);
+  const borderRadius = Math.max(0, Number(state.borderRadius) || 0);
+  const shadowOffsetX = Number(state.shadowOffsetX) || 0;
+  const shadowOffsetY = Number(state.shadowOffsetY) || 0;
+  const shadowBlur = Math.max(0, Number(state.shadowBlur) || 0);
+  const shadowSpread = Number(state.shadowSpread) || 0;
+  const legacyShadowOpacity = Math.min(
+    1,
+    Math.max(0, Number(state.shadowOpacity) || 0.18),
+  );
   const boxShadow = state.hasShadow
     ? `${s(shadowOffsetX)}px ${s(shadowOffsetY)}px ${s(shadowBlur)}px ${s(shadowSpread)}px ${resolveShadowColor(state.shadowColor, legacyShadowOpacity)}`
-    : 'none'
-  const restingBoxShadow = state.hasShadow && !state.shadowOnHover ? boxShadow : 'none'
-  const hoverBoxShadow = state.hasShadow && state.shadowOnHover ? boxShadow : restingBoxShadow
-  const shouldPreviewWidth = Boolean(state.previewWidthInLiveView)
-  const measurementLabel = shouldPreviewWidth ? `Width: ${liveMeasuredWidth || 0}px` : ''
+    : "none";
+  const restingBoxShadow =
+    state.hasShadow && !state.shadowOnHover ? boxShadow : "none";
+  const hoverBoxShadow =
+    state.hasShadow && state.shadowOnHover ? boxShadow : restingBoxShadow;
+  const shouldPreviewWidth = Boolean(state.previewWidthInLiveView);
+  const measurementLabel = shouldPreviewWidth
+    ? `Width: ${liveMeasuredWidth || 0}px`
+    : "";
 
   // Imperatively force the outer dot-component wrapper to height: auto when we are in
   // content-based mode. getSizeTypes signals the framework, but its update may lag behind
   // the resize event, leaving the old fixed pixel height on the platform container.
-  const needsAutoHeight = !Boolean(state.hasWidthBreakpoint) || isCompactLayout
+  const needsAutoHeight = !Boolean(state.hasWidthBreakpoint) || isCompactLayout;
   useEffect(() => {
-    const el = containerRef.current
-    if (!el) return
+    const el = containerRef.current;
+    if (!el) return;
 
-    let ancestor = el.parentElement
+    let ancestor = el.parentElement;
     while (ancestor) {
-      if (ancestor.classList && ancestor.classList.contains('dot-component')) {
+      if (ancestor.classList && ancestor.classList.contains("dot-component")) {
         if (needsAutoHeight) {
           // Save the platform's pixel height before overriding so we can restore it later
-          const currentHeight = ancestor.style.height
-          if (currentHeight && currentHeight !== 'auto') {
-            platformHeightRef.current = currentHeight
+          const currentHeight = ancestor.style.height;
+          if (currentHeight && currentHeight !== "auto") {
+            platformHeightRef.current = currentHeight;
           }
-          ancestor.style.height = 'auto'
+          ancestor.style.height = "auto";
         } else {
           // Restore the platform's original pixel height
           if (platformHeightRef.current) {
-            ancestor.style.height = platformHeightRef.current
+            ancestor.style.height = platformHeightRef.current;
           }
         }
-        break
+        break;
       }
-      ancestor = ancestor.parentElement
+      ancestor = ancestor.parentElement;
     }
-  }, [needsAutoHeight])
+  }, [needsAutoHeight]);
 
   const styles = `
     .cmp-card-container {
       position: relative;
       width: 100%;
-      height: ${(Boolean(state.hasWidthBreakpoint) && !isCompactLayout) ? '100%' : 'auto'};
+      height: ${Boolean(state.hasWidthBreakpoint) && !isCompactLayout ? "100%" : "auto"};
       box-sizing: border-box;
       padding: ${s(isCompactLayout ? Math.max(16, cardPadding * 0.7) : cardPadding)}px;
-      background-color: ${state.hasBackground ? state.bgColor : 'transparent'};
+      background-color: ${state.hasBackground ? state.bgColor : "transparent"};
       border-radius: ${state.hasBackground ? s(borderRadius) : 0}px;
       box-shadow: ${restingBoxShadow};
       display: flex;
@@ -1215,62 +1351,81 @@ export function Component({ state, setState, saveAudienceData, runTrigger }) {
       55% { transform: translateY(${s(4)}px); }
       75% { transform: translateY(-${s(8)}px); }
     }
-  `
+  `;
 
-  const animationClass = state.animationType !== 'none' ? `cmp-anim-${state.animationType}` : ''
+  const animationClass =
+    state.animationType !== "none" ? `cmp-anim-${state.animationType}` : "";
 
   useEffect(() => {
-    const didAnimationStart = !previousAnimationActive.current && isLoadingActive && state.animationType !== 'none'
+    const didAnimationStart =
+      !previousAnimationActive.current &&
+      isLoadingActive &&
+      state.animationType !== "none";
 
-    previousAnimationActive.current = isLoadingActive
+    previousAnimationActive.current = isLoadingActive;
 
     if (didAnimationStart && state.exposeOnAnimationStart) {
-      runTrigger('onAnimationStart')
+      runTrigger("onAnimationStart");
     }
-  }, [isLoadingActive, runTrigger, state.animationType, state.exposeOnAnimationStart])
+  }, [
+    isLoadingActive,
+    runTrigger,
+    state.animationType,
+    state.exposeOnAnimationStart,
+  ]);
 
   const handleAnimationEnd = (iconIndex) => {
-    if (!state.exposeOnAnimationEnd || state.animationType === 'none' || state.animationRepeat !== 'once') {
-      return
+    if (
+      !state.exposeOnAnimationEnd ||
+      state.animationType === "none" ||
+      state.animationRepeat !== "once"
+    ) {
+      return;
     }
 
     if (iconIndex !== state.icons.length - 1) {
-      return
+      return;
     }
 
-    const currentRunId = state.animationRunId ?? 0
+    const currentRunId = state.animationRunId ?? 0;
 
     if (completedAnimationRunId.current === currentRunId) {
-      return
+      return;
     }
 
-    completedAnimationRunId.current = currentRunId
-    runTrigger('onAnimationEnd')
-  }
+    completedAnimationRunId.current = currentRunId;
+    runTrigger("onAnimationEnd");
+  };
 
   const handleCardClick = () => {
     if (!state.exposeOnCardClick) {
-      return
+      return;
     }
 
-    runTrigger('onCardClick')
-  }
+    runTrigger("onCardClick");
+  };
 
   return (
     <>
       <ScopedStyle>{styles}</ScopedStyle>
-      <div ref={containerRef} className="cmp-card-container" onClick={handleCardClick}>
-        {measurementLabel && <div className="cmp-measurement-overlay">{measurementLabel}</div>}
+      <div
+        ref={containerRef}
+        className="cmp-card-container"
+        onClick={handleCardClick}
+      >
+        {measurementLabel && (
+          <div className="cmp-measurement-overlay">{measurementLabel}</div>
+        )}
         {state.icons && state.icons.length > 0 && (
           <div className="cmp-icons-container">
             {state.icons.map((icon, index) => (
               <div
-                key={`${icon.id}-${state.animationRepeat === 'once' ? state.animationRunId ?? 0 : 'loop'}`}
-                className={`cmp-icon-wrapper ${isLoadingActive ? animationClass : ''}`}
+                key={`${icon.id}-${state.animationRepeat === "once" ? (state.animationRunId ?? 0) : "loop"}`}
+                className={`cmp-icon-wrapper ${isLoadingActive ? animationClass : ""}`}
                 style={{
                   color: icon.color,
-                  '--animation-iteration-count': animationIterationCount,
-                  '--animation-delay': `${index * sequentialDelayStep}s`
+                  "--animation-iteration-count": animationIterationCount,
+                  "--animation-delay": `${index * sequentialDelayStep}s`,
                 }}
                 onAnimationEnd={() => handleAnimationEnd(index)}
                 dangerouslySetInnerHTML={{ __html: icon.svg }}
@@ -1282,7 +1437,8 @@ export function Component({ state, setState, saveAudienceData, runTrigger }) {
         <p className="cmp-description">{state.description}</p>
       </div>
     </>
-  )
+  );
 }
 ```
+
 END

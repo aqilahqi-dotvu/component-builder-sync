@@ -1,96 +1,106 @@
 FILE: /common/index.js
+
 ```javascript
-import { getUniqueId } from '@utils'
+import { getUniqueId } from "@utils";
 
 function normalizeBulletItem(bullet) {
-  return typeof bullet === 'string'
+  return typeof bullet === "string"
     ? { id: getUniqueId(), text: bullet }
     : {
         id: bullet?.id || getUniqueId(),
-        text: String(bullet?.text || '')
-      }
+        text: String(bullet?.text || ""),
+      };
 }
 
 export function getInitialState(state) {
-  const showIntroSection = state.showIntroSection ?? state.showTitle ?? true
-  const baseFont = state.headingFontFamily ?? state.bodyFontFamily ?? state.font ?? 'Arial'
-  const defaultNumberBgColor = state.numberBgColor ?? '#111827'
-  const defaultNumberTextColor = state.numberTextColor ?? '#ffffff'
+  const showIntroSection = state.showIntroSection ?? state.showTitle ?? true;
+  const baseFont =
+    state.headingFontFamily ?? state.bodyFontFamily ?? state.font ?? "Arial";
+  const defaultNumberBgColor = state.numberBgColor ?? "#111827";
+  const defaultNumberTextColor = state.numberTextColor ?? "#ffffff";
   const animationPlaybackMode =
-    state.animationPlaybackMode ?? (state.animationAutoPlay ? 'auto' : 'manual')
-  const sectionPaddingX = state.sectionPaddingX ?? state.cardPaddingX ?? 20
-  const sectionPaddingY = state.sectionPaddingY ?? state.cardPaddingY ?? 20
+    state.animationPlaybackMode ??
+    (state.animationAutoPlay ? "auto" : "manual");
+  const sectionPaddingX = state.sectionPaddingX ?? state.cardPaddingX ?? 20;
+  const sectionPaddingY = state.sectionPaddingY ?? state.cardPaddingY ?? 20;
   const defaultItems = [
     {
       id: getUniqueId(),
-      title: 'Choose your option',
-      description: 'Start by selecting the product, service, or path that best matches your needs.',
+      title: "Choose your option",
+      description:
+        "Start by selecting the product, service, or path that best matches your needs.",
       numberBgColor: defaultNumberBgColor,
       numberTextColor: defaultNumberTextColor,
-      bulletListStyle: 'bullets',
+      bulletListStyle: "bullets",
       bullets: [
-        { id: getUniqueId(), text: 'Compare the available options.' },
-        { id: getUniqueId(), text: 'Pick the route that fits your goal.' }
-      ]
+        { id: getUniqueId(), text: "Compare the available options." },
+        { id: getUniqueId(), text: "Pick the route that fits your goal." },
+      ],
     },
     {
       id: getUniqueId(),
-      title: 'Customize the details',
-      description: 'Adjust the content and styling to create a clear and branded step-by-step experience.',
+      title: "Customize the details",
+      description:
+        "Adjust the content and styling to create a clear and branded step-by-step experience.",
       numberBgColor: defaultNumberBgColor,
       numberTextColor: defaultNumberTextColor,
-      bulletListStyle: 'alpha',
+      bulletListStyle: "alpha",
       bullets: [
-        { id: getUniqueId(), text: 'Edit the copy for each numbered item.' },
-        { id: getUniqueId(), text: 'Add supporting bullet points where needed.' }
-      ]
+        { id: getUniqueId(), text: "Edit the copy for each numbered item." },
+        {
+          id: getUniqueId(),
+          text: "Add supporting bullet points where needed.",
+        },
+      ],
     },
     {
       id: getUniqueId(),
-      title: 'Launch with confidence',
-      description: 'Publish your component and guide users through the process with an easy-to-scan layout.',
+      title: "Launch with confidence",
+      description:
+        "Publish your component and guide users through the process with an easy-to-scan layout.",
       numberBgColor: defaultNumberBgColor,
       numberTextColor: defaultNumberTextColor,
-      bulletListStyle: 'roman',
+      bulletListStyle: "roman",
       bullets: [
-        { id: getUniqueId(), text: 'Check the spacing across all items.' },
-        { id: getUniqueId(), text: 'Preview the full flow before publishing.' }
-      ]
-    }
-  ]
+        { id: getUniqueId(), text: "Check the spacing across all items." },
+        { id: getUniqueId(), text: "Preview the full flow before publishing." },
+      ],
+    },
+  ];
   const normalizedItems = Array.isArray(state.items)
-    ? state.items.map(item => ({
+    ? state.items.map((item) => ({
         ...item,
-        bulletListStyle: item?.bulletListStyle || 'bullets',
+        bulletListStyle: item?.bulletListStyle || "bullets",
         bullets: Array.isArray(item.bullets)
           ? item.bullets.map(normalizeBulletItem)
-          : []
+          : [],
       }))
-    : defaultItems
+    : defaultItems;
 
   return {
     showIntroSection,
-    title: 'How it works',
-    introText: 'Use this component to present a numbered list with child lists for each step.',
+    title: "How it works",
+    introText:
+      "Use this component to present a numbered list with child lists for each step.",
     headingFontFamily: baseFont,
     bodyFontFamily: baseFont,
     headingFontWeight: state.headingFontWeight ?? 700,
     bodyFontWeight: state.bodyFontWeight ?? 400,
-    circleStyleType: 'filled',
+    circleStyleType: "filled",
     circleOutlineWidth: 2,
-    titleColor: '#1f2937',
-    introColor: '#4b5563',
-    itemTitleColor: '#111827',
-    itemDescriptionColor: '#6b7280',
-    cardBackgroundColor: '#ffffff',
-    cardBorderColor: '#e5e7eb',
-    sectionBackgroundColor: '#f9fafb',
+    titleColor: "#1f2937",
+    introColor: "#4b5563",
+    itemTitleColor: "#111827",
+    itemDescriptionColor: "#6b7280",
+    cardBackgroundColor: "#ffffff",
+    cardBorderColor: "#e5e7eb",
+    sectionBackgroundColor: "#f9fafb",
     titleFontSize: 30,
     introFontSize: 16,
     numberSize: 40,
     numberOffsetX: 0,
     numberOffsetY: 0,
-    itemContentAlignment: 'start',
+    itemContentAlignment: "start",
     itemTitleFontSize: 18,
     itemDescriptionFontSize: 14,
     itemGap: 16,
@@ -98,7 +108,7 @@ export function getInitialState(state) {
     bulletListGap: 8,
     sectionPaddingX,
     sectionPaddingY,
-    animationStyle: 'none',
+    animationStyle: "none",
     animationDuration: 700,
     animationStagger: 140,
     animationPlaybackMode,
@@ -121,15 +131,17 @@ export function getInitialState(state) {
     ...state,
     bulletListTopGap: state.bulletListTopGap ?? 12,
     bulletListGap: state.bulletListGap ?? 8,
-    items: normalizedItems
-  }
+    items: normalizedItems,
+  };
 }
 ```
+
 END
 
 FILE: /editor/index.js
+
 ```javascript
-import React, { useMemo, useState } from 'react'
+import React, { useMemo, useState } from "react";
 import {
   Checkbox,
   TextInput,
@@ -145,33 +157,53 @@ import {
   TableContainer,
   OptionsMenuRootButton,
   Drawer,
-  DrawerSection
-} from '@ui'
-import { SizeType } from '@constants'
-import { getUniqueId } from '@utils'
-import { editIcon, deleteIcon, duplicateIcon, arrowUpIcon, arrowDownIcon } from '@icons'
-import { getInitialState } from '@common/index'
+  DrawerSection,
+} from "@ui";
+import { SizeType } from "@constants";
+import { getUniqueId } from "@utils";
+import {
+  editIcon,
+  deleteIcon,
+  duplicateIcon,
+  arrowUpIcon,
+  arrowDownIcon,
+} from "@icons";
+import { getInitialState } from "@common/index";
 
-export { getInitialState }
+export { getInitialState };
 
 function SectionTitle({ content, help }) {
   return (
-    <div style={{ marginBottom: 12, fontSize: 16, fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.06em' }}>
+    <div
+      style={{
+        marginBottom: 12,
+        fontSize: 16,
+        fontWeight: 700,
+        textTransform: "uppercase",
+        letterSpacing: "0.06em",
+      }}
+    >
       <Label content={content} help={help} />
     </div>
-  )
+  );
 }
 
 function SubSectionHeading({ content, help }) {
   return (
-    <div style={{ paddingTop: 8, marginBottom: 12, fontSize: 14, fontWeight: 700 }}>
+    <div
+      style={{ paddingTop: 8, marginBottom: 12, fontSize: 14, fontWeight: 700 }}
+    >
       <Label content={content} help={help} />
     </div>
-  )
+  );
 }
 
 function FontSizeSettingItem({
-  label, value, min, max, step,
+  label,
+  value,
+  min,
+  max,
+  step,
   onChange,
   showCompact,
   compactPreview,
@@ -180,17 +212,26 @@ function FontSizeSettingItem({
   compactCustomEnabled,
   onCompactCustomChange,
   compactValue,
-  compactMin, compactMax,
-  onCompactValueChange
+  compactMin,
+  compactMax,
+  onCompactValueChange,
 }) {
   return (
     <>
       <SettingItem>
         <Label content={label} help="Size in pixels." />
         <div>
-          <NumberInput value={value} min={min} max={max} step={step} onChange={onChange} />
+          <NumberInput
+            value={value}
+            min={min}
+            max={max}
+            step={step}
+            onChange={onChange}
+          />
           {showCompact ? (
-            <div style={{ fontSize: 12, color: '#565656', marginTop: 4 }}>{`Compact: ${compactPreview}px`}</div>
+            <div
+              style={{ fontSize: 12, color: "#565656", marginTop: 4 }}
+            >{`Compact: ${compactPreview}px`}</div>
           ) : null}
         </div>
       </SettingItem>
@@ -219,33 +260,33 @@ function FontSizeSettingItem({
         </>
       ) : null}
     </>
-  )
+  );
 }
 
 function SettingRow({ children }) {
   return (
     <div
       style={{
-        display: 'grid',
-        gridTemplateColumns: 'minmax(0, 1fr) minmax(0, 1fr)',
+        display: "grid",
+        gridTemplateColumns: "minmax(0, 1fr) minmax(0, 1fr)",
         gap: 12,
-        alignItems: 'start',
-        marginBottom: 16
+        alignItems: "start",
+        marginBottom: 16,
       }}
     >
       {children}
     </div>
-  )
+  );
 }
 
 function RadioChoice({ name, value, checked, onChange, label }) {
   return (
     <label
       style={{
-        display: 'flex',
-        alignItems: 'center',
+        display: "flex",
+        alignItems: "center",
         gap: 8,
-        cursor: 'pointer'
+        cursor: "pointer",
       }}
     >
       <input
@@ -257,11 +298,11 @@ function RadioChoice({ name, value, checked, onChange, label }) {
       />
       <span>{label}</span>
     </label>
-  )
+  );
 }
 
 function sanitizeSingleLineText(value) {
-  return String(value || '').replace(/[\r\n]+/g, ' ')
+  return String(value || "").replace(/[\r\n]+/g, " ");
 }
 
 function duplicateItemWithNewIds(item) {
@@ -269,223 +310,267 @@ function duplicateItemWithNewIds(item) {
     ...item,
     id: getUniqueId(),
     bullets: Array.isArray(item?.bullets)
-      ? item.bullets.map(bullet => ({
+      ? item.bullets.map((bullet) => ({
           ...bullet,
-          id: getUniqueId()
+          id: getUniqueId(),
         }))
-      : []
-  }
+      : [],
+  };
 }
 
 const fontWeightOptions = [
-  { value: 300, text: 'Light (300)' },
-  { value: 400, text: 'Regular (400)' },
-  { value: 500, text: 'Medium (500)' },
-  { value: 600, text: 'Semibold (600)' },
-  { value: 700, text: 'Bold (700)' },
-  { value: 800, text: 'Extra Bold (800)' }
-]
+  { value: 300, text: "Light (300)" },
+  { value: 400, text: "Regular (400)" },
+  { value: 500, text: "Medium (500)" },
+  { value: 600, text: "Semibold (600)" },
+  { value: 700, text: "Bold (700)" },
+  { value: 800, text: "Extra Bold (800)" },
+];
 
 function Settings({ state, setState }) {
-  const [selectedItemId, setSelectedItemId] = useState(null)
-  const [draggedItemId, setDraggedItemId] = useState(null)
-  const [dragOverItemId, setDragOverItemId] = useState(null)
-  const [draggedBulletId, setDraggedBulletId] = useState(null)
-  const [dragOverBulletId, setDragOverBulletId] = useState(null)
+  const [selectedItemId, setSelectedItemId] = useState(null);
+  const [draggedItemId, setDraggedItemId] = useState(null);
+  const [dragOverItemId, setDragOverItemId] = useState(null);
+  const [draggedBulletId, setDraggedBulletId] = useState(null);
+  const [dragOverBulletId, setDragOverBulletId] = useState(null);
 
   const selectedItem = useMemo(
-    () => state.items.find(item => item.id === selectedItemId) || null,
-    [state.items, selectedItemId]
-  )
+    () => state.items.find((item) => item.id === selectedItemId) || null,
+    [state.items, selectedItemId],
+  );
 
   const selectedItemIndex = useMemo(
-    () => state.items.findIndex(item => item.id === selectedItemId),
-    [state.items, selectedItemId]
-  )
+    () => state.items.findIndex((item) => item.id === selectedItemId),
+    [state.items, selectedItemId],
+  );
 
   const updateItem = (itemId, updates) => {
     setState({
       ...state,
-      items: state.items.map(item =>
-        item.id === itemId ? { ...item, ...updates } : item
-      )
-    })
-  }
+      items: state.items.map((item) =>
+        item.id === itemId ? { ...item, ...updates } : item,
+      ),
+    });
+  };
 
-  const deleteItem = itemId => {
-    const nextItems = state.items.filter(item => item.id !== itemId)
-    setState({ ...state, items: nextItems })
+  const deleteItem = (itemId) => {
+    const nextItems = state.items.filter((item) => item.id !== itemId);
+    setState({ ...state, items: nextItems });
     if (selectedItemId === itemId) {
-      setSelectedItemId(null)
+      setSelectedItemId(null);
     }
-  }
+  };
 
-  const duplicateItem = itemId => {
-    const itemIndex = state.items.findIndex(item => item.id === itemId)
-    if (itemIndex === -1) return
+  const duplicateItem = (itemId) => {
+    const itemIndex = state.items.findIndex((item) => item.id === itemId);
+    if (itemIndex === -1) return;
 
-    const itemToDuplicate = state.items[itemIndex]
-    const duplicatedItem = duplicateItemWithNewIds(itemToDuplicate)
+    const itemToDuplicate = state.items[itemIndex];
+    const duplicatedItem = duplicateItemWithNewIds(itemToDuplicate);
 
-    const nextItems = [...state.items]
-    nextItems.splice(itemIndex + 1, 0, duplicatedItem)
-    setState({ ...state, items: nextItems })
-    setSelectedItemId(duplicatedItem.id)
-  }
+    const nextItems = [...state.items];
+    nextItems.splice(itemIndex + 1, 0, duplicatedItem);
+    setState({ ...state, items: nextItems });
+    setSelectedItemId(duplicatedItem.id);
+  };
 
   const reorderItems = (sourceItemId, targetItemId) => {
     if (!sourceItemId || !targetItemId || sourceItemId === targetItemId) {
-      return
+      return;
     }
 
-    const sourceIndex = state.items.findIndex(item => item.id === sourceItemId)
-    const targetIndex = state.items.findIndex(item => item.id === targetItemId)
+    const sourceIndex = state.items.findIndex(
+      (item) => item.id === sourceItemId,
+    );
+    const targetIndex = state.items.findIndex(
+      (item) => item.id === targetItemId,
+    );
 
     if (sourceIndex === -1 || targetIndex === -1) {
-      return
+      return;
     }
 
-    const nextItems = [...state.items]
-    const [movedItem] = nextItems.splice(sourceIndex, 1)
-    nextItems.splice(targetIndex, 0, movedItem)
-    setState({ ...state, items: nextItems })
-  }
+    const nextItems = [...state.items];
+    const [movedItem] = nextItems.splice(sourceIndex, 1);
+    nextItems.splice(targetIndex, 0, movedItem);
+    setState({ ...state, items: nextItems });
+  };
 
   const addItem = () => {
     const newItem = {
       id: getUniqueId(),
-      title: 'New item',
-      description: 'Add a short explanation for this step.',
-      numberBgColor: state.numberBgColor || '#111827',
-      numberTextColor: state.numberTextColor || '#ffffff',
-      bulletListStyle: 'bullets',
-      bullets: []
-    }
-    setState({ ...state, items: [...state.items, newItem] })
-    setSelectedItemId(newItem.id)
-  }
+      title: "New item",
+      description: "Add a short explanation for this step.",
+      numberBgColor: state.numberBgColor || "#111827",
+      numberTextColor: state.numberTextColor || "#ffffff",
+      bulletListStyle: "bullets",
+      bullets: [],
+    };
+    setState({ ...state, items: [...state.items, newItem] });
+    setSelectedItemId(newItem.id);
+  };
 
   const updateBullet = (itemId, bulletId, updates) => {
     setState({
       ...state,
-      items: state.items.map(item =>
+      items: state.items.map((item) =>
         item.id !== itemId
           ? item
           : {
               ...item,
-              bullets: (item.bullets || []).map(bullet =>
-                bullet.id === bulletId ? { ...bullet, ...updates } : bullet
-              )
-            }
-      )
-    })
-  }
+              bullets: (item.bullets || []).map((bullet) =>
+                bullet.id === bulletId ? { ...bullet, ...updates } : bullet,
+              ),
+            },
+      ),
+    });
+  };
 
-  const addBullet = itemId => {
+  const addBullet = (itemId) => {
     const newBullet = {
       id: getUniqueId(),
-      text: 'Add a supporting bullet point.'
-    }
+      text: "Add a supporting bullet point.",
+    };
 
     setState({
       ...state,
-      items: state.items.map(item =>
+      items: state.items.map((item) =>
         item.id !== itemId
           ? item
-          : { ...item, bullets: [...(item.bullets || []), newBullet] }
-      )
-    })
-  }
+          : { ...item, bullets: [...(item.bullets || []), newBullet] },
+      ),
+    });
+  };
 
   const deleteBullet = (itemId, bulletId) => {
     setState({
       ...state,
-      items: state.items.map(item =>
+      items: state.items.map((item) =>
         item.id !== itemId
           ? item
           : {
               ...item,
-              bullets: (item.bullets || []).filter(bullet => bullet.id !== bulletId)
-            }
-      )
-    })
-  }
+              bullets: (item.bullets || []).filter(
+                (bullet) => bullet.id !== bulletId,
+              ),
+            },
+      ),
+    });
+  };
 
   const duplicateBullet = (itemId, bulletId) => {
-    const currentItem = state.items.find(item => item.id === itemId)
-    const bulletIndex = currentItem?.bullets?.findIndex(bullet => bullet.id === bulletId) ?? -1
+    const currentItem = state.items.find((item) => item.id === itemId);
+    const bulletIndex =
+      currentItem?.bullets?.findIndex((bullet) => bullet.id === bulletId) ?? -1;
 
     if (!currentItem || bulletIndex === -1) {
-      return
+      return;
     }
 
-    const bulletToDuplicate = currentItem.bullets[bulletIndex]
+    const bulletToDuplicate = currentItem.bullets[bulletIndex];
     const duplicatedBullet = {
       ...bulletToDuplicate,
-      id: getUniqueId()
-    }
+      id: getUniqueId(),
+    };
 
     setState({
       ...state,
-      items: state.items.map(item => {
+      items: state.items.map((item) => {
         if (item.id !== itemId) {
-          return item
+          return item;
         }
 
-        const nextBullets = [...(item.bullets || [])]
-        nextBullets.splice(bulletIndex + 1, 0, duplicatedBullet)
-        return { ...item, bullets: nextBullets }
-      })
-    })
-  }
+        const nextBullets = [...(item.bullets || [])];
+        nextBullets.splice(bulletIndex + 1, 0, duplicatedBullet);
+        return { ...item, bullets: nextBullets };
+      }),
+    });
+  };
 
   const reorderBullets = (itemId, sourceBulletId, targetBulletId) => {
-    if (!sourceBulletId || !targetBulletId || sourceBulletId === targetBulletId) return
+    if (!sourceBulletId || !targetBulletId || sourceBulletId === targetBulletId)
+      return;
     setState({
       ...state,
-      items: state.items.map(item => {
-        if (item.id !== itemId) return item
-        const bullets = [...(item.bullets || [])]
-        const sourceIndex = bullets.findIndex(b => b.id === sourceBulletId)
-        const targetIndex = bullets.findIndex(b => b.id === targetBulletId)
-        if (sourceIndex === -1 || targetIndex === -1) return item
-        const [moved] = bullets.splice(sourceIndex, 1)
-        bullets.splice(targetIndex, 0, moved)
-        return { ...item, bullets }
-      })
-    })
-  }
+      items: state.items.map((item) => {
+        if (item.id !== itemId) return item;
+        const bullets = [...(item.bullets || [])];
+        const sourceIndex = bullets.findIndex((b) => b.id === sourceBulletId);
+        const targetIndex = bullets.findIndex((b) => b.id === targetBulletId);
+        if (sourceIndex === -1 || targetIndex === -1) return item;
+        const [moved] = bullets.splice(sourceIndex, 1);
+        bullets.splice(targetIndex, 0, moved);
+        return { ...item, bullets };
+      }),
+    });
+  };
 
   const moveBulletUp = (itemId, bulletId) => {
-    const item = state.items.find(i => i.id === itemId)
-    if (!item) return
-    const index = (item.bullets || []).findIndex(b => b.id === bulletId)
-    if (index <= 0) return
-    const nextBullets = [...item.bullets]
-    ;[nextBullets[index - 1], nextBullets[index]] = [nextBullets[index], nextBullets[index - 1]]
-    setState({ ...state, items: state.items.map(i => i.id === itemId ? { ...i, bullets: nextBullets } : i) })
-  }
+    const item = state.items.find((i) => i.id === itemId);
+    if (!item) return;
+    const index = (item.bullets || []).findIndex((b) => b.id === bulletId);
+    if (index <= 0) return;
+    const nextBullets = [...item.bullets];
+    [nextBullets[index - 1], nextBullets[index]] = [
+      nextBullets[index],
+      nextBullets[index - 1],
+    ];
+    setState({
+      ...state,
+      items: state.items.map((i) =>
+        i.id === itemId ? { ...i, bullets: nextBullets } : i,
+      ),
+    });
+  };
 
   const moveBulletDown = (itemId, bulletId) => {
-    const item = state.items.find(i => i.id === itemId)
-    if (!item) return
-    const index = (item.bullets || []).findIndex(b => b.id === bulletId)
-    if (index === -1 || index >= (item.bullets || []).length - 1) return
-    const nextBullets = [...item.bullets]
-    ;[nextBullets[index], nextBullets[index + 1]] = [nextBullets[index + 1], nextBullets[index]]
-    setState({ ...state, items: state.items.map(i => i.id === itemId ? { ...i, bullets: nextBullets } : i) })
-  }
+    const item = state.items.find((i) => i.id === itemId);
+    if (!item) return;
+    const index = (item.bullets || []).findIndex((b) => b.id === bulletId);
+    if (index === -1 || index >= (item.bullets || []).length - 1) return;
+    const nextBullets = [...item.bullets];
+    [nextBullets[index], nextBullets[index + 1]] = [
+      nextBullets[index + 1],
+      nextBullets[index],
+    ];
+    setState({
+      ...state,
+      items: state.items.map((i) =>
+        i.id === itemId ? { ...i, bullets: nextBullets } : i,
+      ),
+    });
+  };
 
-  const compactBreakpointWidth = state.widthBreakpoint || 520
-  const compactHelpText = `Used when the component's width is ${compactBreakpointWidth}px or below. To change the breakpoint, go to the Advanced tab.`
-  const autoTitleCompact = Math.max(10, Math.floor(state.titleFontSize * 0.85))
-  const autoIntroCompact = Math.max(10, Math.floor(state.introFontSize * 0.85))
-  const autoItemTitleCompact = Math.max(10, Math.floor(state.itemTitleFontSize * 0.85))
-  const autoItemDescCompact = Math.max(10, Math.floor(state.itemDescriptionFontSize * 0.85))
-  const effectiveTitleCompact = (state.titleFontSizeCompactCustom && state.titleFontSizeCompact != null) ? state.titleFontSizeCompact : autoTitleCompact
-  const effectiveIntroCompact = (state.introFontSizeCompactCustom && state.introFontSizeCompact != null) ? state.introFontSizeCompact : autoIntroCompact
-  const effectiveItemTitleCompact = (state.itemTitleFontSizeCompactCustom && state.itemTitleFontSizeCompact != null) ? state.itemTitleFontSizeCompact : autoItemTitleCompact
-  const effectiveItemDescCompact = (state.itemDescriptionFontSizeCompactCustom && state.itemDescriptionFontSizeCompact != null) ? state.itemDescriptionFontSizeCompact : autoItemDescCompact
+  const compactBreakpointWidth = state.widthBreakpoint || 520;
+  const compactHelpText = `Used when the component's width is ${compactBreakpointWidth}px or below. To change the breakpoint, go to the Advanced tab.`;
+  const autoTitleCompact = Math.max(10, Math.floor(state.titleFontSize * 0.85));
+  const autoIntroCompact = Math.max(10, Math.floor(state.introFontSize * 0.85));
+  const autoItemTitleCompact = Math.max(
+    10,
+    Math.floor(state.itemTitleFontSize * 0.85),
+  );
+  const autoItemDescCompact = Math.max(
+    10,
+    Math.floor(state.itemDescriptionFontSize * 0.85),
+  );
+  const effectiveTitleCompact =
+    state.titleFontSizeCompactCustom && state.titleFontSizeCompact != null
+      ? state.titleFontSizeCompact
+      : autoTitleCompact;
+  const effectiveIntroCompact =
+    state.introFontSizeCompactCustom && state.introFontSizeCompact != null
+      ? state.introFontSizeCompact
+      : autoIntroCompact;
+  const effectiveItemTitleCompact =
+    state.itemTitleFontSizeCompactCustom &&
+    state.itemTitleFontSizeCompact != null
+      ? state.itemTitleFontSizeCompact
+      : autoItemTitleCompact;
+  const effectiveItemDescCompact =
+    state.itemDescriptionFontSizeCompactCustom &&
+    state.itemDescriptionFontSizeCompact != null
+      ? state.itemDescriptionFontSizeCompact
+      : autoItemDescCompact;
 
   return (
     <>
@@ -503,7 +588,7 @@ function Settings({ state, setState }) {
               />
               <Checkbox
                 value={state.showIntroSection}
-                onChange={showIntroSection =>
+                onChange={(showIntroSection) =>
                   setState({ ...state, showIntroSection })
                 }
                 label="Show"
@@ -519,7 +604,7 @@ function Settings({ state, setState }) {
                   />
                   <TextInput
                     value={state.title}
-                    onChange={e =>
+                    onChange={(e) =>
                       setState({ ...state, title: e.currentTarget.value })
                     }
                   />
@@ -532,7 +617,7 @@ function Settings({ state, setState }) {
                   />
                   <TextInput
                     value={state.introText}
-                    onChange={e =>
+                    onChange={(e) =>
                       setState({ ...state, introText: e.currentTarget.value })
                     }
                   />
@@ -556,55 +641,61 @@ function Settings({ state, setState }) {
                 addButtonTitle="Add a new numbered item"
                 emptyMessage="No list items added yet."
                 columns={[
-                  { content: '', compact: true },
-                  { content: 'Number' },
-                  { content: '', compact: true }
+                  { content: "", compact: true },
+                  { content: "Number" },
+                  { content: "", compact: true },
                 ]}
                 onAdd={addItem}
                 rows={state.items.map((item, index) => [
                   <div
                     key={`${item.id}-drag`}
                     draggable
-                    onDragStart={event => {
-                      event.dataTransfer.effectAllowed = 'move'
-                      event.dataTransfer.setData('text/plain', item.id)
-                      setDraggedItemId(item.id)
+                    onDragStart={(event) => {
+                      event.dataTransfer.effectAllowed = "move";
+                      event.dataTransfer.setData("text/plain", item.id);
+                      setDraggedItemId(item.id);
                     }}
-                    onDragOver={event => {
-                      event.preventDefault()
-                      event.dataTransfer.dropEffect = 'move'
+                    onDragOver={(event) => {
+                      event.preventDefault();
+                      event.dataTransfer.dropEffect = "move";
                       if (dragOverItemId !== item.id) {
-                        setDragOverItemId(item.id)
+                        setDragOverItemId(item.id);
                       }
                     }}
-                    onDrop={event => {
-                      event.preventDefault()
-                      const sourceItemId = event.dataTransfer.getData('text/plain') || draggedItemId
-                      reorderItems(sourceItemId, item.id)
-                      setDraggedItemId(null)
-                      setDragOverItemId(null)
+                    onDrop={(event) => {
+                      event.preventDefault();
+                      const sourceItemId =
+                        event.dataTransfer.getData("text/plain") ||
+                        draggedItemId;
+                      reorderItems(sourceItemId, item.id);
+                      setDraggedItemId(null);
+                      setDragOverItemId(null);
                     }}
                     onDragEnd={() => {
-                      setDraggedItemId(null)
-                      setDragOverItemId(null)
+                      setDraggedItemId(null);
+                      setDragOverItemId(null);
                     }}
                     title="Drag to reorder"
                     style={{
-                      cursor: 'grab',
-                      userSelect: 'none',
+                      cursor: "grab",
+                      userSelect: "none",
                       fontWeight: 700,
-                      textAlign: 'center',
-                      padding: '6px 8px',
+                      textAlign: "center",
+                      padding: "6px 8px",
                       borderRadius: 6,
-                      border: item.id === dragOverItemId ? '1px dashed #6b7280' : '1px dashed transparent',
-                      background: item.id === draggedItemId ? '#f3f4f6' : 'transparent'
+                      border:
+                        item.id === dragOverItemId
+                          ? "1px dashed #6b7280"
+                          : "1px dashed transparent",
+                      background:
+                        item.id === draggedItemId ? "#f3f4f6" : "transparent",
                     }}
                   >
                     ::
                   </div>,
                   <div
                     key={`${item.id}-number`}
-                    style={{ textAlign: 'center', fontWeight: 600 }}
+                    style={{ textAlign: "center", fontWeight: 600 }}
                   >
                     {index + 1}
                   </div>,
@@ -612,28 +703,28 @@ function Settings({ state, setState }) {
                     key={`${item.id}-menu`}
                     options={[
                       {
-                        text: 'Edit',
-                        tip: 'Edit this item',
+                        text: "Edit",
+                        tip: "Edit this item",
                         icon: editIcon,
-                        type: 'onClick',
-                        onClick: () => setSelectedItemId(item.id)
+                        type: "onClick",
+                        onClick: () => setSelectedItemId(item.id),
                       },
                       {
-                        text: 'Duplicate',
-                        tip: 'Duplicate this item',
+                        text: "Duplicate",
+                        tip: "Duplicate this item",
                         icon: duplicateIcon,
-                        type: 'onClick',
-                        onClick: () => duplicateItem(item.id)
+                        type: "onClick",
+                        onClick: () => duplicateItem(item.id),
                       },
                       {
-                        text: 'Delete',
-                        tip: 'Delete this item',
+                        text: "Delete",
+                        tip: "Delete this item",
                         icon: deleteIcon,
-                        type: 'onClick',
-                        onClick: () => deleteItem(item.id)
-                      }
+                        type: "onClick",
+                        onClick: () => deleteItem(item.id),
+                      },
                     ]}
-                  />
+                  />,
                 ])}
               />
             </SettingItem>
@@ -654,7 +745,7 @@ function Settings({ state, setState }) {
                 />
                 <FontSelector
                   value={state.headingFontFamily}
-                  onChange={headingFontFamily =>
+                  onChange={(headingFontFamily) =>
                     setState({ ...state, headingFontFamily })
                   }
                 />
@@ -668,7 +759,7 @@ function Settings({ state, setState }) {
                 <Dropdown
                   value={state.headingFontWeight}
                   options={fontWeightOptions}
-                  onChange={headingFontWeight =>
+                  onChange={(headingFontWeight) =>
                     setState({ ...state, headingFontWeight })
                   }
                 />
@@ -683,7 +774,7 @@ function Settings({ state, setState }) {
                 />
                 <FontSelector
                   value={state.bodyFontFamily}
-                  onChange={bodyFontFamily =>
+                  onChange={(bodyFontFamily) =>
                     setState({ ...state, bodyFontFamily })
                   }
                 />
@@ -697,7 +788,7 @@ function Settings({ state, setState }) {
                 <Dropdown
                   value={state.bodyFontWeight}
                   options={fontWeightOptions}
-                  onChange={bodyFontWeight =>
+                  onChange={(bodyFontWeight) =>
                     setState({ ...state, bodyFontWeight })
                   }
                 />
@@ -716,24 +807,39 @@ function Settings({ state, setState }) {
             <FontSizeSettingItem
               label="Size"
               value={state.titleFontSize}
-              min={12} max={72} step={1}
-              onChange={titleFontSize => setState({ ...state, titleFontSize })}
+              min={12}
+              max={72}
+              step={1}
+              onChange={(titleFontSize) =>
+                setState({ ...state, titleFontSize })
+              }
               showCompact={state.hasWidthBreakpoint}
               compactPreview={effectiveTitleCompact}
               compactHelpText={compactHelpText}
               compactLabel="Compact size"
               compactCustomEnabled={state.titleFontSizeCompactCustom}
-              onCompactCustomChange={enabled => setState({ ...state, titleFontSizeCompactCustom: enabled, titleFontSizeCompact: enabled ? (state.titleFontSizeCompact ?? autoTitleCompact) : null })}
+              onCompactCustomChange={(enabled) =>
+                setState({
+                  ...state,
+                  titleFontSizeCompactCustom: enabled,
+                  titleFontSizeCompact: enabled
+                    ? (state.titleFontSizeCompact ?? autoTitleCompact)
+                    : null,
+                })
+              }
               compactValue={state.titleFontSizeCompact ?? autoTitleCompact}
-              compactMin={10} compactMax={72}
-              onCompactValueChange={titleFontSizeCompact => setState({ ...state, titleFontSizeCompact })}
+              compactMin={10}
+              compactMax={72}
+              onCompactValueChange={(titleFontSizeCompact) =>
+                setState({ ...state, titleFontSizeCompact })
+              }
             />
 
             <SettingItem>
               <Label content="Color" />
               <ColorPicker
                 value={state.titleColor}
-                onChange={titleColor => setState({ ...state, titleColor })}
+                onChange={(titleColor) => setState({ ...state, titleColor })}
               />
             </SettingItem>
 
@@ -742,24 +848,39 @@ function Settings({ state, setState }) {
             <FontSizeSettingItem
               label="Size"
               value={state.introFontSize}
-              min={10} max={40} step={1}
-              onChange={introFontSize => setState({ ...state, introFontSize })}
+              min={10}
+              max={40}
+              step={1}
+              onChange={(introFontSize) =>
+                setState({ ...state, introFontSize })
+              }
               showCompact={state.hasWidthBreakpoint}
               compactPreview={effectiveIntroCompact}
               compactHelpText={compactHelpText}
               compactLabel="Compact size"
               compactCustomEnabled={state.introFontSizeCompactCustom}
-              onCompactCustomChange={enabled => setState({ ...state, introFontSizeCompactCustom: enabled, introFontSizeCompact: enabled ? (state.introFontSizeCompact ?? autoIntroCompact) : null })}
+              onCompactCustomChange={(enabled) =>
+                setState({
+                  ...state,
+                  introFontSizeCompactCustom: enabled,
+                  introFontSizeCompact: enabled
+                    ? (state.introFontSizeCompact ?? autoIntroCompact)
+                    : null,
+                })
+              }
               compactValue={state.introFontSizeCompact ?? autoIntroCompact}
-              compactMin={10} compactMax={40}
-              onCompactValueChange={introFontSizeCompact => setState({ ...state, introFontSizeCompact })}
+              compactMin={10}
+              compactMax={40}
+              onCompactValueChange={(introFontSizeCompact) =>
+                setState({ ...state, introFontSizeCompact })
+              }
             />
 
             <SettingItem>
               <Label content="Color" />
               <ColorPicker
                 value={state.introColor}
-                onChange={introColor => setState({ ...state, introColor })}
+                onChange={(introColor) => setState({ ...state, introColor })}
               />
             </SettingItem>
           </Section>
@@ -772,24 +893,41 @@ function Settings({ state, setState }) {
             <FontSizeSettingItem
               label="Item title size"
               value={state.itemTitleFontSize}
-              min={10} max={40} step={1}
-              onChange={itemTitleFontSize => setState({ ...state, itemTitleFontSize })}
+              min={10}
+              max={40}
+              step={1}
+              onChange={(itemTitleFontSize) =>
+                setState({ ...state, itemTitleFontSize })
+              }
               showCompact={state.hasWidthBreakpoint}
               compactPreview={effectiveItemTitleCompact}
               compactHelpText={compactHelpText}
               compactLabel="Compact item title size"
               compactCustomEnabled={state.itemTitleFontSizeCompactCustom}
-              onCompactCustomChange={enabled => setState({ ...state, itemTitleFontSizeCompactCustom: enabled, itemTitleFontSizeCompact: enabled ? (state.itemTitleFontSizeCompact ?? autoItemTitleCompact) : null })}
-              compactValue={state.itemTitleFontSizeCompact ?? autoItemTitleCompact}
-              compactMin={10} compactMax={40}
-              onCompactValueChange={itemTitleFontSizeCompact => setState({ ...state, itemTitleFontSizeCompact })}
+              onCompactCustomChange={(enabled) =>
+                setState({
+                  ...state,
+                  itemTitleFontSizeCompactCustom: enabled,
+                  itemTitleFontSizeCompact: enabled
+                    ? (state.itemTitleFontSizeCompact ?? autoItemTitleCompact)
+                    : null,
+                })
+              }
+              compactValue={
+                state.itemTitleFontSizeCompact ?? autoItemTitleCompact
+              }
+              compactMin={10}
+              compactMax={40}
+              onCompactValueChange={(itemTitleFontSizeCompact) =>
+                setState({ ...state, itemTitleFontSizeCompact })
+              }
             />
 
             <SettingItem>
               <Label content="Item title color" />
               <ColorPicker
                 value={state.itemTitleColor}
-                onChange={itemTitleColor =>
+                onChange={(itemTitleColor) =>
                   setState({ ...state, itemTitleColor })
                 }
               />
@@ -805,24 +943,42 @@ function Settings({ state, setState }) {
             <FontSizeSettingItem
               label="Item description size"
               value={state.itemDescriptionFontSize}
-              min={10} max={32} step={1}
-              onChange={itemDescriptionFontSize => setState({ ...state, itemDescriptionFontSize })}
+              min={10}
+              max={32}
+              step={1}
+              onChange={(itemDescriptionFontSize) =>
+                setState({ ...state, itemDescriptionFontSize })
+              }
               showCompact={state.hasWidthBreakpoint}
               compactPreview={effectiveItemDescCompact}
               compactHelpText={compactHelpText}
               compactLabel="Compact item description size"
               compactCustomEnabled={state.itemDescriptionFontSizeCompactCustom}
-              onCompactCustomChange={enabled => setState({ ...state, itemDescriptionFontSizeCompactCustom: enabled, itemDescriptionFontSizeCompact: enabled ? (state.itemDescriptionFontSizeCompact ?? autoItemDescCompact) : null })}
-              compactValue={state.itemDescriptionFontSizeCompact ?? autoItemDescCompact}
-              compactMin={10} compactMax={32}
-              onCompactValueChange={itemDescriptionFontSizeCompact => setState({ ...state, itemDescriptionFontSizeCompact })}
+              onCompactCustomChange={(enabled) =>
+                setState({
+                  ...state,
+                  itemDescriptionFontSizeCompactCustom: enabled,
+                  itemDescriptionFontSizeCompact: enabled
+                    ? (state.itemDescriptionFontSizeCompact ??
+                      autoItemDescCompact)
+                    : null,
+                })
+              }
+              compactValue={
+                state.itemDescriptionFontSizeCompact ?? autoItemDescCompact
+              }
+              compactMin={10}
+              compactMax={32}
+              onCompactValueChange={(itemDescriptionFontSizeCompact) =>
+                setState({ ...state, itemDescriptionFontSizeCompact })
+              }
             />
 
             <SettingItem>
               <Label content="Item description color" />
               <ColorPicker
                 value={state.itemDescriptionColor}
-                onChange={itemDescriptionColor =>
+                onChange={(itemDescriptionColor) =>
                   setState({ ...state, itemDescriptionColor })
                 }
               />
@@ -838,7 +994,7 @@ function Settings({ state, setState }) {
                 min={0}
                 max={48}
                 step={1}
-                onChange={bulletListTopGap =>
+                onChange={(bulletListTopGap) =>
                   setState({ ...state, bulletListTopGap })
                 }
               />
@@ -854,7 +1010,9 @@ function Settings({ state, setState }) {
                 min={0}
                 max={32}
                 step={1}
-                onChange={bulletListGap => setState({ ...state, bulletListGap })}
+                onChange={(bulletListGap) =>
+                  setState({ ...state, bulletListGap })
+                }
               />
             </SettingItem>
           </Section>
@@ -872,14 +1030,16 @@ function Settings({ state, setState }) {
               <Dropdown
                 value={state.circleStyleType}
                 options={[
-                  { value: 'filled', text: 'Filled' },
-                  { value: 'outlined', text: 'Outlined' }
+                  { value: "filled", text: "Filled" },
+                  { value: "outlined", text: "Outlined" },
                 ]}
-                onChange={circleStyleType => setState({ ...state, circleStyleType })}
+                onChange={(circleStyleType) =>
+                  setState({ ...state, circleStyleType })
+                }
               />
             </SettingItem>
 
-            {state.circleStyleType === 'outlined' ? (
+            {state.circleStyleType === "outlined" ? (
               <SettingItem>
                 <Label
                   content="Line width"
@@ -890,7 +1050,7 @@ function Settings({ state, setState }) {
                   min={1}
                   max={12}
                   step={1}
-                  onChange={circleOutlineWidth =>
+                  onChange={(circleOutlineWidth) =>
                     setState({ ...state, circleOutlineWidth })
                   }
                 />
@@ -904,7 +1064,7 @@ function Settings({ state, setState }) {
                 min={20}
                 max={100}
                 step={1}
-                onChange={numberSize => setState({ ...state, numberSize })}
+                onChange={(numberSize) => setState({ ...state, numberSize })}
               />
             </SettingItem>
 
@@ -918,7 +1078,9 @@ function Settings({ state, setState }) {
                 min={-20}
                 max={20}
                 step={1}
-                onChange={numberOffsetX => setState({ ...state, numberOffsetX })}
+                onChange={(numberOffsetX) =>
+                  setState({ ...state, numberOffsetX })
+                }
               />
             </SettingItem>
 
@@ -932,7 +1094,9 @@ function Settings({ state, setState }) {
                 min={-20}
                 max={20}
                 step={1}
-                onChange={numberOffsetY => setState({ ...state, numberOffsetY })}
+                onChange={(numberOffsetY) =>
+                  setState({ ...state, numberOffsetY })
+                }
               />
             </SettingItem>
           </Section>
@@ -946,20 +1110,23 @@ function Settings({ state, setState }) {
               <Label content="Card background color" />
               <ColorPicker
                 value={state.sectionBackgroundColor}
-                onChange={sectionBackgroundColor =>
+                onChange={(sectionBackgroundColor) =>
                   setState({ ...state, sectionBackgroundColor })
                 }
               />
             </SettingItem>
 
             <SettingItem>
-              <Label content="Gap between items" help="Vertical spacing in pixels." />
+              <Label
+                content="Gap between items"
+                help="Vertical spacing in pixels."
+              />
               <NumberInput
                 value={state.itemGap}
                 min={0}
                 max={48}
                 step={1}
-                onChange={itemGap => setState({ ...state, itemGap })}
+                onChange={(itemGap) => setState({ ...state, itemGap })}
               />
             </SettingItem>
 
@@ -971,35 +1138,45 @@ function Settings({ state, setState }) {
               <Dropdown
                 value={state.itemContentAlignment}
                 options={[
-                  { value: 'start', text: 'Start' },
-                  { value: 'center', text: 'Middle' },
-                  { value: 'end', text: 'End' }
+                  { value: "start", text: "Start" },
+                  { value: "center", text: "Middle" },
+                  { value: "end", text: "End" },
                 ]}
-                onChange={itemContentAlignment =>
+                onChange={(itemContentAlignment) =>
                   setState({ ...state, itemContentAlignment })
                 }
               />
             </SettingItem>
 
             <SettingItem>
-              <Label content="Padding left and right" help="Horizontal padding around the whole component." />
+              <Label
+                content="Padding left and right"
+                help="Horizontal padding around the whole component."
+              />
               <NumberInput
                 value={state.sectionPaddingX}
                 min={0}
                 max={80}
                 step={1}
-                onChange={sectionPaddingX => setState({ ...state, sectionPaddingX })}
+                onChange={(sectionPaddingX) =>
+                  setState({ ...state, sectionPaddingX })
+                }
               />
             </SettingItem>
 
             <SettingItem>
-              <Label content="Padding top and bottom" help="Vertical padding around the whole component." />
+              <Label
+                content="Padding top and bottom"
+                help="Vertical padding around the whole component."
+              />
               <NumberInput
                 value={state.sectionPaddingY}
                 min={0}
                 max={80}
                 step={1}
-                onChange={sectionPaddingY => setState({ ...state, sectionPaddingY })}
+                onChange={(sectionPaddingY) =>
+                  setState({ ...state, sectionPaddingY })
+                }
               />
             </SettingItem>
           </Section>
@@ -1018,7 +1195,9 @@ function Settings({ state, setState }) {
               />
               <Checkbox
                 value={state.hasWidthBreakpoint}
-                onChange={hasWidthBreakpoint => setState({ ...state, hasWidthBreakpoint })}
+                onChange={(hasWidthBreakpoint) =>
+                  setState({ ...state, hasWidthBreakpoint })
+                }
                 label="Enable"
               />
             </SettingItem>
@@ -1034,13 +1213,17 @@ function Settings({ state, setState }) {
                     min={120}
                     max={2000}
                     step={1}
-                    onChange={widthBreakpoint => setState({ ...state, widthBreakpoint })}
+                    onChange={(widthBreakpoint) =>
+                      setState({ ...state, widthBreakpoint })
+                    }
                   />
                 </SettingItem>
                 <SettingItem>
                   <Checkbox
                     value={state.previewWidthInLiveView}
-                    onChange={previewWidthInLiveView => setState({ ...state, previewWidthInLiveView })}
+                    onChange={(previewWidthInLiveView) =>
+                      setState({ ...state, previewWidthInLiveView })
+                    }
                     label="Preview width in live view"
                   />
                 </SettingItem>
@@ -1061,15 +1244,17 @@ function Settings({ state, setState }) {
               <Dropdown
                 value={state.animationStyle}
                 options={[
-                  { value: 'none', text: 'None' },
-                  { value: 'number-wave', text: 'Number wave' },
-                  { value: 'fade-items', text: 'Fade in items' }
+                  { value: "none", text: "None" },
+                  { value: "number-wave", text: "Number wave" },
+                  { value: "fade-items", text: "Fade in items" },
                 ]}
-                onChange={animationStyle => setState({ ...state, animationStyle })}
+                onChange={(animationStyle) =>
+                  setState({ ...state, animationStyle })
+                }
               />
             </SettingItem>
 
-            {state.animationStyle !== 'none' ? (
+            {state.animationStyle !== "none" ? (
               <>
                 <SettingItem>
                   <Label
@@ -1081,7 +1266,7 @@ function Settings({ state, setState }) {
                     min={100}
                     max={5000}
                     step={50}
-                    onChange={animationDuration =>
+                    onChange={(animationDuration) =>
                       setState({ ...state, animationDuration })
                     }
                   />
@@ -1097,7 +1282,7 @@ function Settings({ state, setState }) {
                     min={0}
                     max={2000}
                     step={10}
-                    onChange={animationStagger =>
+                    onChange={(animationStagger) =>
                       setState({ ...state, animationStagger })
                     }
                   />
@@ -1105,7 +1290,7 @@ function Settings({ state, setState }) {
               </>
             ) : null}
 
-                        {state.animationStyle !== 'none' ? (
+            {state.animationStyle !== "none" ? (
               <>
                 <SettingItem>
                   <Label
@@ -1113,30 +1298,35 @@ function Settings({ state, setState }) {
                     help="Choose whether the animation runs automatically on load or only when triggered manually through the Start Animation action."
                   />
                   <Dropdown
-                    value={state.animationPlaybackMode || 'auto'}
+                    value={state.animationPlaybackMode || "auto"}
                     options={[
-                      { value: 'auto', text: 'Auto play on load' },
-                      { value: 'manual', text: 'Manual trigger' }
+                      { value: "auto", text: "Auto play on load" },
+                      { value: "manual", text: "Manual trigger" },
                     ]}
-                    onChange={animationPlaybackMode =>
+                    onChange={(animationPlaybackMode) =>
                       setState({ ...state, animationPlaybackMode })
                     }
                   />
                 </SettingItem>
-                {state.animationPlaybackMode === 'manual' ? (
-                  <div style={{
-                    display: 'flex',
-                    gap: 10,
-                    padding: '10px 12px',
-                    borderRadius: 6,
-                    background: '#eff6ff',
-                    border: '1px solid #bfdbfe',
-                    color: '#6b80c5',
-                    fontSize: 13,
-                    lineHeight: 1.5,
-                    marginBottom: 8
-                  }}>
-                    <span>The animation will not play automatically. Use the <b>Start Animation</b> action to trigger it externally.</span>
+                {state.animationPlaybackMode === "manual" ? (
+                  <div
+                    style={{
+                      display: "flex",
+                      gap: 10,
+                      padding: "10px 12px",
+                      borderRadius: 6,
+                      background: "#eff6ff",
+                      border: "1px solid #bfdbfe",
+                      color: "#6b80c5",
+                      fontSize: 13,
+                      lineHeight: 1.5,
+                      marginBottom: 8,
+                    }}
+                  >
+                    <span>
+                      The animation will not play automatically. Use the{" "}
+                      <b>Start Animation</b> action to trigger it externally.
+                    </span>
                   </div>
                 ) : null}
               </>
@@ -1148,7 +1338,7 @@ function Settings({ state, setState }) {
       <Drawer
         isOpen={Boolean(selectedItem)}
         onClose={() => {
-          setSelectedItemId(null)
+          setSelectedItemId(null);
         }}
         title="Edit list item"
         width={520}
@@ -1168,9 +1358,9 @@ function Settings({ state, setState }) {
                 <Label content="Item title" />
                 <TextInput
                   value={selectedItem.title}
-                  onChange={e =>
+                  onChange={(e) =>
                     updateItem(selectedItem.id, {
-                      title: e.currentTarget.value
+                      title: e.currentTarget.value,
                     })
                   }
                 />
@@ -1181,20 +1371,22 @@ function Settings({ state, setState }) {
                 <textarea
                   value={selectedItem.description}
                   rows={4}
-                  onKeyDown={event => {
-                    if (event.key === 'Enter') {
-                      event.preventDefault()
+                  onKeyDown={(event) => {
+                    if (event.key === "Enter") {
+                      event.preventDefault();
                     }
                   }}
-                  onChange={e =>
+                  onChange={(e) =>
                     updateItem(selectedItem.id, {
-                      description: sanitizeSingleLineText(e.currentTarget.value)
+                      description: sanitizeSingleLineText(
+                        e.currentTarget.value,
+                      ),
                     })
                   }
                   style={{
-                    width: '100%',
-                    resize: 'vertical',
-                    boxSizing: 'border-box'
+                    width: "100%",
+                    resize: "vertical",
+                    boxSizing: "border-box",
                   }}
                 />
               </SettingItem>
@@ -1211,8 +1403,8 @@ function Settings({ state, setState }) {
                   help="Set the circle color for this specific number."
                 />
                 <ColorPicker
-                  value={selectedItem.numberBgColor || '#111827'}
-                  onChange={numberBgColor =>
+                  value={selectedItem.numberBgColor || "#111827"}
+                  onChange={(numberBgColor) =>
                     updateItem(selectedItem.id, { numberBgColor })
                   }
                 />
@@ -1224,8 +1416,8 @@ function Settings({ state, setState }) {
                   help="Set the text color for this specific number."
                 />
                 <ColorPicker
-                  value={selectedItem.numberTextColor || '#ffffff'}
-                  onChange={numberTextColor =>
+                  value={selectedItem.numberTextColor || "#ffffff"}
+                  onChange={(numberTextColor) =>
                     updateItem(selectedItem.id, { numberTextColor })
                   }
                 />
@@ -1244,16 +1436,16 @@ function Settings({ state, setState }) {
                 />
                 <Dropdown
                   value={
-                    selectedItem.bulletListStyle === 'alpha'
-                      ? 'alphabetical'
-                      : selectedItem.bulletListStyle || 'bullets'
+                    selectedItem.bulletListStyle === "alpha"
+                      ? "alphabetical"
+                      : selectedItem.bulletListStyle || "bullets"
                   }
                   options={[
-                    { value: 'bullets', text: 'Bullets' },
-                    { value: 'alphabetical', text: 'Alphabetical' },
-                    { value: 'roman', text: 'Roman numerals' }
+                    { value: "bullets", text: "Bullets" },
+                    { value: "alphabetical", text: "Alphabetical" },
+                    { value: "roman", text: "Roman numerals" },
                   ]}
-                  onChange={bulletListStyle =>
+                  onChange={(bulletListStyle) =>
                     updateItem(selectedItem.id, { bulletListStyle })
                   }
                 />
@@ -1268,95 +1460,113 @@ function Settings({ state, setState }) {
                   addButtonTitle="Add a new bullet item"
                   emptyMessage="No bullet items added yet."
                   columns={[
-                    { content: '', compact: true },
-                    { content: 'Bullet text' },
-                    { content: '', compact: true }
+                    { content: "", compact: true },
+                    { content: "Bullet text" },
+                    { content: "", compact: true },
                   ]}
                   onAdd={() => addBullet(selectedItem.id)}
-                  rows={(selectedItem.bullets || []).map((bullet, bulletIndex) => [
-                    <div
-                      key={`${bullet.id}-drag`}
-                      draggable
-                      onDragStart={event => {
-                        event.dataTransfer.effectAllowed = 'move'
-                        event.dataTransfer.setData('text/plain', bullet.id)
-                        setDraggedBulletId(bullet.id)
-                      }}
-                      onDragOver={event => {
-                        event.preventDefault()
-                        event.dataTransfer.dropEffect = 'move'
-                        if (dragOverBulletId !== bullet.id) {
-                          setDragOverBulletId(bullet.id)
+                  rows={(selectedItem.bullets || []).map(
+                    (bullet, bulletIndex) => [
+                      <div
+                        key={`${bullet.id}-drag`}
+                        draggable
+                        onDragStart={(event) => {
+                          event.dataTransfer.effectAllowed = "move";
+                          event.dataTransfer.setData("text/plain", bullet.id);
+                          setDraggedBulletId(bullet.id);
+                        }}
+                        onDragOver={(event) => {
+                          event.preventDefault();
+                          event.dataTransfer.dropEffect = "move";
+                          if (dragOverBulletId !== bullet.id) {
+                            setDragOverBulletId(bullet.id);
+                          }
+                        }}
+                        onDrop={(event) => {
+                          event.preventDefault();
+                          const sourceBulletId =
+                            event.dataTransfer.getData("text/plain") ||
+                            draggedBulletId;
+                          reorderBullets(
+                            selectedItem.id,
+                            sourceBulletId,
+                            bullet.id,
+                          );
+                          setDraggedBulletId(null);
+                          setDragOverBulletId(null);
+                        }}
+                        onDragEnd={() => {
+                          setDraggedBulletId(null);
+                          setDragOverBulletId(null);
+                        }}
+                        title="Drag to reorder"
+                        style={{
+                          cursor: "grab",
+                          userSelect: "none",
+                          fontWeight: 700,
+                          textAlign: "center",
+                          padding: "6px 8px",
+                          borderRadius: 6,
+                          border:
+                            bullet.id === dragOverBulletId
+                              ? "1px dashed #6b7280"
+                              : "1px dashed transparent",
+                          background:
+                            bullet.id === draggedBulletId
+                              ? "#f3f4f6"
+                              : "transparent",
+                        }}
+                      >
+                        ::
+                      </div>,
+                      <TextInput
+                        key={`${bullet.id}-text`}
+                        value={bullet.text}
+                        onChange={(e) =>
+                          updateBullet(selectedItem.id, bullet.id, {
+                            text: sanitizeSingleLineText(e.currentTarget.value),
+                          })
                         }
-                      }}
-                      onDrop={event => {
-                        event.preventDefault()
-                        const sourceBulletId = event.dataTransfer.getData('text/plain') || draggedBulletId
-                        reorderBullets(selectedItem.id, sourceBulletId, bullet.id)
-                        setDraggedBulletId(null)
-                        setDragOverBulletId(null)
-                      }}
-                      onDragEnd={() => {
-                        setDraggedBulletId(null)
-                        setDragOverBulletId(null)
-                      }}
-                      title="Drag to reorder"
-                      style={{
-                        cursor: 'grab',
-                        userSelect: 'none',
-                        fontWeight: 700,
-                        textAlign: 'center',
-                        padding: '6px 8px',
-                        borderRadius: 6,
-                        border: bullet.id === dragOverBulletId ? '1px dashed #6b7280' : '1px dashed transparent',
-                        background: bullet.id === draggedBulletId ? '#f3f4f6' : 'transparent'
-                      }}
-                    >
-                      ::
-                    </div>,
-                    <TextInput
-                      key={`${bullet.id}-text`}
-                      value={bullet.text}
-                      onChange={e =>
-                        updateBullet(selectedItem.id, bullet.id, {
-                          text: sanitizeSingleLineText(e.currentTarget.value)
-                        })
-                      }
-                    />,
-                    <OptionsMenuRootButton
-                      key={`${bullet.id}-menu`}
-                      options={[
-                        {
-                          text: 'Move up',
-                          tip: 'Move this bullet up',
-                          icon: arrowUpIcon,
-                          type: 'onClick',
-                          onClick: () => moveBulletUp(selectedItem.id, bullet.id)
-                        },
-                        {
-                          text: 'Move down',
-                          tip: 'Move this bullet down',
-                          icon: arrowDownIcon,
-                          type: 'onClick',
-                          onClick: () => moveBulletDown(selectedItem.id, bullet.id)
-                        },
-                        {
-                          text: 'Duplicate',
-                          tip: 'Duplicate this bullet item',
-                          icon: duplicateIcon,
-                          type: 'onClick',
-                          onClick: () => duplicateBullet(selectedItem.id, bullet.id)
-                        },
-                        {
-                          text: 'Delete',
-                          tip: 'Delete this bullet item',
-                          icon: deleteIcon,
-                          type: 'onClick',
-                          onClick: () => deleteBullet(selectedItem.id, bullet.id)
-                        }
-                      ]}
-                    />
-                  ])}
+                      />,
+                      <OptionsMenuRootButton
+                        key={`${bullet.id}-menu`}
+                        options={[
+                          {
+                            text: "Move up",
+                            tip: "Move this bullet up",
+                            icon: arrowUpIcon,
+                            type: "onClick",
+                            onClick: () =>
+                              moveBulletUp(selectedItem.id, bullet.id),
+                          },
+                          {
+                            text: "Move down",
+                            tip: "Move this bullet down",
+                            icon: arrowDownIcon,
+                            type: "onClick",
+                            onClick: () =>
+                              moveBulletDown(selectedItem.id, bullet.id),
+                          },
+                          {
+                            text: "Duplicate",
+                            tip: "Duplicate this bullet item",
+                            icon: duplicateIcon,
+                            type: "onClick",
+                            onClick: () =>
+                              duplicateBullet(selectedItem.id, bullet.id),
+                          },
+                          {
+                            text: "Delete",
+                            tip: "Delete this bullet item",
+                            icon: deleteIcon,
+                            type: "onClick",
+                            onClick: () =>
+                              deleteBullet(selectedItem.id, bullet.id),
+                          },
+                        ]}
+                      />,
+                    ],
+                  )}
                 />
               </SettingItem>
             </DrawerSection>
@@ -1364,27 +1574,40 @@ function Settings({ state, setState }) {
         ) : null}
       </Drawer>
     </>
-  )
+  );
 }
 
 export function getSettings(state) {
   return {
     settings: {
-      name: 'Numbered List',
-      categories: ['Text', 'Bullet List'],
-      tags: ['Numbered List', 'Step-by-Step List', 'Process List', 'Instruction List', 'Ordered List', 'Nested List', 'Structured Content', 'How-To Steps', 'Checklist', 'Hierarchical List'],
-      description: 'A numbered list component ideal for step-by-step instructions and structured content that displays ordered items with optional nested sub-points and interactive elements.',
+      name: "Numbered List",
+      categories: ["Text", "Bullet List"],
+      tags: [
+        "Numbered List",
+        "Step-by-Step List",
+        "Process List",
+        "Instruction List",
+        "Ordered List",
+        "Nested List",
+        "Structured Content",
+        "How-To Steps",
+        "Checklist",
+        "Hierarchical List",
+      ],
+      description:
+        "A numbered list component ideal for step-by-step instructions and structured content that displays ordered items with optional nested sub-points and interactive elements.",
       Setting: Settings,
       width: 460,
       help: () => ({
-        title: 'Numbered List Help',
+        title: "Numbered List Help",
         content: (
           <>
             <h1>Numbered List</h1>
             <p>
-              A numbered list component ideal for step-by-step instructions and structured content.
-              Each item can include a title, description, and optional nested bullet list with
-              support for bullets, alphabetical, or Roman numeral styles.
+              A numbered list component ideal for step-by-step instructions and
+              structured content. Each item can include a title, description,
+              and optional nested bullet list with support for bullets,
+              alphabetical, or Roman numeral styles.
             </p>
             <h2>Content</h2>
             <p>
@@ -1394,9 +1617,9 @@ export function getSettings(state) {
             </p>
             <h2>Style</h2>
             <p>
-              Use the Style tab to control typography, header styling, item
-              title and description styling, circled number styling, and
-              container colors and spacing.
+              Use the Style tab to mirror the same mental model as Content:
+              style the header first, then the item content, then the shared
+              number and container controls.
             </p>
             <h2>Advanced</h2>
             <p>
@@ -1406,35 +1629,41 @@ export function getSettings(state) {
               breakpoint to apply compact font sizes when the component is
               narrower than a set threshold.
             </p>
-            <hr style={{margin: '20px 0'}}/>
+            <hr style={{ margin: "20px 0" }} />
             <h2>Actions</h2>
             <ul>
-              <li><b>Start Animation</b> — Runs the configured list animation once.</li>
+              <li>
+                <b>Start Animation</b> — Runs the configured list animation
+                once.
+              </li>
             </ul>
             <h2>Triggers</h2>
             <ul>
-              <li><b>On Animation Complete</b> — Fires when the list animation finishes, allowing external workflows or analytics to respond.</li>
+              <li>
+                <b>On Animation Complete</b> — Fires when the list animation
+                finishes, allowing external workflows or analytics to respond.
+              </li>
             </ul>
           </>
-        )
-      })
-    }
-  }
+        ),
+      }),
+    },
+  };
 }
 
 export function getDataFields(state) {
   return {
-    title: { name: 'Title', type: 'text' },
-    introText: { name: 'Description', type: 'text' },
-    items: { name: 'Items', type: 'list' }
-  }
+    title: { name: "Title", type: "text" },
+    introText: { name: "Description", type: "text" },
+    items: { name: "Items", type: "list" },
+  };
 }
 
 export function getActions(state) {
   return {
     runAnimation: {
-      name: 'Start Animation',
-      info: { text: 'Runs the configured list animation once.' },
+      name: "Start Animation",
+      info: { text: "Runs the configured list animation once." },
       state: {},
       Setting() {
         return (
@@ -1444,228 +1673,255 @@ export function getActions(state) {
               help="This action runs the animation configured in the Advanced tab."
             />
           </SettingItem>
-        )
-      }
-    }
-  }
+        );
+      },
+    },
+  };
 }
 
 export function getTriggers(state) {
   return {
-    onAnimationComplete: { name: 'On Animation Complete' }
-  }
+    onAnimationComplete: { name: "On Animation Complete" },
+  };
 }
 
 export function getFonts(state) {
-  return [state.headingFontFamily, state.bodyFontFamily]
+  return [state.headingFontFamily, state.bodyFontFamily];
 }
 
 export function getSizeTypes(state) {
   return {
     width: SizeType.RESIZABLE,
-    height: SizeType.CONTENT_BASED
-  }
+    height: SizeType.CONTENT_BASED,
+  };
 }
 
 export function getLiveState(state) {
-  return state
+  return state;
 }
 ```
+
 END
 
 FILE: /live/index.js
-```javascript
-import React, { useEffect, useRef, useState } from 'react'
-import { ScopedStyle } from '@utils'
-import { useScaler } from '@hooks'
-import { getInitialState } from '@common/index'
 
-export { getInitialState }
+```javascript
+import React, { useEffect, useRef, useState } from "react";
+import { ScopedStyle } from "@utils";
+import { useScaler } from "@hooks";
+import { getInitialState } from "@common/index";
+
+export { getInitialState };
 
 export function getActionHandlers() {
   return {
     async runAnimation({ setComponentState }) {
-      setComponentState(prev => ({
+      setComponentState((prev) => ({
         ...prev,
-        animationRunId: (prev.animationRunId || 0) + 1
-      }))
-    }
-  }
+        animationRunId: (prev.animationRunId || 0) + 1,
+      }));
+    },
+  };
 }
 
 export function Component({ state, setState, saveAudienceData, runTrigger }) {
-  const { s } = useScaler()
-  const rootRef = useRef(null)
-  const autoPlayRef = useRef(false)
-  const animationTimeoutRef = useRef(null)
-  const [animationNonce, setAnimationNonce] = useState(0)
-  const [activeAnimationStyle, setActiveAnimationStyle] = useState('none')
-  const scaledNumberSize = s(state.numberSize)
-  const scaledNumberFontSize = s(Math.max(12, Math.round(state.numberSize * 0.42)))
-  const scaledCircleOutlineWidth = s(state.circleOutlineWidth || 0)
-  const numberCenterX = scaledNumberSize / 2 + s(state.numberOffsetX || 0)
-  const numberCenterY = scaledNumberSize / 2 + s(state.numberOffsetY || 0)
+  const { s } = useScaler();
+  const rootRef = useRef(null);
+  const autoPlayRef = useRef(false);
+  const animationTimeoutRef = useRef(null);
+  const [animationNonce, setAnimationNonce] = useState(0);
+  const [activeAnimationStyle, setActiveAnimationStyle] = useState("none");
+  const scaledNumberSize = s(state.numberSize);
+  const scaledNumberFontSize = s(
+    Math.max(12, Math.round(state.numberSize * 0.42)),
+  );
+  const scaledCircleOutlineWidth = s(state.circleOutlineWidth || 0);
+  const numberCenterX = scaledNumberSize / 2 + s(state.numberOffsetX || 0);
+  const numberCenterY = scaledNumberSize / 2 + s(state.numberOffsetY || 0);
   const itemAlignment =
-    state.itemContentAlignment === 'center'
-      ? 'center'
-      : state.itemContentAlignment === 'end'
-        ? 'flex-end'
-        : 'flex-start'
-  const animationDuration = Math.max(100, state.animationDuration || 700)
-  const animationStagger = Math.max(0, state.animationStagger || 0)
-  const itemCount = (state.items || []).length
+    state.itemContentAlignment === "center"
+      ? "center"
+      : state.itemContentAlignment === "end"
+        ? "flex-end"
+        : "flex-start";
+  const animationDuration = Math.max(100, state.animationDuration || 700);
+  const animationStagger = Math.max(0, state.animationStagger || 0);
+  const itemCount = (state.items || []).length;
 
-  const responsiveBreakpointWidth = Math.max(120, Number(state.widthBreakpoint) || 120)
-  const measuredWidth = Math.max(0, Number(state.currentComponentWidth) || 0)
-  const isCompactLayout = Boolean(state.hasWidthBreakpoint) && measuredWidth > 0 && measuredWidth <= responsiveBreakpointWidth
+  const responsiveBreakpointWidth = Math.max(
+    120,
+    Number(state.widthBreakpoint) || 120,
+  );
+  const measuredWidth = Math.max(0, Number(state.currentComponentWidth) || 0);
+  const isCompactLayout =
+    Boolean(state.hasWidthBreakpoint) &&
+    measuredWidth > 0 &&
+    measuredWidth <= responsiveBreakpointWidth;
 
   const activeTitleFontSize = isCompactLayout
-    ? ((state.titleFontSizeCompactCustom && state.titleFontSizeCompact != null) ? state.titleFontSizeCompact : Math.max(10, Math.floor(state.titleFontSize * 0.85)))
-    : state.titleFontSize
+    ? state.titleFontSizeCompactCustom && state.titleFontSizeCompact != null
+      ? state.titleFontSizeCompact
+      : Math.max(10, Math.floor(state.titleFontSize * 0.85))
+    : state.titleFontSize;
   const activeIntroFontSize = isCompactLayout
-    ? ((state.introFontSizeCompactCustom && state.introFontSizeCompact != null) ? state.introFontSizeCompact : Math.max(10, Math.floor(state.introFontSize * 0.85)))
-    : state.introFontSize
+    ? state.introFontSizeCompactCustom && state.introFontSizeCompact != null
+      ? state.introFontSizeCompact
+      : Math.max(10, Math.floor(state.introFontSize * 0.85))
+    : state.introFontSize;
   const activeItemTitleFontSize = isCompactLayout
-    ? ((state.itemTitleFontSizeCompactCustom && state.itemTitleFontSizeCompact != null) ? state.itemTitleFontSizeCompact : Math.max(10, Math.floor(state.itemTitleFontSize * 0.85)))
-    : state.itemTitleFontSize
+    ? state.itemTitleFontSizeCompactCustom &&
+      state.itemTitleFontSizeCompact != null
+      ? state.itemTitleFontSizeCompact
+      : Math.max(10, Math.floor(state.itemTitleFontSize * 0.85))
+    : state.itemTitleFontSize;
   const activeItemDescFontSize = isCompactLayout
-    ? ((state.itemDescriptionFontSizeCompactCustom && state.itemDescriptionFontSizeCompact != null) ? state.itemDescriptionFontSizeCompact : Math.max(10, Math.floor(state.itemDescriptionFontSize * 0.85)))
-    : state.itemDescriptionFontSize
-  const toAlphabeticalMarker = value => {
-    let number = value
-    let result = ''
+    ? state.itemDescriptionFontSizeCompactCustom &&
+      state.itemDescriptionFontSizeCompact != null
+      ? state.itemDescriptionFontSizeCompact
+      : Math.max(10, Math.floor(state.itemDescriptionFontSize * 0.85))
+    : state.itemDescriptionFontSize;
+  const toAlphabeticalMarker = (value) => {
+    let number = value;
+    let result = "";
 
     while (number > 0) {
-      const remainder = (number - 1) % 26
-      result = String.fromCharCode(97 + remainder) + result
-      number = Math.floor((number - 1) / 26)
+      const remainder = (number - 1) % 26;
+      result = String.fromCharCode(97 + remainder) + result;
+      number = Math.floor((number - 1) / 26);
     }
 
-    return `${result}.`
-  }
+    return `${result}.`;
+  };
 
-  const toRomanMarker = value => {
+  const toRomanMarker = (value) => {
     const numerals = [
-      ['m', 1000],
-      ['cm', 900],
-      ['d', 500],
-      ['cd', 400],
-      ['c', 100],
-      ['xc', 90],
-      ['l', 50],
-      ['xl', 40],
-      ['x', 10],
-      ['ix', 9],
-      ['v', 5],
-      ['iv', 4],
-      ['i', 1]
-    ]
-    let number = value
-    let result = ''
+      ["m", 1000],
+      ["cm", 900],
+      ["d", 500],
+      ["cd", 400],
+      ["c", 100],
+      ["xc", 90],
+      ["l", 50],
+      ["xl", 40],
+      ["x", 10],
+      ["ix", 9],
+      ["v", 5],
+      ["iv", 4],
+      ["i", 1],
+    ];
+    let number = value;
+    let result = "";
 
     numerals.forEach(([symbol, amount]) => {
       while (number >= amount) {
-        result += symbol
-        number -= amount
+        result += symbol;
+        number -= amount;
       }
-    })
+    });
 
-    return `${result}.`
-  }
+    return `${result}.`;
+  };
 
   const getBulletMarker = (item, bulletIndex) => {
     switch (item?.bulletListStyle) {
-      case 'alphabetical':
-      case 'alpha':
-        return toAlphabeticalMarker(bulletIndex + 1)
-      case 'roman':
-        return toRomanMarker(bulletIndex + 1)
+      case "alphabetical":
+      case "alpha":
+        return toAlphabeticalMarker(bulletIndex + 1);
+      case "roman":
+        return toRomanMarker(bulletIndex + 1);
       default:
-        return '\u2022'
+        return "\u2022";
     }
-  }
+  };
 
   const startAnimation = () => {
-    if (!state.animationStyle || state.animationStyle === 'none') {
-      return
+    if (!state.animationStyle || state.animationStyle === "none") {
+      return;
     }
 
-    setActiveAnimationStyle(state.animationStyle)
-    setAnimationNonce(prev => prev + 1)
+    setActiveAnimationStyle(state.animationStyle);
+    setAnimationNonce((prev) => prev + 1);
 
     if (animationTimeoutRef.current) {
-      clearTimeout(animationTimeoutRef.current)
+      clearTimeout(animationTimeoutRef.current);
     }
 
-    animationTimeoutRef.current = setTimeout(() => {
-      runTrigger('onAnimationComplete')
-    }, animationDuration + Math.max(0, itemCount - 1) * animationStagger)
-  }
+    animationTimeoutRef.current = setTimeout(
+      () => {
+        runTrigger("onAnimationComplete");
+      },
+      animationDuration + Math.max(0, itemCount - 1) * animationStagger,
+    );
+  };
 
   useEffect(() => {
-    const el = rootRef.current
-    if (!el) return
+    const el = rootRef.current;
+    if (!el) return;
 
     const sync = () => {
-      const w = Math.round(el.clientWidth)
-      const h = Math.round(el.clientHeight)
-      setState(prev => {
-        if (prev.currentComponentWidth === w && prev.currentComponentHeight === h) return prev
-        return { ...prev, currentComponentWidth: w, currentComponentHeight: h }
-      })
-    }
+      const w = Math.round(el.clientWidth);
+      const h = Math.round(el.clientHeight);
+      setState((prev) => {
+        if (
+          prev.currentComponentWidth === w &&
+          prev.currentComponentHeight === h
+        )
+          return prev;
+        return { ...prev, currentComponentWidth: w, currentComponentHeight: h };
+      });
+    };
 
-    sync()
-    const frameId = requestAnimationFrame(sync)
-    const frameId2 = requestAnimationFrame(() => requestAnimationFrame(sync))
+    sync();
+    const frameId = requestAnimationFrame(sync);
+    const frameId2 = requestAnimationFrame(() => requestAnimationFrame(sync));
 
-    let observer
-    if (typeof ResizeObserver !== 'undefined') {
-      observer = new ResizeObserver(sync)
-      observer.observe(el)
+    let observer;
+    if (typeof ResizeObserver !== "undefined") {
+      observer = new ResizeObserver(sync);
+      observer.observe(el);
     }
 
     return () => {
-      cancelAnimationFrame(frameId)
-      cancelAnimationFrame(frameId2)
-      if (observer) observer.disconnect()
-    }
-  }, [setState])
+      cancelAnimationFrame(frameId);
+      cancelAnimationFrame(frameId2);
+      if (observer) observer.disconnect();
+    };
+  }, [setState]);
 
   useEffect(() => {
-    if (state.animationStyle === 'none') {
-      setActiveAnimationStyle('none')
+    if (state.animationStyle === "none") {
+      setActiveAnimationStyle("none");
     }
-  }, [state.animationStyle])
+  }, [state.animationStyle]);
 
   useEffect(() => {
     if (
-      state.animationPlaybackMode !== 'auto' ||
+      state.animationPlaybackMode !== "auto" ||
       autoPlayRef.current ||
-      state.animationStyle === 'none'
+      state.animationStyle === "none"
     ) {
-      return
+      return;
     }
 
-    autoPlayRef.current = true
-    startAnimation()
-  }, [state.animationPlaybackMode, state.animationStyle])
+    autoPlayRef.current = true;
+    startAnimation();
+  }, [state.animationPlaybackMode, state.animationStyle]);
 
   useEffect(() => {
     if (!state.animationRunId) {
-      return
+      return;
     }
 
-    startAnimation()
-  }, [state.animationRunId])
+    startAnimation();
+  }, [state.animationRunId]);
 
   useEffect(() => {
     return () => {
       if (animationTimeoutRef.current) {
-        clearTimeout(animationTimeoutRef.current)
+        clearTimeout(animationTimeoutRef.current);
       }
-    }
-  }, [])
+    };
+  }, []);
 
   const styles = `
     .numbered-list-root,
@@ -1842,29 +2098,31 @@ export function Component({ state, setState, saveAudienceData, runTrigger }) {
         transform: scale(1);
       }
     }
-  `
+  `;
 
   return (
     <>
       <ScopedStyle>{styles}</ScopedStyle>
       <div ref={rootRef} className="numbered-list-root">
         {state.previewWidthInLiveView && state.currentComponentWidth > 0 ? (
-          <div style={{
-            position: 'absolute',
-            top: `${s(12)}px`,
-            right: `${s(12)}px`,
-            zIndex: 2,
-            boxSizing: 'border-box',
-            padding: `${s(6)}px ${s(10)}px`,
-            borderRadius: `${s(999)}px`,
-            background: 'rgba(17, 24, 39, 0.78)',
-            color: '#ffffff',
-            fontSize: `${s(12)}px`,
-            fontWeight: 600,
-            lineHeight: 1,
-            pointerEvents: 'none',
-            whiteSpace: 'nowrap'
-          }}>
+          <div
+            style={{
+              position: "absolute",
+              top: `${s(12)}px`,
+              right: `${s(12)}px`,
+              zIndex: 2,
+              boxSizing: "border-box",
+              padding: `${s(6)}px ${s(10)}px`,
+              borderRadius: `${s(999)}px`,
+              background: "rgba(17, 24, 39, 0.78)",
+              color: "#ffffff",
+              fontSize: `${s(12)}px`,
+              fontWeight: 600,
+              lineHeight: 1,
+              pointerEvents: "none",
+              whiteSpace: "nowrap",
+            }}
+          >
             {state.currentComponentWidth}px
           </div>
         ) : null}
@@ -1880,103 +2138,109 @@ export function Component({ state, setState, saveAudienceData, runTrigger }) {
           <div
             key={animationNonce}
             className={`numbered-list-items ${
-              activeAnimationStyle === 'fade-items'
-                ? 'is-fade-items'
-                : activeAnimationStyle === 'number-wave'
-                  ? 'is-number-wave'
-                  : ''
+              activeAnimationStyle === "fade-items"
+                ? "is-fade-items"
+                : activeAnimationStyle === "number-wave"
+                  ? "is-number-wave"
+                  : ""
             }`}
           >
-            {(state.items || []).map((item, index) => (
+            {(state.items || []).map((item, index) =>
               (() => {
-                const circleColor = item.numberBgColor || state.numberBgColor || '#111827'
+                const circleColor =
+                  item.numberBgColor || state.numberBgColor || "#111827";
                 const circleStyle =
-                  state.circleStyleType === 'outlined'
+                  state.circleStyleType === "outlined"
                     ? {
-                        background: 'transparent',
+                        background: "transparent",
                         borderColor: circleColor,
-                        borderWidth: `${scaledCircleOutlineWidth}px`
+                        borderWidth: `${scaledCircleOutlineWidth}px`,
                       }
                     : {
                         background: circleColor,
-                        borderWidth: '0px'
-                      }
+                        borderWidth: "0px",
+                      };
 
                 return (
-              <div
-                key={item.id || index}
-                className="numbered-list-item"
-                style={
-                  activeAnimationStyle === 'fade-items'
-                    ? { animationDelay: `${index * animationStagger}ms` }
-                    : undefined
-                }
-              >
-                <div
-                  className="numbered-list-circle"
-                  style={{
-                    ...circleStyle,
-                    animationDelay:
-                      activeAnimationStyle === 'number-wave'
-                        ? `${index * animationStagger}ms`
+                  <div
+                    key={item.id || index}
+                    className="numbered-list-item"
+                    style={
+                      activeAnimationStyle === "fade-items"
+                        ? { animationDelay: `${index * animationStagger}ms` }
                         : undefined
-                  }}
-                  aria-hidden="true"
-                  title={`Item ${index + 1}`}
-                >
-                  <svg
-                    className="numbered-list-circle-svg"
-                    viewBox={`0 0 ${scaledNumberSize} ${scaledNumberSize}`}
-                    aria-hidden="true"
-                    focusable="false"
+                    }
                   >
-                    <text
-                      x={numberCenterX}
-                      y={numberCenterY}
-                      textAnchor="middle"
-                      dominantBaseline="middle"
-                      fill={item.numberTextColor || state.numberTextColor || '#ffffff'}
-                      fontFamily={state.headingFontFamily}
-                      fontSize={scaledNumberFontSize}
-                      fontWeight={state.headingFontWeight}
+                    <div
+                      className="numbered-list-circle"
+                      style={{
+                        ...circleStyle,
+                        animationDelay:
+                          activeAnimationStyle === "number-wave"
+                            ? `${index * animationStagger}ms`
+                            : undefined,
+                      }}
+                      aria-hidden="true"
+                      title={`Item ${index + 1}`}
                     >
-                      {index + 1}
-                    </text>
-                  </svg>
-                </div>
-                <div className="numbered-list-content">
-                  <h3 className="numbered-list-item-title">{item.title}</h3>
-                  <p className="numbered-list-item-description">
-                    {item.description}
-                  </p>
-                  {(item.bullets || []).length ? (
-                    <div className="numbered-list-bullets" role="list">
-                      {item.bullets.map((bullet, bulletIndex) => (
-                        <div
-                          key={bullet.id || bulletIndex}
-                          className="numbered-list-bullet-item"
-                          role="listitem"
+                      <svg
+                        className="numbered-list-circle-svg"
+                        viewBox={`0 0 ${scaledNumberSize} ${scaledNumberSize}`}
+                        aria-hidden="true"
+                        focusable="false"
+                      >
+                        <text
+                          x={numberCenterX}
+                          y={numberCenterY}
+                          textAnchor="middle"
+                          dominantBaseline="middle"
+                          fill={
+                            item.numberTextColor ||
+                            state.numberTextColor ||
+                            "#ffffff"
+                          }
+                          fontFamily={state.headingFontFamily}
+                          fontSize={scaledNumberFontSize}
+                          fontWeight={state.headingFontWeight}
                         >
-                          <span className="numbered-list-bullet-marker">
-                            {getBulletMarker(item, bulletIndex)}
-                          </span>
-                          <span className="numbered-list-bullet-text">
-                            {bullet.text}
-                          </span>
-                        </div>
-                      ))}
+                          {index + 1}
+                        </text>
+                      </svg>
                     </div>
-                  ) : null}
-                </div>
-              </div>
-                )
-              })()
-            ))}
+                    <div className="numbered-list-content">
+                      <h3 className="numbered-list-item-title">{item.title}</h3>
+                      <p className="numbered-list-item-description">
+                        {item.description}
+                      </p>
+                      {(item.bullets || []).length ? (
+                        <div className="numbered-list-bullets" role="list">
+                          {item.bullets.map((bullet, bulletIndex) => (
+                            <div
+                              key={bullet.id || bulletIndex}
+                              className="numbered-list-bullet-item"
+                              role="listitem"
+                            >
+                              <span className="numbered-list-bullet-marker">
+                                {getBulletMarker(item, bulletIndex)}
+                              </span>
+                              <span className="numbered-list-bullet-text">
+                                {bullet.text}
+                              </span>
+                            </div>
+                          ))}
+                        </div>
+                      ) : null}
+                    </div>
+                  </div>
+                );
+              })(),
+            )}
           </div>
         </div>
       </div>
     </>
-  )
+  );
 }
 ```
+
 END
