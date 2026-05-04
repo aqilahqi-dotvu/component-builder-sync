@@ -67,21 +67,22 @@ Slash commands for the main workflow tasks. Type `/` in Copilot Chat to invoke t
 
 On-demand expertise loaded automatically when relevant, or invoked with `/` in chat. Skills are for specific features and UI patterns — they don't run unless the task calls for them.
 
-| Skill                      | Command                    | Purpose                                                                                                                                                              |
-| -------------------------- | -------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `dotvu-api/`               | `/dotvu-api`               | API signatures, allowed imports, and boilerplate skeletons for all three height patterns.                                                                            |
-| `settings-table/`          | `/settings-table`          | Add or refactor a reorderable, editable settings table using TableContainer + Drawer.                                                                                |
-| `breakpoint-height/`       | `/breakpoint-height`       | Implement or convert BREAKPOINT_AWARE height — ResizeObserver, getSizeTypes, `.dot-component` height override.                                                       |
-| `width-breakpoint-layout/` | `/width-breakpoint-layout` | Add layout stacking based on component width without changing height mode.                                                                                           |
-| `form-component/`          | `/form-component`          | Feature checklist for form components — validation, submit, success view, reset, triggers, actions.                                                                  |
-| `checkbox/`                | `/checkbox`                | Rules for `Checkbox` controls — short labels, no `description` prop, Label with help pattern.                                                                        |
-| `dropdown/`                | `/dropdown`                | Rules for `Dropdown` controls — `{ value, text }` shape, `onChange` wiring, Label pairing.                                                                           |
-| `section-headings/`        | `/section-headings`        | Rules and CSS for section and sub-section headings in the editor.                                                                                                    |
-| `shadow/`                  | `/shadow`                  | Shadow settings — `hasShadow` gating, `resolveShadowColor` helper, hover-only shadow.                                                                                |
-| `svgpicker/`               | `/svgpicker`               | Normalize SvgPicker icons for `currentColor` support and responsive sizing.                                                                                          |
-| `textarea/`                | `/textarea`                | Rules for native HTML `<textarea>` — when to use it over `TextInput`, consistent styling, newline handling.                                                          |
-| `animation-settings/`      | `/animation-settings`      | Animation controls — Type, Duration, Start Animation setting or Preview button, Triggers (Animation Starts, Animation Ends), and the Start Animation inbound action. |
-| `dynamic-text/`            | `/dynamic-text`            | Make a component's text updatable at runtime — Update Text action, `getDataFields` exposure, and `getActionHandlers` in live.js.                                     |
+| Skill                      | Command                    | Purpose                                                                                                                                                                      |
+| -------------------------- | -------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `dotvu-api/`               | `/dotvu-api`               | API signatures, allowed imports, and boilerplate skeletons for all three height patterns.                                                                                    |
+| `settings-table/`          | `/settings-table`          | Add or refactor a reorderable, editable settings table using TableContainer + Drawer.                                                                                        |
+| `breakpoint-height/`       | `/breakpoint-height`       | Implement or convert BREAKPOINT_AWARE height — ResizeObserver, getSizeTypes, `.dot-component` height override.                                                               |
+| `width-breakpoint-layout/` | `/width-breakpoint-layout` | Add layout stacking based on component width without changing height mode.                                                                                                   |
+| `form-component/`          | `/form-component`          | Feature checklist for form components — validation, submit, success view, reset, triggers, actions.                                                                          |
+| `checkbox/`                | `/checkbox`                | Rules for `Checkbox` controls — short labels, no `description` prop, Label with help pattern.                                                                                |
+| `dropdown/`                | `/dropdown`                | Rules for `Dropdown` controls — `{ value, text }` shape, `onChange` wiring, Label pairing.                                                                                   |
+| `section-headings/`        | `/section-headings`        | Rules and CSS for section and sub-section headings in the editor.                                                                                                            |
+| `shadow/`                  | `/shadow`                  | Shadow settings — `hasShadow` gating, `resolveShadowColor` helper, hover-only shadow.                                                                                        |
+| `svgpicker/`               | `/svgpicker`               | Normalize SvgPicker icons for `currentColor` support and responsive sizing.                                                                                                  |
+| `settings-actionset/`      | `/settings-actionset`      | Add ActionSet UI and `runActionSet` runtime wiring for URL vs Trigger actions, and ask first whether a trigger path should execute an ActionSet or stay an outbound trigger. |
+| `textarea/`                | `/textarea`                | Rules for native HTML `<textarea>` — when to use it over `TextInput`, consistent styling, newline handling.                                                                  |
+| `animation-settings/`      | `/animation-settings`      | Animation controls — Type, Duration, Start Animation setting or Preview button, Triggers (Animation Starts, Animation Ends), and the Start Animation inbound action.         |
+| `dynamic-text/`            | `/dynamic-text`            | Make a component's text updatable at runtime — Update Text action, `getDataFields` exposure, and `getActionHandlers` in live.js.                                             |
 
 ---
 
