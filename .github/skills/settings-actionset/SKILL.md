@@ -109,6 +109,24 @@ function getActionSetValue(value) {
 - Show only the controls relevant to the selected action type.
 - When using `ActionSet`, label the field `Action Set`, not `Trigger Name`.
 - Add a short help sentence when the difference between outbound triggers and direct ActionSet execution may be unclear.
+- For `URL` actions, allow users to paste values starting with `www.` by normalizing to `https://` in live runtime before opening the link.
+
+### URL normalization example (Open URL mode)
+
+```js
+function normalizeUrl(urlValue) {
+  const trimmedUrl = String(urlValue || '').trim();
+  if (trimmedUrl.toLowerCase().startsWith('www.')) {
+    return `https://${trimmedUrl}`;
+  }
+  return trimmedUrl;
+}
+
+const normalizedUrl = normalizeUrl(item.buttonUrl);
+if (normalizedUrl) {
+  window.open(normalizedUrl, '_blank', 'noopener,noreferrer');
+}
+```
 
 ---
 
