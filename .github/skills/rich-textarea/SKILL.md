@@ -112,13 +112,14 @@ function RichTextEditor({
 
 ## Refs
 
-| Ref             | Purpose                                                                                       |
-| --------------- | --------------------------------------------------------------------------------------------- |
-| `wrapperRef`    | Measures position for toolbar placement                                                       |
-| `editorRef`     | The contentEditable div — always mounted, hidden with `display:none` in source mode           |
-| `savedRangeRef` | Persists the selection range across React re-renders                                          |
-| `toolbarRef`    | Used in blur handler to keep toolbar open when focus moves inside it                          |
-| `prevValueRef`  | Tracks the last value written by `handleInput` to avoid resetting `innerHTML` on self-updates |
+| Ref               | Purpose                                                                                                  |
+| ----------------- | -------------------------------------------------------------------------------------------------------- |
+| `wrapperRef`      | Measures position for toolbar placement                                                                  |
+| `editorRef`       | The contentEditable div — always mounted, hidden with `display:none` in source mode                      |
+| `savedRangeRef`   | Persists the selection range across React re-renders                                                     |
+| `toolbarRef`      | Used in blur handler to keep toolbar open when focus moves inside it                                     |
+| `prevValueRef`    | Tracks the last value written by `handleInput` to avoid resetting `innerHTML` on self-updates            |
+| `originalHtmlRef` | Stores the full HTML when entering source mode so action links can be restored if the draft is unchanged |
 
 ---
 
@@ -344,31 +345,53 @@ a.rte-link { ... }
 .rte-action-link { ... }
 ```
 
-Always include both the class selector (primary) and the attribute selector fallback (for links saved before class names were introduced):
+Always include both the class selector (primary) and the attribute selector fallback (for links saved before class names were introduced).
 
-```css
-.your-component-answer a.rte-link,
-.your-component-answer a[href]:not([data-action-id]) {
-  color: inherit;
-  text-decoration: underline;
-  cursor: pointer;
-}
-.your-component-answer a.rte-link:hover,
-.your-component-answer a[href]:not([data-action-id]):hover {
-  opacity: 0.75;
-}
-.your-component-answer a.rte-action-link,
-.your-component-answer a[data-action-id] {
-  color: #f57b37;
-  text-decoration: underline;
-  cursor: pointer;
-  font-style: italic;
-}
-.your-component-answer a.rte-action-link:hover,
-.your-component-answer a[data-action-id]:hover {
-  opacity: 0.75;
-}
+If the component exposes link style settings in state (color, underline, bold, italic), drive the CSS from those values using a template literal. Default to safe fallbacks (`inherit`, `underline`) so existing links still render correctly when state fields are absent:
+
+```jsx
+<ScopedStyle>{`
+  .your-component-answer a.rte-link,
+  .your-component-answer a[href]:not([data-action-id]) {
+    color: ${state.urlLinkColor || "inherit"};
+    text-decoration: ${state.urlLinkUnderline !== false ? "underline" : "none"};
+    font-weight: ${state.urlLinkBold ? "bold" : "inherit"};
+    font-style: ${state.urlLinkItalic ? "italic" : "inherit"};
+    cursor: pointer;
+  }
+  .your-component-answer a.rte-link:hover,
+  .your-component-answer a[href]:not([data-action-id]):hover {
+    opacity: 0.75;
+  }
+  .your-component-answer a.rte-action-link,
+  .your-component-answer a[data-action-id] {
+    color: ${state.actionLinkColor || "#f57b37"};
+    text-decoration: ${state.actionLinkUnderline !== false ? "underline" : "none"};
+    font-weight: ${state.actionLinkBold ? "bold" : "inherit"};
+    font-style: ${state.actionLinkItalic !== false ? "italic" : "inherit"};
+    cursor: pointer;
+  }
+  .your-component-answer a.rte-action-link:hover,
+  .your-component-answer a[data-action-id]:hover {
+    opacity: 0.75;
+  }
+`}</ScopedStyle>
 ```
+
+For the matching editor settings, add these defaults to `common.js`:
+
+```js
+urlLinkColor: 'inherit',
+urlLinkUnderline: true,
+urlLinkBold: false,
+urlLinkItalic: false,
+actionLinkColor: '#f57b37',
+actionLinkUnderline: true,
+actionLinkBold: false,
+actionLinkItalic: true,
+```
+
+And expose them in `editor.js` under a **Styles** tab using `ColorPicker` + `Checkbox` controls (see `settings-checkbox` and `settings-dropdown` skills). The `urlLinkColor` field stores `'inherit'` as a sentinel — pass `state.answerColor` to the `ColorPicker` as its display value when the stored value is `'inherit'`, but write `'inherit'` into the CSS.
 
 Replace `.your-component-answer` with the class on the `dangerouslySetInnerHTML` element in your component (e.g. `.faq-answer`, `.card-body`, `.item-description`).
 
@@ -389,7 +412,28 @@ Replace `.your-component-answer` with the class on the `dangerouslySetInnerHTML`
 
 - In rich-text mode: small `</>` button, transparent background.
 - In source mode: orange (`#f57b37`) background, bold white **"Save changes"** label.
-- Toggling source → rich-text runs `markdownToHtml(markdownDraft)` and writes it to `onChange` + `editorRef.current.innerHTML`.
+- On **enter** source mode: save the current HTML to `originalHtmlRef.current`, then convert to Markdown for the draft textarea.
+- On **exit** source mode: compare the draft to `htmlToMarkdown(originalHtmlRef.current)`. If they are identical (user didn't change anything), restore the original HTML directly — this preserves action links which cannot survive a Markdown round-trip. If the draft was edited, run `markdownToHtml(markdownDraft)` as usual.
+
+```js
+const handleToggleSource = () => {
+  if (!showSource) {
+    originalHtmlRef.current = value;
+    setMarkdownDraft(htmlToMarkdown(value));
+    setShowSource(true);
+    setShowToolbar(false);
+    setShowLinkForm(false);
+  } else {
+    const unchanged = markdownDraft === htmlToMarkdown(originalHtmlRef.current);
+    const newHtml = unchanged
+      ? originalHtmlRef.current
+      : markdownToHtml(markdownDraft);
+    onChange(newHtml);
+    if (editorRef.current) editorRef.current.innerHTML = newHtml;
+    setShowSource(false);
+  }
+};
+```
 
 ---
 
@@ -422,3 +466,5 @@ Replace `.your-component-answer` with the class on the `dangerouslySetInnerHTML`
 - **Always** set `prevValueRef.current = html` in `handleInput` before calling `onChange`.
 - **Always** use both the class selector and the attribute selector fallback in `ScopedStyle` so links saved before class names were added still render correctly.
 - **Always** prefix `rte-link` and `rte-action-link` with the component's own container class (e.g. `.faq-answer a.rte-link`) — never use bare `.rte-link` or `.rte-action-link` as they are shared names.
+- **Always** store `originalHtmlRef.current = value` when entering source mode. On exit, compare the draft to `htmlToMarkdown(originalHtmlRef.current)` — if unchanged, restore the original HTML. Action links (`data-action-id`) cannot survive a Markdown round-trip; without this guard, toggling source mode and back silently destroys them.
+- **Never** use hardcoded CSS values in `ScopedStyle` for link colors/decoration when state fields exist — drive them from state so editor settings take effect immediately.
