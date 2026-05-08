@@ -20,24 +20,24 @@ The help article lives inside `getSettings` in `editor.js`:
 export function getSettings(state) {
   return {
     settings: {
-      name: '...',
+      name: "...",
       Setting: Settings,
       width: 500,
-      help: state => ({
-        title: '...',
-        content: ( <> ... </> )
-      })
-    }
-  }
+      help: (state) => ({
+        title: "...",
+        content: <> ... </>,
+      }),
+    },
+  };
 }
 ```
 
 Fields to keep in sync:
 
-| Field | Should match |
-|---|---|
-| `name` | The component's display name |
-| `title` | `"{name} Help"` |
+| Field     | Should match                                  |
+| --------- | --------------------------------------------- |
+| `name`    | The component's display name                  |
+| `title`   | `"{name} Help"`                               |
 | `content` | Current tabs, sections, actions, and triggers |
 
 ## Content structure
@@ -50,13 +50,35 @@ content: (
     <h1>{Component Name}</h1>
     <p>One sentence describing what the component does.</p>
 
-    <h2>{Tab Name} tab</h2>
+    <h3><strong>How it works</strong></h3>
     <ul>
-      <li><strong>{Setting label}</strong> — what it controls.</li>
-      <li><strong>{Setting label}</strong> — what it controls.</li>
+      <li>Bullet summarising one core behaviour.</li>
+      {/* one <li> per major concept */}
+    </ul>
+    <br /><br />
+
+    <h3><strong>Tabs and settings overview</strong></h3>
+    <br />
+
+    <h4><strong>{Tab Name} tab</strong></h4>
+    <p>One sentence describing the tab's purpose.</p>
+    <ul>
+      <li><strong>{Setting label}</strong>: What it controls.</li>
+      <li>
+        <strong>{Setting label}</strong> (when visible):
+        <ul>
+          <li><strong>{Sub-setting}</strong>: What it controls.</li>
+        </ul>
+      </li>
     </ul>
 
-    {/* Repeat an <h2> + <ul> block for each tab */}
+    {/* Repeat <h4> + <p> + <ul> for each tab */}
+
+    <br /><br />
+    <h3><strong>Tips for a great experience</strong></h3>
+    <ul>
+      <li>Actionable tip.</li>
+    </ul>
   </>
 )
 ```
@@ -64,11 +86,15 @@ content: (
 ### Rules
 
 - Use `<h1>` once — for the component name.
-- Use `<h2>` per tab or major feature group — match the tab titles in the editor.
-- Use `<ul>` + `<li>` for settings within each group. Each `<li>` should follow the pattern: `<strong>Label</strong> — explanation.`
+- Use `<h3><strong>…</strong></h3>` for major sections: "How it works", "Tabs and settings overview", and "Tips for a great experience".
+- Use `<h4><strong>…</strong></h4>` for each tab heading — match the tab titles exactly as they appear in the editor.
+- Add `<br /><br />` between major `<h3>` sections and between the last tab block and the Tips section.
+- Add a single `<br />` between the `<h3>Tabs and settings overview</h3>` heading and the first `<h4>`.
+- Use `<ul>` + `<li>` for settings within each group. Each `<li>` should follow the pattern: `<strong>Label</strong>: explanation.`
+- Use nested `<ul>` inside a `<li>` for sub-settings that only appear when a parent toggle is enabled, noting the condition in parentheses (e.g. `(when the chart is visible)`).
 - Use `<strong>` for setting names, button labels, and action names.
-- Use `<em>` for option values (e.g. `<em>On Load</em>`).
-- Keep each `<li>` to one sentence.
+- Use `<em>` for option values (e.g. `<em>On load</em>`, `<em>Manual trigger</em>`).
+- Keep each `<li>` to one sentence where possible.
 - Do not add a tab section for tabs that have no notable settings to explain.
 - Do not describe internal implementation details — only what the user sees and controls.
 

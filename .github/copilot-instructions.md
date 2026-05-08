@@ -48,6 +48,7 @@ Type `/` in chat or describe what you need and the agent will load the right ski
 | `settings-svgpicker`        | Adding an icon picker with currentColor support and viewBox normalization                                                                                                                                       |
 | `settings-actionset`        | Adding an ActionSet UI and runtime execution for URL vs Trigger actions; when a trigger action path is being added or edited, first ask whether it should run an ActionSet directly or stay an outbound trigger |
 | `settings-textarea`         | Adding a multi-line text input (native HTML textarea) when TextInput is too narrow                                                                                                                              |
+| `settings-input-field`      | Adding a reusable InputField wrapper (NumberInput or TextInput) with auto-generated or custom hint text below the control                                                                                       |
 | `resizable-both`            | Making a component resizable in all directions (width, height, and diagonally)                                                                                                                                  |
 | `settings-font`             | Adding the standard Typography settings block (Font Family, Weight, Size, Line Height, Alignment, Color) in a 2×2 grid whenever a component has a TextInput or textarea                                         |
 | `settings-animation`        | Adding animation controls (Type, Duration, Start Animation), Triggers (Animation Starts, Animation Ends), and the Start Animation action — or a Preview Animation button for ambient/scroll-driven animations   |
@@ -55,6 +56,8 @@ Type `/` in chat or describe what you need and the agent will load the right ski
 | `dynamic-text`              | Making a component's text field updatable at runtime via an Update Text inbound action, getDataFields exposure, and getActionHandlers in live.js                                                                |
 | `rich-textarea`             | Adding a rich text editor field to editor.js with bold, URL links, Dot.vu action links (wand icon), remove-bold/remove-link toolbar, Markdown source toggle, dismissible hint banner, and inline ActionSet list |
 | `card-component`            | Building or editing a component with card-based UI — card structure, single vs multiple cards, content fields, settings sections, design consistency, and scaling rules                                         |
+| `settings-padding`          | Adding per-side padding settings — linked/unlinked toggle, 2×2 grid for individual controls, migration from a legacy single-value field, and s()-scaled CSS output                                              |
+| `settings-border-radius`    | Adding per-corner border-radius settings — linked/unlinked toggle, 2×2 grid for individual controls, migration from a legacy single-value field, and s()-scaled CSS output                                      |
 
 ## Skill creation
 
