@@ -55,6 +55,45 @@ Type `/` in chat or describe what you need and the agent will load the right ski
 | `dynamic-text`              | Making a component's text field updatable at runtime via an Update Text inbound action, getDataFields exposure, and getActionHandlers in live.js                                                                |
 | `rich-textarea`             | Adding a rich text editor field to editor.js with bold, URL links, Dot.vu action links (wand icon), remove-bold/remove-link toolbar, Markdown source toggle, dismissible hint banner, and inline ActionSet list |
 
+## Skill creation
+
+Before creating any new skill, run the following checks in order. Do not create any file or folder until the checks pass and the user confirms.
+
+### Step 1 — Exact name check
+
+List all folder names under `.github/skills/`. If a folder with the proposed skill name already exists:
+
+1. Read its `SKILL.md` and show the user its `name` and `description` from the frontmatter.
+2. State clearly: **"A skill with this name already exists."**
+3. Stop. Do not create any files.
+
+### Step 2 — Topic overlap check
+
+Cross-reference the proposed skill's purpose against every entry in the **Skills** table above. If one or more existing skills cover the same feature or overlapping use-cases:
+
+1. List each overlapping skill by name.
+2. For each, quote the relevant "Use when" description from the table.
+3. Summarize what would be different or additional in the proposed skill versus the existing one(s).
+4. Ask the user to choose one of:
+   - **Create anyway** — proceed with a distinct name and a description that clearly differentiates it.
+   - **Merge** — add the new content to the existing skill's `SKILL.md` instead of creating a new folder.
+   - **Rename** — pick a new name that avoids the ambiguity, then re-run the name check.
+
+### Step 3 — Orphan stub check
+
+If a folder under `.github/skills/` matches the proposed name but contains no `SKILL.md`, flag it as an orphan stub:
+
+- State: **"A folder named `<name>/` exists but has no SKILL.md. It may be an unfinished stub."**
+- Ask whether to populate it or delete it before proceeding.
+
+### Step 4 — Create and register
+
+Only after the checks above are clear and the user confirms:
+
+1. Create `.github/skills/<name>/SKILL.md` with the correct YAML frontmatter (`name`, `description`) and body content.
+2. Remind the user to run `/update-readme` to add the new skill to the Skills table in `copilot-instructions.md` and to `README.md`.
+3. If content was merged into an existing skill instead, no new folder is needed — only edit the existing `SKILL.md`.
+
 ## General behavior
 
 - Always read `common.js`, `editor.js`, and `live.js` before editing an existing component.
