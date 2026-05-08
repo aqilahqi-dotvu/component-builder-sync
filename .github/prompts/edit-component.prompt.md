@@ -1,5 +1,5 @@
 ---
-agent: dotvu-component-builder
+agent: agent
 description: Modify an existing Dot.vu component
 ---
 

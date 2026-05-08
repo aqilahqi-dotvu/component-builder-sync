@@ -1,5 +1,5 @@
 ---
-agent: dotvu-component-builder
+agent: agent
 description: Create a new Dot.vu component from scratch
 ---
 

@@ -1,5 +1,5 @@
 ---
-agent: dotvu-component-builder
+agent: agent
 description: Fix runtime, rendering, or consistency issues in a Dot.vu component
 ---
 

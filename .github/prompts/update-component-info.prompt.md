@@ -1,5 +1,5 @@
 ---
-agent: dotvu-component-builder
+agent: agent
 description: Update the getSettings help article to reflect the current component
 ---
 

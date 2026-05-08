@@ -52,16 +52,15 @@ Always-on rules loaded automatically when working on component files.
 
 Slash commands for the main workflow tasks. Type `/` in Copilot Chat to invoke them.
 
-| Prompt                            | Command                  | Purpose                                                                                                                                                                                     |
-| --------------------------------- | ------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `build-plan.prompt.md`            | `/build-plan`            | **Plan before you build.** The agent asks clarifying questions, produces a written plan covering tabs, state fields, and behaviors, and waits for your approval before any code is written. |
-| `new-component.prompt.md`         | `/new-component`         | Scaffold a brand-new component from scratch.                                                                                                                                                |
-| `edit-component.prompt.md`        | `/edit-component`        | Modify an existing component safely, preserving existing state and structure.                                                                                                               |
-| `review-component.prompt.md`      | `/review-component`      | Audit a component for compliance with team standards.                                                                                                                                       |
-| `fix-component.prompt.md`         | `/fix-component`         | Debug and repair a broken component.                                                                                                                                                        |
-| `update-component-info.prompt.md` | `/update-component-info` | Update the `getSettings` help article to reflect the current component's tabs and controls.                                                                                                 |
-| `update-readme.prompt.md`         | `/update-readme`         | Sync README.md after adding, removing, or renaming a skill, prompt, or instruction file.                                                                                                    |
-| `pre-submit-scan.prompt.md`       | `/pre-submit-scan`       | Scan any Dot.vu component for lint errors, repeated code, incomplete skill patterns, and settings UI gaps before submitting work.                                                           |
+| Prompt                            | Command                  | Purpose                                                                                                                           |
+| --------------------------------- | ------------------------ | --------------------------------------------------------------------------------------------------------------------------------- |
+| `new-component.prompt.md`         | `/new-component`         | Scaffold a brand-new component from scratch.                                                                                      |
+| `edit-component.prompt.md`        | `/edit-component`        | Modify an existing component safely, preserving existing state and structure.                                                     |
+| `review-component.prompt.md`      | `/review-component`      | Audit a component for compliance with team standards.                                                                             |
+| `fix-component.prompt.md`         | `/fix-component`         | Debug and repair a broken component.                                                                                              |
+| `update-component-info.prompt.md` | `/update-component-info` | Update the `getSettings` help article to reflect the current component's tabs and controls.                                       |
+| `update-readme.prompt.md`         | `/update-readme`         | Sync README.md after adding, removing, or renaming a skill, prompt, or instruction file.                                          |
+| `pre-submit-scan.prompt.md`       | `/pre-submit-scan`       | Scan any Dot.vu component for lint errors, repeated code, incomplete skill patterns, and settings UI gaps before submitting work. |
 
 #### `.github/skills/`
 
@@ -116,37 +115,6 @@ Type `/` in Copilot Chat to see all available prompts and skills.
 
 **Prompts** handle workflow tasks (plan, build, edit, review, fix).
 **Skills** handle specific features (lists, shadows, forms, breakpoints, etc.) — they load automatically when the task calls for them, or you can invoke them directly with `/skill-name`.
-
----
-
-## The `/build-plan` Workflow
-
-Use `/build-plan` when you want to think through a component before committing to code. This is the recommended starting point for any non-trivial component.
-
-### How to invoke it
-
-In Copilot Chat, type:
-
-```
-/build-plan I want to create a testimonial card that displays a customer quote, their name, and a profile image. The editor should control the background color, text colors, spacing, and whether to show a star rating.
-```
-
-Or describe your idea informally and then say:
-
-> "Let's plan this first."
-
-### The workflow in action
-
-```
-User:   /build-plan + description
-Agent:  Asks clarifying questions
-User:   Replies with details
-Agent:  Creates a written plan covering tabs, state fields, and behaviors
-User:   Approves or requests changes
-Agent:  Hands off to /new-component or builds directly on request
-```
-
-This forces a pause before code is written, catches ambiguities early, and ensures you and the agent are aligned on what's being built.
 
 ---
 

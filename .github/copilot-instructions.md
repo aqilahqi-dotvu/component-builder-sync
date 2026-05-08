@@ -24,7 +24,6 @@ Type `/` in chat to invoke the matching prompt:
 - `new-component` — create a new component from scratch
 - `edit-component` — modify an existing component safely
 - `review-component` — audit a component against team standards
-- `build-plan` — plan a component before coding
 - `fix-component` — repair a broken component
 - `update-component-info` — update the help article in `getSettings`
 - `update-readme` — sync README.md after adding, removing, or renaming a skill, prompt, or instruction
