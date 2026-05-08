@@ -29,6 +29,7 @@ Type `/` in chat to invoke the matching prompt:
 - `troubleshoot-component` — diagnose errors without applying fixes
 - `update-component-info` — update the help article in `getSettings`
 - `update-readme` — sync README.md after adding, removing, or renaming a skill, prompt, or instruction
+- `pre-submit-scan` — scan any component for lint errors, repeated code, incomplete skill patterns, and settings UI gaps before submitting work
 
 ## Skills — use for specific features and patterns
 

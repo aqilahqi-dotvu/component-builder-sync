@@ -11,6 +11,18 @@ Read first: [dotvu-component.instructions.md](../../instructions/dotvu-component
 
 ---
 
+## Critical API requirements
+
+- Import `ActionSet` from `@ui` in `editor.js`.
+- Import `runActionSet` from `@data` in `live.js`.
+- Store the selected Action Set value in component state (for example `ctaActionSet` or `buttonActionSet`).
+- Default missing action-set state to `[]` in `common.js`.
+- Use a short `Label` and place detailed explanation in `help`.
+- Show the `ActionSet` picker only when the related mode is active.
+- Execute the selected Action Set in `live.js` using `runActionSet`; do not require trigger wiring.
+
+---
+
 ## Decision rule
 
 If the component already has or needs an action type with a `trigger` option, ask this before implementing the trigger path:
@@ -39,7 +51,59 @@ If the user confirms the trigger path should run actions directly:
 - Remove obsolete per-element trigger exports from `getTriggers` when the direct ActionSet replaces them.
 - Update the help article so the editor behavior matches the runtime behavior.
 
-### Editor example
+### Editor example — simple picker (component-level state)
+
+Use when there is no mode switch and the component always runs an Action Set.
+
+```jsx
+<SettingItem>
+  <Label content="CTA Action Set" />
+  <ActionSet
+    value={state.ctaActionSet}
+    onChange={(ctaActionSet) => setState({ ...state, ctaActionSet })}
+  />
+</SettingItem>
+```
+
+### Editor example — mode selection (URL vs Action Set)
+
+Use when the component can either open a URL or run an Action Set.
+
+```jsx
+<SettingItem>
+  <Label
+    content="Button Action"
+    help="Choose what happens when the button is clicked."
+  />
+  <Dropdown
+    value={state.buttonActionType || "url"}
+    options={[
+      { value: "url", text: "Open URL" },
+      { value: "actionSet", text: "Run Action Set" },
+    ]}
+    onChange={(buttonActionType) => setState({ ...state, buttonActionType })}
+  />
+</SettingItem>;
+
+{
+  (state.buttonActionType || "url") === "actionSet" ? (
+    <SettingItem>
+      <Label
+        content="CTA Action Set"
+        help="Pick the Action Set to run when the CTA is clicked."
+      />
+      <ActionSet
+        value={state.ctaActionSet}
+        onChange={(ctaActionSet) => setState({ ...state, ctaActionSet })}
+      />
+    </SettingItem>
+  ) : null;
+}
+```
+
+### Editor example — per-item (settings table)
+
+Use when each row in a settings table has its own Action Set.
 
 ```js
 <SettingItem>
@@ -58,7 +122,33 @@ If the user confirms the trigger path should run actions directly:
 </SettingItem>
 ```
 
-### Live example
+### Live example — component-level click handler (URL + Action Set)
+
+```js
+const handleButtonClick = (event) => {
+  event.stopPropagation();
+
+  if ((state.buttonActionType || "url") === "actionSet") {
+    if (state.ctaActionSet) {
+      runActionSet(state.ctaActionSet, state);
+    }
+    return;
+  }
+
+  // URL behavior
+  const normalizedUrl = normalizeUrl(state.buttonUrl);
+  if (!normalizedUrl) return;
+
+  if (state.buttonOpenInNewTab !== false) {
+    window.open(normalizedUrl, "_blank", "noopener,noreferrer");
+    return;
+  }
+
+  window.location.href = normalizedUrl;
+};
+```
+
+### Live example — per-item click handler
 
 ```js
 async function handleButtonClick(item, event) {
@@ -115,8 +205,8 @@ function getActionSetValue(value) {
 
 ```js
 function normalizeUrl(urlValue) {
-  const trimmedUrl = String(urlValue || '').trim();
-  if (trimmedUrl.toLowerCase().startsWith('www.')) {
+  const trimmedUrl = String(urlValue || "").trim();
+  if (trimmedUrl.toLowerCase().startsWith("www.")) {
     return `https://${trimmedUrl}`;
   }
   return trimmedUrl;
@@ -124,7 +214,7 @@ function normalizeUrl(urlValue) {
 
 const normalizedUrl = normalizeUrl(item.buttonUrl);
 if (normalizedUrl) {
-  window.open(normalizedUrl, '_blank', 'noopener,noreferrer');
+  window.open(normalizedUrl, "_blank", "noopener,noreferrer");
 }
 ```
 
@@ -132,16 +222,28 @@ if (normalizedUrl) {
 
 ## What not to do
 
-```js
-// Do not assume every trigger action should become an ActionSet.
+```jsx
+// ❌ Do not assume every trigger action should become an ActionSet.
 
-// Do not keep both a generated outbound trigger and a direct ActionSet
+// ❌ Do not keep both a generated outbound trigger and a direct ActionSet
 // for the same click path unless the user explicitly asks for both.
 
-// Do not store a non-array ActionSet value.
-buttonActionSet: {
-}
+// ❌ Do not store a non-array ActionSet value.
+buttonActionSet: {}
 
-// Do not call runActionSet without guarding the value.
+// ❌ Do not call runActionSet without guarding the value.
 await runActionSet(item.buttonActionSet);
+
+// ❌ Do not use TextInput for Action Set id/name instead of the ActionSet picker.
+<TextInput value={state.ctaActionSet} onChange={...} />
+
+// ❌ Do not always show the ActionSet picker even when mode is URL.
+<ActionSet value={state.ctaActionSet} onChange={...} />
+
+// ❌ Do not keep trigger-based wiring when direct Action Set execution is required.
+runTrigger("onCTAClick");
+
+// ❌ Do not add the picker in editor without a matching runActionSet call in live.js.
+
+// ❌ Do not forget to initialize ctaActionSet (or equivalent) before ...state in common.js.
 ```
