@@ -10,7 +10,6 @@ Use this prompt when changing an existing Dot.vu component.
 Read first:
 
 #file:.github/instructions/dotvu-component.instructions.md
-#file:.github/prompts/dotvu-api-reference.prompt.md
 #file:common.js
 #file:editor.js
 #file:live.js

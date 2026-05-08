@@ -5,12 +5,13 @@ description: Review a Dot.vu component for team standards and runtime safety
 
 # Review Dot.vu Component
 
+Use this prompt to audit a working component for team standards compliance. Do not apply fixes — report findings only. If fixes are needed, use `fix-component` after the review.
+
 Review the current Dot.vu component against team standards.
 
 Read first:
 
 #file:.github/instructions/dotvu-component.instructions.md
-#file:.github/prompts/dotvu-api-reference.prompt.md
 #file:common.js
 #file:editor.js
 #file:live.js

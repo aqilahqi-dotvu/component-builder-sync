@@ -26,7 +26,6 @@ Type `/` in chat to invoke the matching prompt:
 - `review-component` — audit a component against team standards
 - `build-plan` — plan a component before coding
 - `fix-component` — repair a broken component
-- `troubleshoot-component` — diagnose errors without applying fixes
 - `update-component-info` — update the help article in `getSettings`
 - `update-readme` — sync README.md after adding, removing, or renaming a skill, prompt, or instruction
 - `pre-submit-scan` — scan any component for lint errors, repeated code, incomplete skill patterns, and settings UI gaps before submitting work
@@ -55,6 +54,7 @@ Type `/` in chat or describe what you need and the agent will load the right ski
 | `scroll-runtime`            | Making scroll-reliant components work in both the AI builder and Preview Mode by resolving the active scroll container and computing progress against that viewport                                             |
 | `dynamic-text`              | Making a component's text field updatable at runtime via an Update Text inbound action, getDataFields exposure, and getActionHandlers in live.js                                                                |
 | `rich-textarea`             | Adding a rich text editor field to editor.js with bold, URL links, Dot.vu action links (wand icon), remove-bold/remove-link toolbar, Markdown source toggle, dismissible hint banner, and inline ActionSet list |
+| `card-component`            | Building or editing a component with card-based UI — card structure, single vs multiple cards, content fields, settings sections, design consistency, and scaling rules                                         |
 
 ## Skill creation
 

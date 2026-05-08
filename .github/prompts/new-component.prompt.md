@@ -10,7 +10,6 @@ Use this prompt when creating a new Dot.vu component.
 Read the project instructions first:
 
 #file:.github/instructions/dotvu-component.instructions.md
-#file:.github/prompts/dotvu-api-reference.prompt.md
 
 If template files exist in the repository, read them before writing code. If the user says they have no template yet, create the component from the API reference patterns.
 
@@ -21,35 +20,39 @@ Before writing code, ask these questions unless the user already answered them:
 **Before I build this, a few quick questions:**
 
 **1. Height behavior**
+
 - A) Content-based - height grows with content. Best for forms, text, cards, quizzes, and surveys.
 - B) Fixed/resizable - fills a defined height. Best for maps, galleries, videos, visual panels, and hero sections.
 - C) Breakpoint-aware - height is resizable above a width breakpoint and auto-height below it.
 
 **2. Does the editor need a reorderable list of items?**
+
 - A) Yes - use a table with drag-to-reorder and an edit drawer per item.
 - B) No.
 
 **3. Does anything animate?**
+
 - A) Yes - include on-load and manual trigger support.
 - B) No.
 
 **4. Are Dynamic Values, Action Sets, or Audience Data needed?**
+
 - A) Yes - explain which fields or events need them.
 - B) No.
 
 ## Step 2 - Map answers to decisions
 
-| Answer | Decision |
-| --- | --- |
-| Q1 A | CONTENT_BASED. `height: SizeType.CONTENT_BASED`. Root height is `auto`. No Advanced tab. |
-| Q1 B | RESIZABLE. `height: SizeType.RESIZABLE`. Root height is `100%`. No Advanced tab unless requested. |
-| Q1 C | BREAKPOINT_AWARE. Use the full five-field state, Advanced tab, ResizeObserver, `getSizeTypes` conditional logic, and `.dot-component` height override. |
-| Q2 A | Use `TableContainer` + drag handle + `OptionsMenuRootButton` + `Drawer` + `DrawerSection`. Include Add, Edit, Duplicate, Delete, and Reorder. |
-| Q2 B | Do not add list infrastructure. |
-| Q3 A | Add `animationType`, `animationRepeat`, `loadingMode`, `hasStartedLoading`, and `animationRunId`. Add Animation tab and `Start Animation` action. |
-| Q3 B | Do not add animation system. |
-| Q4 A | Add only the requested dynamic/audience/action-set functionality. |
-| Q4 B | Do not import `@data`, do not use DynamicValueInput, and do not expose audience data. |
+| Answer | Decision                                                                                                                                               |
+| ------ | ------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| Q1 A   | CONTENT_BASED. `height: SizeType.CONTENT_BASED`. Root height is `auto`. No Advanced tab.                                                               |
+| Q1 B   | RESIZABLE. `height: SizeType.RESIZABLE`. Root height is `100%`. No Advanced tab unless requested.                                                      |
+| Q1 C   | BREAKPOINT_AWARE. Use the full five-field state, Advanced tab, ResizeObserver, `getSizeTypes` conditional logic, and `.dot-component` height override. |
+| Q2 A   | Use `TableContainer` + drag handle + `OptionsMenuRootButton` + `Drawer` + `DrawerSection`. Include Add, Edit, Duplicate, Delete, and Reorder.          |
+| Q2 B   | Do not add list infrastructure.                                                                                                                        |
+| Q3 A   | Add `animationType`, `animationRepeat`, `loadingMode`, `hasStartedLoading`, and `animationRunId`. Add Animation tab and `Start Animation` action.      |
+| Q3 B   | Do not add animation system.                                                                                                                           |
+| Q4 A   | Add only the requested dynamic/audience/action-set functionality.                                                                                      |
+| Q4 B   | Do not import `@data`, do not use DynamicValueInput, and do not expose audience data.                                                                  |
 
 ## Step 3 - Write in this order
 
@@ -142,6 +145,7 @@ Use the boilerplate only as a pattern reference:
 Do not copy it directly.
 
 Extract only the patterns needed for this component, such as:
+
 - settings structure
 - sizing behavior
 - `ScopedStyle`

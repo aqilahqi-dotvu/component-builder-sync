@@ -1,54 +1,91 @@
 ---
-agent: dotvu-component-builder
-description: Plan a component build before starting
+mode: agent
+description: Plan a Dot.vu component before writing any code
 ---
 
-# Build Plan — Dot.vu Component
+# Build Plan
 
-Read the boilerplate first to understand what patterns are available:
-#file:.github/prompts/dotvu-api-reference.prompt.md
+Use this prompt to produce a written component plan before any code is written.
 
-## Step 1 — Ask clarifying questions
+Do not write any code. Do not edit any files. Produce a written plan only and wait for the user to approve it.
 
-Do not write any code or create files. Send the user this message:
+Read first:
+
+#file:.github/instructions/dotvu-component.instructions.md
+
+## Step 1 — Ask before planning
+
+Ask these questions unless the user has already answered them:
+
+**Before I plan this, a few quick questions:**
+
+**1. Height behavior**
+
+- A) Content-based — height grows with content. Best for forms, text, cards, quizzes, and surveys.
+- B) Fixed/resizable — fills a defined height. Best for maps, galleries, videos, visual panels, and hero sections.
+- C) Breakpoint-aware — height is resizable above a width breakpoint and auto-height below it.
+
+**2. Does the editor need a reorderable list of items?**
+
+- A) Yes — use a table with drag-to-reorder and an edit drawer per item.
+- B) No.
+
+**3. Does anything animate?**
+
+- A) Yes — include on-load and manual trigger support.
+- B) No.
+
+**4. Are Dynamic Values, Action Sets, or Audience Data needed?**
+
+- A) Yes — explain which fields or events need them.
+- B) No.
+
+## Step 2 — Produce the plan
+
+Output a structured written plan with the following sections. Do not write code.
+
+### Component overview
+
+One paragraph describing the component's purpose, visible behavior, and editor experience.
+
+### Height pattern
+
+State the pattern (CONTENT_BASED / RESIZABLE / BREAKPOINT_AWARE) and justify the choice.
+
+### State fields (`getInitialState`)
+
+List every state field with its key, default value, and purpose. Group by concern (content, style, animation, breakpoint).
+
+### Editor tabs and sections
+
+List each tab and the sections and controls inside it. Use this structure:
+
+```
+Tab: Content
+  Section: [heading]
+    - [control type]: [field name] — [purpose]
+```
+
+### Actions and triggers
+
+List inbound actions (`getActionHandlers`) and outbound triggers (`getTriggers`) if any. If none, state "None."
+
+### Data fields and fonts
+
+List `getDataFields` entries and `getFonts` entries if any. If none, state "None."
+
+### Dynamic lists
+
+If the component has a reorderable list, describe the item shape, the TableContainer columns, and the Drawer fields.
+
+### Animation
+
+If animation is included, list the state fields (`animationType`, `animationRepeat`, `loadingMode`, `hasStartedLoading`, `animationRunId`) and the editor controls.
+
+### Open questions
+
+List any decisions that were not answered in Step 1 and that would affect the implementation. If none, state "None."
 
 ---
 
-**Let's plan this component before building.**
-
-**Describe what you want to build:** (What does it do? What does the editor control? What content is dynamic?)
-
-**Once you give me the description, I'll create a written plan covering:**
-- What each tab in the settings will contain (Content, Style, Animation, Advanced)
-- What state fields are needed
-- What dynamic behaviors or interactivity exist
-- What patterns from the boilerplate apply
-
-*Reply with your description and I'll draft the plan.*
-
----
-
-## Step 2 — Create the written plan
-
-Based on the user's description, draft a plan that covers:
-
-1. **Component overview** — 1–2 sentences of what it does
-2. **Settings structure** — List each tab and what sections/controls go in it
-3. **State fields** — List all state fields needed, grouped by purpose
-4. **Behaviors** — Animation? List management? Responsive breakpoints?
-5. **Boilerplate patterns** — Which patterns from the icon card boilerplate apply (ResizeObserver, animation system, drag-to-reorder, shadow controls, etc.)
-6. **Questions for you** — Any ambiguities to clarify before building?
-
-Send this plan to the user as a numbered outline and ask: **"Does this match what you want? Any changes before I build?"**
-
-## Step 3 — Wait for approval
-
-Do not proceed to building until the user confirms the plan. If they request changes, update the plan and ask again.
-
-## Step 4 — Hand off to build
-
-Once approved, respond with:
-
-**"Plan approved. Ready to build. Use `/new-component` with this plan, or just say "Build this" and I'll create the three files."**
-
-Do not actually build — let the user decide if they want to use the `/new-component` flow or just ask you directly.
+Wait for the user to approve or revise the plan before any code is written.
