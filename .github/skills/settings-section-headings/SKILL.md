@@ -124,6 +124,44 @@ Same as the section heading style **except**:
 
 ---
 
+## Injecting the stylesheet
+
+The heading CSS lives in a `<style>` tag rendered inside the `Settings` component. **Do not place `<style>` inside `<Tabs>` as a sibling of `<Tab>` elements.** The `<Tabs>` component only processes `<Tab>` children and silently discards everything else, so the styles are never injected and the heading classes have no effect.
+
+**Wrong — styles silently dropped:**
+
+```jsx
+function Settings({ state, setState }) {
+  return (
+    <Tabs defaultActiveTab="content">
+      <style>{EDITOR_STYLES}</style> {/* ❌ ignored by Tabs */}
+      <Tab id="content" title="Content">
+        ...
+      </Tab>
+    </Tabs>
+  );
+}
+```
+
+**Correct — wrap in a fragment so `<style>` renders outside `<Tabs>`:**
+
+```jsx
+function Settings({ state, setState }) {
+  return (
+    <>
+      <style>{EDITOR_STYLES}</style> {/* ✅ injected into the DOM */}
+      <Tabs defaultActiveTab="content">
+        <Tab id="content" title="Content">
+          ...
+        </Tab>
+      </Tabs>
+    </>
+  );
+}
+```
+
+---
+
 ## Drawers
 
 When headings are used inside `Drawer` / `DrawerSection`, first verify whether the component library renders the drawer content **inside the same DOM subtree** as the editor panel or into a portal.
