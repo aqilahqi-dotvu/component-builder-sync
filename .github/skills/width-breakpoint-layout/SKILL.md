@@ -294,7 +294,13 @@ function ResponsiveFontSize({
 </Section>
 ```
 
-Do **not** change `getSizeTypes` — height behavior stays the same.
+Do **not** change `getSizeTypes` — height behavior stays the same **unless** the component also needs to remove the height drag handle below the breakpoint (e.g. a count-up number that should collapse to content height on mobile). In that case:
+
+1. Update `getSizeTypes` in `editor.js` to return `CONTENT_BASED` when `isCompactLayout` is true (see the `breakpoint-height` skill for the exact pattern).
+2. Add `platformHeightRef` and the imperative DOM-walking `useEffect` to `live.js` (see **`breakpoint-height` → live.js — .dot-component height override effect**).
+3. Switch all container `height` CSS values to `auto` when compact (root, wrapper, and inner card containers).
+
+> Do **not** use `ScopedStyle` to target `.dot-component`. `ScopedStyle` is scoped inside the component container and cannot reach the platform wrapper above it — the imperative DOM-walking effect is the only reliable approach.
 
 ---
 
@@ -427,7 +433,8 @@ style={isCompactLayout ? { alignItems: 'center', textAlign: 'center' } : {}}
 - [ ] `ResponsiveNumberSetting` and `ResponsiveFontSize` added above `getControlValue`
 - [ ] All overridable settings use `ResponsiveFontSize` or `ResponsiveNumberSetting` with `hasBreakpoint={Boolean(state.hasWidthBreakpoint)}`
 - [ ] Advanced tab has one "responsive width" section
-- [ ] `getSizeTypes` is unchanged
+- [ ] `getSizeTypes` is unchanged (unless height switching is also required — see note above)
+- [ ] If height switching: `platformHeightRef` + DOM-walking `useEffect` present in `live.js`; all container heights set to `auto` when compact
 - [ ] No CSS `@media` queries used for layout switching
 - [ ] ResizeObserver effect added with proper cleanup
 - [ ] `isCompactLayout` derived from `measuredWidth` and `state.widthBreakpoint`

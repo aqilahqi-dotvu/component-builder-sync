@@ -1,6 +1,6 @@
 ---
 name: breakpoint-height
-description: 'Implement or convert BREAKPOINT_AWARE height behavior in a Dot.vu component — ResizeObserver measurement, getSizeTypes switching between RESIZABLE and CONTENT_BASED, and the .dot-component height override. Use when adding per-breakpoint height or converting an existing component to responsive height.'
+description: "Implement or convert BREAKPOINT_AWARE height behavior in a Dot.vu component — ResizeObserver measurement, getSizeTypes switching between RESIZABLE and CONTENT_BASED, and the .dot-component height override. Use when adding per-breakpoint height or converting an existing component to responsive height."
 ---
 
 # Breakpoint Height — BREAKPOINT_AWARE Pattern
@@ -37,14 +37,16 @@ currentComponentHeight: 0,
 
 ```js
 export function getSizeTypes(state) {
-  const isNarrow = Boolean(state.hasWidthBreakpoint)
-    && Number(state.currentComponentWidth) > 0
-    && Number(state.currentComponentWidth) <= Math.max(120, Number(state.widthBreakpoint) || 120)
-  const needsResizableHeight = Boolean(state.hasWidthBreakpoint) && !isNarrow
+  const isNarrow =
+    Boolean(state.hasWidthBreakpoint) &&
+    Number(state.currentComponentWidth) > 0 &&
+    Number(state.currentComponentWidth) <=
+      Math.max(120, Number(state.widthBreakpoint) || 120);
+  const needsResizableHeight = Boolean(state.hasWidthBreakpoint) && !isNarrow;
   return {
     width: SizeType.RESIZABLE,
-    height: needsResizableHeight ? SizeType.RESIZABLE : SizeType.CONTENT_BASED
-  }
+    height: needsResizableHeight ? SizeType.RESIZABLE : SizeType.CONTENT_BASED,
+  };
 }
 ```
 
@@ -52,106 +54,128 @@ export function getSizeTypes(state) {
 
 ```js
 // HEIGHT_PATTERN: BREAKPOINT_AWARE
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useEffect, useRef, useState } from "react";
 ```
 
 Inside `Component`, immediately after `const { s } = useScaler()`:
 
 ```js
-const containerRef = useRef(null)
-const platformHeightRef = useRef(null)
-const [measuredSize, setMeasuredSize] = useState({ width: 0, height: 0 })
+const containerRef = useRef(null);
+const platformHeightRef = useRef(null);
+const [measuredSize, setMeasuredSize] = useState({ width: 0, height: 0 });
 ```
 
 ### live.js — ResizeObserver effect
 
 ```js
 useEffect(() => {
-  const element = containerRef.current
-  if (!element) return undefined
+  const element = containerRef.current;
+  if (!element) return undefined;
 
-  let frameId = 0
-  let secondFrameId = 0
-  let intervalId = 0
-  let observer = null
+  let frameId = 0;
+  let secondFrameId = 0;
+  let intervalId = 0;
+  let observer = null;
 
-  const syncMeasuredSize = nextSize => {
-    const safeWidth = Math.round(Number(nextSize.width) || 0)
-    const safeHeight = Math.round(Number(nextSize.height) || 0)
-    setMeasuredSize(prev => {
-      if (prev.width === safeWidth && prev.height === safeHeight) return prev
-      return { width: safeWidth, height: safeHeight }
-    })
-    setState(prev => {
-      if (Number(prev.currentComponentWidth) === safeWidth && Number(prev.currentComponentHeight) === safeHeight) return prev
-      return { ...prev, currentComponentWidth: safeWidth, currentComponentHeight: safeHeight }
-    })
-  }
+  const syncMeasuredSize = (nextSize) => {
+    const safeWidth = Math.round(Number(nextSize.width) || 0);
+    const safeHeight = Math.round(Number(nextSize.height) || 0);
+    setMeasuredSize((prev) => {
+      if (prev.width === safeWidth && prev.height === safeHeight) return prev;
+      return { width: safeWidth, height: safeHeight };
+    });
+    setState((prev) => {
+      if (
+        Number(prev.currentComponentWidth) === safeWidth &&
+        Number(prev.currentComponentHeight) === safeHeight
+      )
+        return prev;
+      return {
+        ...prev,
+        currentComponentWidth: safeWidth,
+        currentComponentHeight: safeHeight,
+      };
+    });
+  };
 
   const measureNow = () => {
-    if (!element) return
-    const rect = element.getBoundingClientRect()
-    syncMeasuredSize({ width: rect.width, height: rect.height })
+    if (!element) return;
+    const rect = element.getBoundingClientRect();
+    syncMeasuredSize({ width: rect.width, height: rect.height });
+  };
+
+  if (typeof ResizeObserver !== "undefined") {
+    observer = new ResizeObserver((entries) => {
+      const entry = entries && entries[0];
+      if (!entry) return;
+      const box = entry.contentRect || element.getBoundingClientRect();
+      syncMeasuredSize({ width: box.width, height: box.height });
+    });
+    observer.observe(element);
   }
 
-  if (typeof ResizeObserver !== 'undefined') {
-    observer = new ResizeObserver(entries => {
-      const entry = entries && entries[0]
-      if (!entry) return
-      const box = entry.contentRect || element.getBoundingClientRect()
-      syncMeasuredSize({ width: box.width, height: box.height })
-    })
-    observer.observe(element)
-  }
-
-  measureNow()
+  measureNow();
   frameId = requestAnimationFrame(() => {
-    measureNow()
-    secondFrameId = requestAnimationFrame(measureNow)
-  })
-  intervalId = window.setInterval(measureNow, 250)
+    measureNow();
+    secondFrameId = requestAnimationFrame(measureNow);
+  });
+  intervalId = window.setInterval(measureNow, 250);
 
   return () => {
-    if (frameId) cancelAnimationFrame(frameId)
-    if (secondFrameId) cancelAnimationFrame(secondFrameId)
-    if (intervalId) window.clearInterval(intervalId)
-    if (observer) observer.disconnect()
-  }
-}, [setState])
+    if (frameId) cancelAnimationFrame(frameId);
+    if (secondFrameId) cancelAnimationFrame(secondFrameId);
+    if (intervalId) window.clearInterval(intervalId);
+    if (observer) observer.disconnect();
+  };
+}, [setState]);
 ```
 
 ### live.js — derived values
 
 ```js
-const liveMeasuredWidth = Math.max(0, Number(measuredSize.width) || 0)
-const measuredWidth = Math.max(0, liveMeasuredWidth || Number(state.currentComponentWidth) || 0)
-const responsiveBreakpointWidth = Math.max(120, Number(state.widthBreakpoint) || 120)
-const isCompactLayout = Boolean(state.hasWidthBreakpoint) && measuredWidth > 0 && measuredWidth <= responsiveBreakpointWidth
-const measurementLabel = Boolean(state.previewWidthInLiveView) ? `Width: ${liveMeasuredWidth || 0}px` : ''
-const needsAutoHeight = !Boolean(state.hasWidthBreakpoint) || isCompactLayout
+const liveMeasuredWidth = Math.max(0, Number(measuredSize.width) || 0);
+const measuredWidth = Math.max(
+  0,
+  liveMeasuredWidth || Number(state.currentComponentWidth) || 0,
+);
+const responsiveBreakpointWidth = Math.max(
+  120,
+  Number(state.widthBreakpoint) || 120,
+);
+const isCompactLayout =
+  Boolean(state.hasWidthBreakpoint) &&
+  measuredWidth > 0 &&
+  measuredWidth <= responsiveBreakpointWidth;
+const measurementLabel = Boolean(state.previewWidthInLiveView)
+  ? `Width: ${liveMeasuredWidth || 0}px`
+  : "";
+const needsAutoHeight = !Boolean(state.hasWidthBreakpoint) || isCompactLayout;
 ```
 
 ### live.js — .dot-component height override effect
 
+> **Why not ScopedStyle?** `ScopedStyle` injects CSS that is scoped _inside_ the component's own container. The `.dot-component` platform wrapper sits _above_ that container in the DOM, so scoped CSS cannot reach it. The only reliable fix is an imperative `useEffect` that walks up the DOM tree and sets `height` directly on the wrapper element.
+
 ```js
 useEffect(() => {
-  const el = containerRef.current
-  if (!el) return
-  let ancestor = el.parentElement
+  const el = containerRef.current;
+  if (!el) return;
+  let ancestor = el.parentElement;
   while (ancestor) {
-    if (ancestor.classList && ancestor.classList.contains('dot-component')) {
+    if (ancestor.classList && ancestor.classList.contains("dot-component")) {
       if (needsAutoHeight) {
-        const currentHeight = ancestor.style.height
-        if (currentHeight && currentHeight !== 'auto') platformHeightRef.current = currentHeight
-        ancestor.style.height = 'auto'
+        const currentHeight = ancestor.style.height;
+        if (currentHeight && currentHeight !== "auto")
+          platformHeightRef.current = currentHeight;
+        ancestor.style.height = "auto";
       } else if (platformHeightRef.current) {
-        ancestor.style.height = platformHeightRef.current
+        ancestor.style.height = platformHeightRef.current;
       }
-      break
+      break;
     }
-    ancestor = ancestor.parentElement
+    ancestor = ancestor.parentElement;
   }
-}, [needsAutoHeight])
+}, [needsAutoHeight]);
 ```
 
 ### live.js — root element
