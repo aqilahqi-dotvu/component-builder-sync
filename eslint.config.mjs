@@ -5,6 +5,7 @@ const browserGlobals = {
   window: 'readonly',
   document: 'readonly',
   URL: 'readonly',
+  performance: 'readonly',
   IntersectionObserver: 'readonly',
   ResizeObserver: 'readonly',
   requestAnimationFrame: 'readonly',

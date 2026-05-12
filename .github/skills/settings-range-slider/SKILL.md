@@ -23,17 +23,6 @@ Both components use plain HTML `<input type="range">` — there is no `@ui` slid
   flex-direction: column;
   gap: 4px;
 }
-.cmp-range-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 0 2px;
-}
-.cmp-range-header-label {
-  font-size: 12px;
-  color: #374151;
-  font-weight: 600;
-}
 .cmp-range-ticks {
   display: flex;
   justify-content: space-between;
@@ -168,8 +157,15 @@ function SingleSlider({ label, min, max, step = 1, value, onChange }) {
   return (
     <div className="cmp-range-wrap">
       {label && (
-        <div className="cmp-range-header">
-          <span className="cmp-range-header-label">{label}</span>
+        <div
+          style={{
+            fontSize: 12,
+            color: "#374151",
+            fontWeight: 600,
+            padding: "0 2px",
+          }}
+        >
+          {label}
         </div>
       )}
       <input
@@ -224,8 +220,15 @@ function RangeSlider({
   return (
     <div className="cmp-range-wrap">
       {label && (
-        <div className="cmp-range-header">
-          <span className="cmp-range-header-label">{label}</span>
+        <div
+          style={{
+            fontSize: 12,
+            color: "#374151",
+            fontWeight: 600,
+            padding: "0 2px",
+          }}
+        >
+          {label}
         </div>
       )}
       <div className="cmp-dual-track">
