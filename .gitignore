@@ -1,7 +1,7 @@
 common.js
 editor.js
 live.js
-.DS_Store
-DS_Store
 node_modules
 *.code-workspace
+.DS_Store
+.github/.DS_Store
