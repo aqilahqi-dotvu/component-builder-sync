@@ -73,9 +73,9 @@ Check the `help()` function inside `getSettings` in `editor.js` for these requir
 
 ## 6. Skills format compliance
 
-- Editable arrays use `TableContainer` + `Drawer` + `DrawerSection`
+- Editable arrays use `TableContainer`; add `Drawer` + `DrawerSection` only when rows have an Edit action
 - Reorderable lists have a drag handle as the first compact column
-- Row actions use `OptionsMenuRootButton` as the last compact column with at minimum Edit, Duplicate, Delete
+- Row actions: use a single `IconButton` with `deleteIcon` when delete is the only action; use `OptionsMenuRootButton` as the last compact column when multiple actions (Edit, Duplicate, Delete) are needed
 - No Save or Cancel buttons inside any `<Drawer>`
 - Shadow settings (if present) follow the `settings-shadow` skill pattern
 - Border radius (if present) follows the `settings-border-radius` skill pattern
