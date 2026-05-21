@@ -413,7 +413,11 @@ Use this tab order. Only include tabs relevant to the quiz variant being built.
 | **Questions** | Question list (TableContainer + Drawer) → Results / End cards (TableContainer + Drawer)                                                                                            |
 | **End**       | See Results button → Restart Quiz → CTA Button → Button layout → Badge                                                                                                             |
 | **Style**     | Badge → Question text typography → Answer text typography → Start typography (inherit checkbox) → Result typography (inherit checkbox) → Question layout → Colors → Card & spacing |
-| **Behavior**  | Back button, shuffle, motion                                                                                                                                                       |
+| **Behavior**  | Back button, shuffle, motion, action sets                                                                                                                                          |
+
+> **Start and End are always separate tabs.** Never merge them into a single "Start & End" tab, even for simple quizzes. Content (title, description, button) belongs in each respective tab; typography for both screens belongs in the Style tab.
+
+> **Screen typography goes in the Style tab.** Do not place font, size, or color controls inside the Start or End content tabs. When the component uses shared typography fields that apply to both screens, show them as one "Screen typography" section in Style with a `Label` help prop reading "Applied to both the start and end screens."
 
 ### Section heading CSS
 
