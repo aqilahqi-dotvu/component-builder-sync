@@ -140,7 +140,38 @@ Row actions must use `OptionsMenuRootButton` with icons when multiple actions ar
 - `editIcon`, `duplicateIcon`, `deleteIcon`
 - Optional: `arrowUpIcon`, `arrowDownIcon`
 
-Do not import icons in `live.js`.
+Import icons from `@icons` in `editor.js` only. Do not import icons in `live.js`.
+
+```jsx
+import { editIcon, duplicateIcon, deleteIcon } from "@icons";
+
+<OptionsMenuRootButton
+  key={`menu-${item.id}`}
+  options={[
+    {
+      text: "Edit",
+      tip: "Edit this item",
+      icon: editIcon,
+      type: "onClick",
+      onClick: () => handleEditItem(item.id),
+    },
+    {
+      text: "Duplicate",
+      tip: "Duplicate this item",
+      icon: duplicateIcon,
+      type: "onClick",
+      onClick: () => handleDuplicateItem(item.id),
+    },
+    {
+      text: "Delete",
+      tip: "Delete this item",
+      icon: deleteIcon,
+      type: "onClick",
+      onClick: () => handleDeleteItem(item.id),
+    },
+  ]}
+/>
+```
 
 **Single-action alternative:** When delete is the only row action needed, skip `OptionsMenuRootButton` entirely and use an inline `<button>` with the trash SVG directly. This avoids importing from `@icons` and keeps the row compact:
 
