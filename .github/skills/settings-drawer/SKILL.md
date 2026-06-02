@@ -1,6 +1,6 @@
 ---
 name: settings-drawer
-description: "Rules and patterns for Drawer and DrawerSection in editor.js — isOpen prop, always-mounted pattern, section headings inside portaled drawers, and splitting large drawers into multiple DrawerSection blocks. Use when adding or editing an item-edit Drawer in a component."
+description: "Rules and patterns for Drawer and DrawerSection in editor.js — isOpen prop, always-mounted pattern, drawer width matching settings panel width, section headings inside portaled drawers, and splitting large drawers into multiple DrawerSection blocks. Use when adding or editing an item-edit Drawer in a component."
 ---
 
 # Drawer Pattern
@@ -75,7 +75,45 @@ function Settings({ state, setState }) {
 | `isOpen`  | `boolean`  | Controls visibility. **Not** `open`.                                                  |
 | `title`   | `string`   | Shown in the drawer header.                                                           |
 | `onClose` | `function` | Called when the user closes the drawer. Clear both `drawerOpen` and `editingId` here. |
-| `width`   | `number`   | Optional. Default width is set by the platform.                                       |
+| `width`   | `number`   | Set to match the settings panel width (the `width` value in `getSettings`).           |
+
+### Drawer width
+
+Always set the `width` prop on `<Drawer>` to the same pixel value used for the settings panel in `getSettings`. This keeps the drawer the same width as the panel it slides out from, so the editor layout stays consistent.
+
+```js
+// getSettings
+export function getSettings(state) {
+  return {
+    settings: {
+      name: 'My Component',
+      Setting: Settings,
+      width: 360,         // ← settings panel width
+      help: () => ({ ... })
+    }
+  }
+}
+```
+
+```jsx
+// Drawer — match the same width
+<Drawer isOpen={drawerOpen} title="Edit Item" width={360} onClose={handleClose}>
+  ...
+</Drawer>
+```
+
+If the settings panel width is stored as a constant, reference it in both places:
+
+```js
+const SETTINGS_WIDTH = 360
+
+export function getSettings(state) {
+  return { settings: { ..., width: SETTINGS_WIDTH } }
+}
+
+// Inside Settings component:
+<Drawer isOpen={drawerOpen} title="Edit Item" width={SETTINGS_WIDTH} onClose={handleClose}>
+```
 
 ---
 

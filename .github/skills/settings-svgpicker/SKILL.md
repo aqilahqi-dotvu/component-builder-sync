@@ -1,6 +1,6 @@
 ---
 name: settings-svgpicker
-description: "Normalize SvgPicker icons so selected SVGs always support dynamic color via currentColor and scale with wrapper size. Covers normalization rules, live CSS overrides for fill/stroke, and viewBox preservation. Use when adding an icon picker to a component."
+description: "Normalize SvgPicker icons so selected SVGs always support dynamic color via currentColor and scale with wrapper size. Covers normalization rules, live CSS overrides for fill/stroke, viewBox preservation, and companion editor settings (color picker, size). Use when adding an icon picker to a component."
 ---
 
 # SVG Picker Normalization
@@ -95,12 +95,101 @@ Avoid:
 
 ---
 
+## Companion settings (color picker and size)
+
+When a component includes `SvgPicker`, it commonly needs companion settings to control icon color and size. All companion settings must affect the same selected icon — group them together in the editor under the same section or drawer where the picker lives.
+
+### Color picker
+
+- Add a `ColorPicker` field (e.g. `iconColor`) immediately after the `SvgPicker` in the editor.
+- Use a sensible default (e.g. the component's accent color or `#000000`).
+- Pass the color value to the live wrapper as a CSS variable (e.g. `--icon-color`).
+- In live CSS, set `color: var(--icon-color)` on the wrapper so that `currentColor` in the SVG resolves to the chosen color.
+- When migrating: fall back to an existing color field (e.g. `accentColor`) for items saved before the `iconColor` field existed.
+
+Editor example:
+
+```jsx
+<Label text="Icon" />
+<SvgPicker value={item.iconSvg} onChange={svg => update({ iconSvg: normalizeSvg(svg) })} />
+<Label text="Icon Color" />
+<ColorPicker value={item.iconColor ?? '#000000'} onChange={color => update({ iconColor: color })} />
+```
+
+### Size control
+
+- Add a `NumberInput` (e.g. `iconSize`) for the icon size in pixels.
+- Provide a sensible default (e.g. `32`) and reasonable Min / Max bounds (e.g. 8–128 px).
+- Apply size to the wrapper element via inline style or a CSS variable (e.g. `--icon-size`).
+- The wrapper should set both `width` and `height` from this value so the SVG scales uniformly.
+- Pair with a `Label` and include a hint (e.g. "px") to clarify the unit.
+
+Editor example:
+
+```jsx
+<Label text="Icon Size" />
+<NumberInput
+  value={item.iconSize ?? 32}
+  min={8}
+  max={128}
+  onChange={v => update({ iconSize: v })}
+/>
+```
+
+Live example:
+
+```jsx
+<div
+  className="icon-wrap"
+  style={{
+    "--icon-color": item.iconColor ?? "#000000",
+    "--icon-size": `${s(item.iconSize ?? 32)}px`,
+  }}
+  dangerouslySetInnerHTML={{ __html: item.iconSvg }}
+/>
+```
+
+CSS:
+
+```css
+.icon-wrap {
+  width: var(--icon-size);
+  height: var(--icon-size);
+  color: var(--icon-color);
+  flex-shrink: 0;
+}
+
+.icon-wrap svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+```
+
+### Grouping rule
+
+When `SvgPicker`, color picker, and size control all appear together, keep them grouped visually:
+
+```jsx
+<Label text="Icon" />
+<SvgPicker ... />
+<Label text="Icon Color" />
+<ColorPicker ... />
+<Label text="Icon Size" />
+<NumberInput ... />
+```
+
+Do not scatter these controls across different sections — they all affect the same element and should stay together.
+
+---
+
 ## Editor expectations
 
 - `SvgPicker` should update the selected SVG value immediately.
 - If a normalization helper is added, keep it near the editor state update path.
 - Do not expose raw normalization controls to the editor unless the user asks.
 - Editor icon previews (in table rows or drawers) should use the same `currentColor` override pattern as live rendering.
+- Apply the same `iconColor` and `iconSize` values to editor previews (e.g. inside `TableContainer` rows or `Drawer` previews) so what the user sees in the editor matches live output.
 
 ---
 
@@ -110,6 +199,7 @@ Avoid:
 - Preserve saved-state compatibility.
 - Prefer normalizing legacy SVG values over replacing them outright.
 - When introducing a new `iconColor` field, fall back to the existing color field (e.g. `accentColor`) for older saved items.
+- When introducing a new `iconSize` field, fall back to a sensible default (e.g. `32`) for older saved items.
 
 ---
 
@@ -123,3 +213,6 @@ Avoid:
 - [ ] Live CSS still forces nested `fill` and `stroke` to follow `currentColor` when needed
 - [ ] Editor previews use the same color override behavior as live rendering
 - [ ] Existing saved SVG values remain supported
+- [ ] `iconColor` ColorPicker is grouped immediately after `SvgPicker` in the editor
+- [ ] `iconSize` NumberInput is grouped with the picker and color controls
+- [ ] Icon color and size are applied to editor previews (table rows, drawer) as well as live output
