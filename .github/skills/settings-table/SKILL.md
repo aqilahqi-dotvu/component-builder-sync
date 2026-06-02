@@ -170,7 +170,7 @@ import { editIcon, duplicateIcon, deleteIcon } from "@icons";
       onClick: () => handleDeleteItem(item.id),
     },
   ]}
-/>
+/>;
 ```
 
 **Single-action alternative:** When delete is the only row action needed, skip `OptionsMenuRootButton` entirely and use an inline `<button>` with the trash SVG directly. This avoids importing from `@icons` and keeps the row compact:

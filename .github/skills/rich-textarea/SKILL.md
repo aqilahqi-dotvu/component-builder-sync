@@ -1,6 +1,6 @@
 ---
 name: rich-textarea
-description: "Full implementation of the RichTextEditor component for Dot.vu editor.js — contentEditable with floating bold/link/action toolbar, cursor-in-link detection, remove-bold/remove-link, Markdown source toggle, dismissible hint banner, and inline ActionSet list. Use whenever a component answer or body field needs rich text with Dot.vu action links."
+description: "Full implementation of the RichTextEditor component for Dot.vu editor.js — contentEditable with a permanent toolbar (bold, italic, subscript, URL link, action link, remove link), cursor-in-link detection, Markdown source toggle, and inline ActionSet list. Individual buttons are optional — components implement only the subset they need. Use whenever a component answer or body field needs rich text formatting."
 ---
 
 # RichTextEditor — Full Pattern
@@ -50,6 +50,9 @@ function htmlToMarkdown(html) {
     const tag = node.tagName.toLowerCase();
     const inner = Array.from(node.childNodes).map(walk).join("");
     if (tag === "strong" || tag === "b") return `**${inner}**`;
+    if (tag === "em" || tag === "i") return `_${inner}_`;
+    if (tag === "sub") return `~${inner}~`;
+    if (tag === "sup") return `^${inner}^`;
     if (tag === "br") return "\n";
     if (tag === "a") {
       if (node.hasAttribute("data-action-id")) return inner;
@@ -71,6 +74,9 @@ Converts Markdown back to HTML on "Save changes". Only handles `**bold**` and `[
 function markdownToHtml(md) {
   let html = (md || "")
     .replace(/\*\*(.+?)\*\*/g, "<strong>$1</strong>")
+    .replace(/\_(.+?)\_/g, "<em>$1</em>")
+    .replace(/~(.+?)~/g, "<sub>$1</sub>")
+    .replace(/\^(.+?)\^/g, "<sup>$1</sup>")
     .replace(
       /\[([^\]]+)\]\((https?:\/\/[^)]+)\)/g,
       '<a href="$2" target="_blank" rel="noopener noreferrer">$1</a>',
@@ -114,10 +120,8 @@ function RichTextEditor({
 
 | Ref               | Purpose                                                                                                  |
 | ----------------- | -------------------------------------------------------------------------------------------------------- |
-| `wrapperRef`      | Measures position for toolbar placement                                                                  |
 | `editorRef`       | The contentEditable div — always mounted, hidden with `display:none` in source mode                      |
-| `savedRangeRef`   | Persists the selection range across React re-renders                                                     |
-| `toolbarRef`      | Used in blur handler to keep toolbar open when focus moves inside it                                     |
+| `savedRangeRef`   | Persists the selection range across React re-renders (needed before `createLink` for URL links)          |
 | `prevValueRef`    | Tracks the last value written by `handleInput` to avoid resetting `innerHTML` on self-updates            |
 | `originalHtmlRef` | Stores the full HTML when entering source mode so action links can be restored if the draft is unchanged |
 
@@ -126,13 +130,13 @@ function RichTextEditor({
 ## State
 
 ```js
-const [showToolbar, setShowToolbar]; // floating toolbar visibility
-const [toolbarPos, setToolbarPos]; // { top, left } relative to wrapperRef
-const [showLinkForm, setShowLinkForm]; // URL input popup
+const [showLinkForm, setShowLinkForm]; // URL input dropdown below toolbar
 const [linkUrl, setLinkUrl]; // controlled value of URL input
 const [isBold, setIsBold]; // true when cursor/selection is inside bold
+const [isItalic, setIsItalic]; // true when cursor/selection is inside italic
+const [isSubscript, setIsSubscript]; // true when cursor/selection is inside subscript (include only when toolbar has a subscript button)
+const [isSuperscript, setIsSuperscript]; // true when cursor/selection is inside superscript (include only when toolbar has a superscript button)
 const [isInLink, setIsInLink]; // true when cursor/selection is inside any <a>
-const [showBanner, setShowBanner]; // dismissible hint banner
 const [showSource, setShowSource]; // Markdown source mode toggle
 const [markdownDraft, setMarkdownDraft]; // textarea value in source mode
 ```
@@ -162,9 +166,11 @@ React.useEffect(() => {
 }, [value]);
 ```
 
-### Toolbar — cursor-in-link detection
+### Toolbar — permanent bar, cursor state detection
 
-`checkSelection` runs on every `keyUp` and `mouseUp`. For collapsed selections (cursor only), it checks if the cursor is inside an `<a>` by walking ancestors. If so, the toolbar is shown above the link element even without a text selection.
+The toolbar is **always rendered** above the editor. It is never shown or hidden based on selection state. Disable buttons (e.g. `opacity: 0.4; pointer-events: none`) when source mode is active — `execCommand` has no effect on a `<textarea>`.
+
+`checkSelection` runs on every `keyUp` and `mouseUp`. It updates `isBold`, `isItalic`, `isSubscript`, and `isInLink` to reflect the cursor position, which drives button highlight states and switches between the link/remove-link icons. For collapsed selections (cursor only), it walks ancestors to detect if the cursor is inside an `<a>`.
 
 ```js
 const findLinkAncestor = (node) => {
@@ -399,12 +405,15 @@ Replace `.your-component-answer` with the class on the `dangerouslySetInnerHTML`
 
 ## Toolbar button layout
 
-| Button                 | Condition   | Action                                                     |
-| ---------------------- | ----------- | ---------------------------------------------------------- |
-| **B** (bold)           | always      | `execCommand('bold')` toggle; lit background when `isBold` |
-| Chain-link icon        | `!isInLink` | Opens URL input popup                                      |
-| Wand icon              | `!isInLink` | Inserts action link immediately                            |
-| Broken-link icon (red) | `isInLink`  | Unwraps `<a>`, removes link                                |
+| Button                 | Condition                       | Action                                                                      |
+| ---------------------- | ------------------------------- | --------------------------------------------------------------------------- |
+| **B** (bold)           | always                          | `execCommand('bold')` toggle; orange background when `isBold`               |
+| _I_ (italic)           | always                          | `execCommand('italic')` toggle; orange background when `isItalic`           |
+| X₂ (subscript)         | always (optional per component) | `execCommand('subscript')` toggle; orange background when `isSubscript`     |
+| X² (superscript)       | always (optional per component) | `execCommand('superscript')` toggle; orange background when `isSuperscript` |
+| Chain-link icon        | `!isInLink`                     | Opens URL input dropdown below the toolbar                                  |
+| Wand icon              | `!isInLink`                     | Inserts action link immediately                                             |
+| Broken-link icon (red) | `isInLink`                      | Unwraps `<a>`, removes link                                                 |
 
 ---
 
@@ -468,3 +477,6 @@ const handleToggleSource = () => {
 - **Always** prefix `rte-link` and `rte-action-link` with the component's own container class (e.g. `.faq-answer a.rte-link`) — never use bare `.rte-link` or `.rte-action-link` as they are shared names.
 - **Always** store `originalHtmlRef.current = value` when entering source mode. On exit, compare the draft to `htmlToMarkdown(originalHtmlRef.current)` — if unchanged, restore the original HTML. Action links (`data-action-id`) cannot survive a Markdown round-trip; without this guard, toggling source mode and back silently destroys them.
 - **Never** use hardcoded CSS values in `ScopedStyle` for link colors/decoration when state fields exist — drive them from state so editor settings take effect immediately.
+- **Never** conditionally render the toolbar — it must always be visible above the editor. Control button appearance (highlighted state, disabled) instead of hiding the whole bar.
+- **Always** put `onMouseDown={e => e.preventDefault()}` on the toolbar container div. Without it, clicking a toolbar button blurs the contentEditable and clears the selection before `execCommand` runs, so bold/italic/link have no effect.
+- Italic (`execCommand('italic')`) does not require DOM unwrapping — toggling it again removes the `<em>`. No special removal handler is needed, unlike links.
