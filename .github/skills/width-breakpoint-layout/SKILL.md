@@ -67,111 +67,73 @@ widthBreakpoint2: getNumberValue(state && state.widthBreakpoint2, 480),
 Add these classes alongside the component's existing ScopedStyle block:
 
 ```css
-.cmp-settings-subsection-heading {
-  margin: 16px 0;
-  padding-top: 16px;
-  color: #000000;
-  font-size: 14px;
-  letter-spacing: 0.02em;
-  font-weight: 700;
-  line-height: 1.2;
-  text-transform: capitalize;
-}
-.cmp-bp-hint {
-  font-size: 11px;
-  color: #9ca3af;
-  line-height: 1.4;
-  margin-top: 4px;
-}
 .cmp-bp-hint--error {
+  font-size: 11px;
   color: #ef4444;
+  line-height: 1.4;
   margin-top: 2px;
   margin-bottom: 8px;
-}
-.cmp-bp-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
-  gap: 8px;
 }
 ```
 
 Replace `cmp-` with the component's own prefix.
 
-### 3-column per-breakpoint input pattern
+### Dropdown breakpoint switcher pattern
 
-When `state.hasWidthBreakpoint` is **false**, render the setting as a normal single `SettingItem` (unchanged). When **true**, replace it with a SubSectionHeading + 3-column grid. Column order left → right is **small → large**: compact (≤ BP2) · mid (≤ BP1) · Initial.
+Each breakpoint-sensitive setting uses a local `useState` view selector. When `state.hasWidthBreakpoint` is **false** the dropdown is hidden and the setting behaves normally — no layout change needed. When **true**, a `Dropdown` appears above the input so the user can switch which breakpoint tier they are editing.
 
-Each column cell uses a `Label` with a `help` prop that describes when it applies:
+**Step 1 — add a view state per setting** (in `Settings`):
 
-```jsx
-{
-  state.hasWidthBreakpoint ? (
-    <>
-      <div className="cmp-settings-subsection-heading">Columns (Desktop)</div>
-      <div className="cmp-bp-grid">
-        <SettingItem>
-          <Label
-            content={`\u2264 ${Number(state.widthBreakpoint2) || 480}px`}
-            help={`The number of columns shown when the component size is below ${Number(state.widthBreakpoint2) || 480}px.`}
-          />
-          <NumberInput
-            max={6}
-            min={1}
-            value={state.columnsCompact}
-            onChange={(val) => setState({ ...state, columnsCompact: val })}
-          />
-        </SettingItem>
-        <SettingItem>
-          <Label
-            content={`\u2264 ${Number(state.widthBreakpoint) || 768}px`}
-            help={`The number of columns shown when the component size is below ${Number(state.widthBreakpoint) || 768}px.`}
-          />
-          <NumberInput
-            max={6}
-            min={1}
-            value={state.columnsMid}
-            onChange={(val) => setState({ ...state, columnsMid: val })}
-          />
-        </SettingItem>
-        <SettingItem>
-          <Label
-            content="Initial"
-            help="The number of columns shown at full width."
-          />
-          <NumberInput
-            max={6}
-            min={1}
-            value={state.columns}
-            onChange={(val) => setState({ ...state, columns: val })}
-          />
-        </SettingItem>
-      </div>
-    </>
-  ) : (
-    <SettingItem>
-      <Label
-        content="Columns (Desktop)"
-        help="Number of cards shown per row."
-      />
-      <NumberInput
-        max={6}
-        min={1}
-        value={state.columns}
-        onChange={(val) => setState({ ...state, columns: val })}
-      />
-    </SettingItem>
-  );
-}
+```js
+const [columnsBpView, setColumnsBpView] = useState('default')
 ```
 
-Apply the same pattern to any other per-breakpoint setting (gap, padding, font size, etc.).
+**Step 2 — derive the active state key**:
 
-**Rules for the 3-column grid:**
+```js
+const columnsKey = !state.hasWidthBreakpoint || columnsBpView === 'default'
+  ? 'columns'
+  : columnsBpView === 'Mid' ? 'columnsMid' : 'columnsCompact'
+```
 
-- Always order columns **compact · mid · initial** (small → large) so values increase left to right.
-- Use a SubSectionHeading as the label for the group — not a `Label` above the grid.
-- Put the `help` text on each individual `Label` so the breakpoint value is always visible in context. Do not add a shared hint `<div>` below the grid.
-- Prefix classes with the component's own name (`services-`, `carousel-`, etc.) — never use `cmp-` literally.
+**Step 3 — render the setting**:
+
+```jsx
+<SettingItem>
+  <Label
+    content="Columns"
+    help={state.hasWidthBreakpoint
+      ? 'Select which breakpoint to edit. Desktop applies when the component is wider than Breakpoint 1.'
+      : undefined}
+  />
+  {state.hasWidthBreakpoint && (
+    <Dropdown
+      options={[
+        { value: 'default', text: 'Desktop' },
+        { value: 'Mid', text: `\u2264 ${state.widthBreakpoint || 768}px` },
+        { value: 'Compact', text: `\u2264 ${state.widthBreakpoint2 || 480}px` },
+      ]}
+      value={columnsBpView}
+      onChange={setColumnsBpView}
+    />
+  )}
+  <NumberInput
+    max={6}
+    min={1}
+    value={state[columnsKey]}
+    onChange={(val) => setState({ ...state, [columnsKey]: val })}
+  />
+</SettingItem>
+```
+
+Apply the same pattern to every other per-breakpoint setting (gap, padding, font size, etc.). Each gets its own `xyzBpView` state variable and derived `xyzKey`.
+
+**Rules for the dropdown switcher:**
+
+- Dropdown options are always `Desktop` · `≤ BP1px` · `≤ BP2px` in that order.
+- The `Label` `help` prop is **conditional** — only provide it when `state.hasWidthBreakpoint` is true, so no tooltip appears when breakpoints are disabled.
+- The dropdown is only rendered when `state.hasWidthBreakpoint` is true; the `SettingItem` wrapper and `Label` are always present.
+- Use `'default'` as the initial view state value so the Desktop tier is active before the user touches anything.
 
 ### Advanced tab — responsive width section
 
@@ -353,10 +315,10 @@ Attach `ref={containerRef}` to the outermost div returned by `Component`.
 - [ ] Five base fields added to `common.js` before `...state` (`hasWidthBreakpoint`, `widthBreakpoint`, `widthBreakpoint2`, `previewWidthInLiveView`, `currentComponentWidth`)
 - [ ] Per-breakpoint value triples (`xyzCompact`, `xyzMid`, `xyz`) added for each layout-sensitive setting
 - [ ] All numeric fields re-normalized after `...state`
-- [ ] ScopedStyle has subsection heading, `cmp-bp-hint`, `cmp-bp-hint--error`, and `cmp-bp-grid` classes (prefixed correctly)
-- [ ] Per-breakpoint settings render as SubSectionHeading + 3-column grid when `hasWidthBreakpoint` is true, single input when false
-- [ ] 3-column grid order is compact · mid · initial (small → large, left → right)
-- [ ] Each column's `Label` has a `help` prop describing when that value applies
+- [ ] ScopedStyle has `cmp-bp-hint--error` class (prefixed correctly)
+- [ ] Each breakpoint-sensitive setting has a `xyzBpView` local state variable and a derived `xyzKey`
+- [ ] Dropdown options are `Desktop` · `≤ BP1px` · `≤ BP2px` and only rendered when `hasWidthBreakpoint` is true
+- [ ] `Label` `help` prop is conditional on `state.hasWidthBreakpoint`
 - [ ] Advanced tab has one "responsive width" section with BP1 input, BP2 input, error hint when BP2 ≥ BP1, and overlay checkbox
 - [ ] `getSizeTypes` is unchanged (unless height switching is also required — see note above)
 - [ ] No CSS `@media` queries used for layout switching
