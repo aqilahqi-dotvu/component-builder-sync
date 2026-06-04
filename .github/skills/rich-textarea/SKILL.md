@@ -415,6 +415,84 @@ Replace `.your-component-answer` with the class on the `dangerouslySetInnerHTML`
 | Wand icon              | `!isInLink`                     | Inserts action link immediately                                             |
 | Broken-link icon (red) | `isInLink`                      | Unwraps `<a>`, removes link                                                 |
 
+### Canonical toolbar icons
+
+Use these exact inline SVGs. Render them at 14×14 px (11×11 + 9×9 for the unlink pair) and use `fill="currentColor"` so they inherit the button's text color.
+
+**Link (chain icon)**
+
+```jsx
+const IconLink = () => (
+  <svg
+    height="14"
+    viewBox="0 0 16 16"
+    width="14"
+    xmlns="http://www.w3.org/2000/svg"
+  >
+    <path
+      d="M6.9 9.9c-0.2 0-0.4-0.1-0.6-0.2-1.5-1.5-1.5-3.9 0-5.4l3-3c0.7-0.7 1.7-1.1 2.7-1.1s2 0.4 2.7 1.1c1.5 1.5 1.5 3.9 0 5.4l-1.4 1.4c-0.3 0.3-0.8 0.3-1.1 0s-0.3-0.8 0-1.1l1.4-1.4c0.9-0.9 0.9-2.2 0-3.1-0.4-0.4-1-0.6-1.5-0.6s-1.1 0.2-1.5 0.6l-3 3c-0.9 0.9-0.9 2.2 0 3.1 0.3 0.3 0.3 0.8 0 1.1-0.2 0.2-0.4 0.2-0.6 0.2zM4 15.8c-1 0-2-0.4-2.7-1.1-1.5-1.5-1.5-3.9 0-5.4l1.4-1.4c0.3-0.3 0.8-0.3 1.1 0s0.3 0.8 0 1.1l-1.4 1.4c-0.9 0.9-0.9 2.2 0 3.1 0.4 0.4 1 0.6 1.5 0.6s1.1-0.2 1.5-0.6l3-3c0.9-0.9 0.9-2.2 0-3.1-0.3-0.3-0.3-0.8 0-1.1s0.8-0.3 1.1 0c1.5 1.5 1.5 3.9 0 5.4l-3 3c-0.7 0.7-1.7 1.1-2.7 1.1z"
+      fill="currentColor"
+    />
+  </svg>
+);
+```
+
+**Action link (wand/magic icon)**
+
+```jsx
+const IconWand = () => (
+  <svg
+    height="14"
+    viewBox="0 0 32 32"
+    width="14"
+    xmlns="http://www.w3.org/2000/svg"
+  >
+    <path
+      d="M8 6l-4-4h-2v2l4 4zM10 0h2v4h-2zM18 10h4v2h-4zM20 4v-2h-2l-4 4 2 2zM0 10h4v2h-4zM10 18h2v4h-2zM2 18v2h2l4-4-2-2zM31.6 27.6l-19.9-19.9c-0.6-0.6-1.5-0.6-2.1 0l-1.9 1.9c-0.6 0.6-0.6 1.5 0 2.1l19.9 19.9c0.6 0.6 1.5 0.6 2.1 0l1.9-1.9c0.6-0.6 0.6-1.5 0-2.1zM15 17l-6-6 2-2 6 6-2 2z"
+      fill="currentColor"
+    />
+  </svg>
+);
+```
+
+**Remove link (chain + ×)**
+
+Two SVGs side by side inside a `<span>`: the same chain icon at 11×11, plus an × mark at 9×9. The button gets red color when `isInLink`.
+
+```jsx
+const IconUnlink = () => (
+  <span style={{ display: "flex", alignItems: "center", gap: "1px" }}>
+    <svg
+      height="11"
+      viewBox="0 0 16 16"
+      width="11"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <path
+        d="M6.9 9.9c-0.2 0-0.4-0.1-0.6-0.2-1.5-1.5-1.5-3.9 0-5.4l3-3c0.7-0.7 1.7-1.1 2.7-1.1s2 0.4 2.7 1.1c1.5 1.5 1.5 3.9 0 5.4l-1.4 1.4c-0.3 0.3-0.8 0.3-1.1 0s-0.3-0.8 0-1.1l1.4-1.4c0.9-0.9 0.9-2.2 0-3.1-0.4-0.4-1-0.6-1.5-0.6s-1.1 0.2-1.5 0.6l-3 3c-0.9 0.9-0.9 2.2 0 3.1 0.3 0.3 0.3 0.8 0 1.1-0.2 0.2-0.4 0.2-0.6 0.2zM4 15.8c-1 0-2-0.4-2.7-1.1-1.5-1.5-1.5-3.9 0-5.4l1.4-1.4c0.3-0.3 0.8-0.3 1.1 0s0.3 0.8 0 1.1l-1.4 1.4c-0.9 0.9-0.9 2.2 0 3.1 0.4 0.4 1 0.6 1.5 0.6s1.1-0.2 1.5-0.6l3-3c0.9-0.9 0.9-2.2 0-3.1-0.3-0.3-0.3-0.8 0-1.1s0.8-0.3 1.1 0c1.5 1.5 1.5 3.9 0 5.4l-3 3c-0.7 0.7-1.7 1.1-2.7 1.1z"
+        fill="currentColor"
+      />
+    </svg>
+    <svg
+      clipRule="evenodd"
+      fillRule="evenodd"
+      height="9"
+      imageRendering="optimizeQuality"
+      shapeRendering="geometricPrecision"
+      textRendering="geometricPrecision"
+      viewBox="0 0 3000 3000"
+      width="9"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <path
+        d="M120 120l0 0c159-160 420-160 580 0l729 729c39 39 103 39 142 0l730-729c159-160 420-160 579 0l0 0c160 159 160 420 0 580l-729 729c-39 39-39 103 0 142l730 730c159 159 159 420-1 579l0 1c-159 159-420 159-579 0l-730-730c-39-39-103-39-142 0l-730 730c-159 159-420 159-579-1l-1 0c-159-159-159-420 0-579l730-730c39-39 39-103 0-142l-729-729c-160-160-160-421 0-580z"
+        fill="currentColor"
+      />
+    </svg>
+  </span>
+);
+```
+
 ---
 
 ## Source toggle button

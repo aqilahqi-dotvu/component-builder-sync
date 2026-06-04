@@ -51,7 +51,52 @@ When storing or rendering SVG chosen through `SvgPicker`, make sure the icon can
 - Do not rely only on normalization. Live rendering should still include defensive CSS overrides for nested SVG shapes.
 - If the component already uses a working SVG color override pattern, reuse it.
 
-Common failure mode: The component adds an `iconColor` field, but the SVG still keeps hardcoded `fill` or `stroke` values, so changing the color picker appears to do nothing. Fix by combining normalization with live CSS overrides.
+## Normalization helper
+
+Use this helper in editor.js to normalize SVG markup before saving. It handles both single- and double-quoted attributes, derives a `viewBox` from `width`/`height` when none exists, and replaces all non-`none` fill/stroke values with `currentColor`.
+
+```js
+function normalizeSvg(markup) {
+  if (!markup) return markup;
+  let result = markup.replace(/<svg\b([^>]*)>/i, (match, attrs) => {
+    const widthMatch = attrs.match(/\bwidth=(["'])([\d.]+)\1/i);
+    const heightMatch = attrs.match(/\bheight=(["'])([\d.]+)\1/i);
+    const hasViewBox = /\bviewBox=/i.test(attrs);
+    let a = attrs
+      .replace(/\s+width=(["'])[^"']*\1/gi, "")
+      .replace(/\s+height=(["'])[^"']*\1/gi, "");
+    const derivedViewBox =
+      !hasViewBox && widthMatch && heightMatch
+        ? ` viewBox="0 0 ${widthMatch[2]} ${heightMatch[2]}"`
+        : "";
+    return `<svg${a}${derivedViewBox}>`;
+  });
+  result = result
+    .replace(/fill=(['"])(?!none\1)([^'"]*)\1/gi, "fill=$1currentColor$1")
+    .replace(/stroke=(['"])(?!none\1)([^'"]*)\1/gi, "stroke=$1currentColor$1");
+  return result;
+}
+```
+
+Apply in `SvgPicker`'s `onChange`:
+
+```jsx
+<SvgPicker
+  value={state.svgMarkup}
+  onChange={(svgMarkup) =>
+    setState({ ...state, svgMarkup: normalizeSvg(svgMarkup) })
+  }
+/>
+```
+
+---
+
+## Common failure modes
+
+1. **Color picker has no effect** — SVG inner shapes still have hardcoded `fill`/`stroke` values. Fix: combine normalization on save with defensive CSS overrides on render.
+2. **Fallback selectors missing** — Many common icon sets (e.g. Material Icons, Heroicons filled) use `path`/`circle`/`rect`/`polygon` with **no `fill` attribute** at all, so attribute selectors like `*[fill]:not([fill="none"])` miss them entirely. Always include the element-type fallback selectors.
+3. **Single-quoted attributes not normalized** — Regex that only matches double quotes will miss SVGs with single-quoted attributes. Use `(['"])` capture groups.
+4. **No viewBox, fixed size** — SVG without `viewBox` will distort when the `width`/`height` attributes are stripped. Derive a `viewBox` from the original numeric dimensions before removing them.
 
 ---
 
@@ -84,6 +129,16 @@ Good live CSS pattern:
 
 .icon-wrap svg *[stroke]:not([stroke="none"]) {
   stroke: currentColor !important;
+}
+
+/* Critical: many common icons (e.g. Material Icons) use path/circle/rect/polygon
+   with NO explicit fill attribute — they inherit the root SVG fill.
+   The selectors above miss these entirely. Always include this fallback: */
+.icon-wrap svg path:not([fill="none"]):not([stroke]),
+.icon-wrap svg circle:not([fill="none"]):not([stroke]),
+.icon-wrap svg rect:not([fill="none"]):not([stroke]),
+.icon-wrap svg polygon:not([fill="none"]):not([stroke]) {
+  fill: currentColor !important;
 }
 ```
 
