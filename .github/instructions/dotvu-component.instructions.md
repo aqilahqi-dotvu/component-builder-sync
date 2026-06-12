@@ -92,25 +92,29 @@ Use a component-prefixed heading class for each meaningful group:
 
 Use lowercase heading labels such as `copy`, `items`, `typography`, `colors`, `layout`, `shadow`, `responsive width`, and `motion`.
 
+Always load the `settings-section-headings` skill when adding headings to any settings panel. Use the exact CSS and class naming from that skill.
+
 Include this editor scoped style when headings are used:
 
 ```css
 .faq-settings-section-heading {
   margin: 0 0 12px 0;
   color: #000000;
-  font-size: 12px;
+  font-size: 13px;
   font-weight: 700;
   letter-spacing: 0.08em;
   line-height: 1.2;
   text-transform: uppercase;
 }
 
-.faq-settings-sub-section-heading {
-  margin: 12px 0;
+.faq-settings-subsection-heading {
+  margin: 16px 0;
+  padding-top: 16px;
   color: #000000;
-  font-size: 12px;
+  font-size: 14px;
+  letter-spacing: 0.02em;
   font-weight: 700;
-  line-height: 1;
+  line-height: 1.2;
   text-transform: capitalize;
 }
 ```

@@ -417,81 +417,170 @@ Replace `.your-component-answer` with the class on the `dangerouslySetInnerHTML`
 
 ### Canonical toolbar icons
 
-Use these exact inline SVGs. Render them at 14×14 px (11×11 + 9×9 for the unlink pair) and use `fill="currentColor"` so they inherit the button's text color.
+Use these exact inline SVGs. Render them at 14×14 px and use `fill="currentColor"` so they inherit the button's text color. These are Material Symbols icons (`viewBox="0 -960 960 960"`).
 
-**Link (chain icon)**
+**Link icon**
 
 ```jsx
 const IconLink = () => (
   <svg
+    fill="currentColor"
     height="14"
-    viewBox="0 0 16 16"
+    viewBox="0 -960 960 960"
     width="14"
     xmlns="http://www.w3.org/2000/svg"
   >
-    <path
-      d="M6.9 9.9c-0.2 0-0.4-0.1-0.6-0.2-1.5-1.5-1.5-3.9 0-5.4l3-3c0.7-0.7 1.7-1.1 2.7-1.1s2 0.4 2.7 1.1c1.5 1.5 1.5 3.9 0 5.4l-1.4 1.4c-0.3 0.3-0.8 0.3-1.1 0s-0.3-0.8 0-1.1l1.4-1.4c0.9-0.9 0.9-2.2 0-3.1-0.4-0.4-1-0.6-1.5-0.6s-1.1 0.2-1.5 0.6l-3 3c-0.9 0.9-0.9 2.2 0 3.1 0.3 0.3 0.3 0.8 0 1.1-0.2 0.2-0.4 0.2-0.6 0.2zM4 15.8c-1 0-2-0.4-2.7-1.1-1.5-1.5-1.5-3.9 0-5.4l1.4-1.4c0.3-0.3 0.8-0.3 1.1 0s0.3 0.8 0 1.1l-1.4 1.4c-0.9 0.9-0.9 2.2 0 3.1 0.4 0.4 1 0.6 1.5 0.6s1.1-0.2 1.5-0.6l3-3c0.9-0.9 0.9-2.2 0-3.1-0.3-0.3-0.3-0.8 0-1.1s0.8-0.3 1.1 0c1.5 1.5 1.5 3.9 0 5.4l-3 3c-0.7 0.7-1.7 1.1-2.7 1.1z"
-      fill="currentColor"
-    />
+    <path d="M328-160q-69.69 0-118.85-49.15Q160-258.31 160-328q0-33.85 12.31-64.46 12.31-30.62 36.46-54.77l120.92-119.92 28.31 28.3-120.92 120.16q-18.54 18.54-28.2 41.96-9.65 23.42-9.65 48.73 0 53.62 37.58 90.81Q274.38-200 328-200q25.31 0 48.85-9.65 23.53-9.66 42.07-28.2L539.62-358l28.53 28.54-120.92 119.92q-24.15 24.16-54.77 36.85Q361.85-160 328-160Zm73.62-213.85-27.77-28.53 184.53-184.54 28.54 28.54-185.3 184.53Zm228.69-18.77L602-420.38l120.92-120.7q17.77-17.77 27.31-40.69 9.54-22.92 9.54-48.23 0-53.85-37.46-91.92Q684.85-760 631-760q-25.31 0-48.73 9.65-23.42 9.66-41.19 27.43L420.38-602l-27.76-28.31 120.15-120.15q24.15-24.16 54.77-36.85Q598.15-800 632-800q69.69 0 118.73 49.54 49.04 49.54 49.04 119.46 0 33.62-12.19 63.85-12.2 30.23-36.35 54.38L630.31-392.62Z" />
   </svg>
 );
 ```
 
-**Action link (wand/magic icon)**
+**Action link (wand icon)**
 
 ```jsx
 const IconWand = () => (
   <svg
+    fill="currentColor"
     height="14"
-    viewBox="0 0 32 32"
+    viewBox="0 -960 960 960"
     width="14"
     xmlns="http://www.w3.org/2000/svg"
   >
-    <path
-      d="M8 6l-4-4h-2v2l4 4zM10 0h2v4h-2zM18 10h4v2h-4zM20 4v-2h-2l-4 4 2 2zM0 10h4v2h-4zM10 18h2v4h-2zM2 18v2h2l4-4-2-2zM31.6 27.6l-19.9-19.9c-0.6-0.6-1.5-0.6-2.1 0l-1.9 1.9c-0.6 0.6-0.6 1.5 0 2.1l19.9 19.9c0.6 0.6 1.5 0.6 2.1 0l1.9-1.9c0.6-0.6 0.6-1.5 0-2.1zM15 17l-6-6 2-2 6 6-2 2z"
-      fill="currentColor"
-    />
+    <path d="m346.38-664.08-91.53-91.54 28.53-28.53 91.54 91.53-28.54 28.54ZM500-750.62v-130h40v130h-40Zm255.62 495.77-91.54-91.53 28.54-28.54 91.53 91.54-28.53 28.53ZM708-679.46 679.46-708 771-799.54 799.54-771 708-679.46ZM750.62-500v-40h130v40h-130ZM206.54-139.69l-67.62-67.62q-9.69-9.69-9.69-22.61 0-12.93 9.69-22.62l340.7-340.92q23.23-23.46 56.42-23.46t56.65 23.28q23.46 23.28 23.46 56.54 0 33.25-23.46 56.72L251.77-139.69q-9.69 9.69-22.62 9.69-12.92 0-22.61-9.69Zm273.61-284.23-14.5-14-14.5-14-14-14-14-14 28 28 29 28Zm-251 251 251-251-57-56-250 250 56 57Z" />
   </svg>
 );
 ```
 
-**Remove link (chain + ×)**
+**Remove link icon**
 
-Two SVGs side by side inside a `<span>`: the same chain icon at 11×11, plus an × mark at 9×9. The button gets red color when `isInLink`.
+A single SVG at 14×14. The button gets red (`#dc2626`) color when `isInLink`.
 
 ```jsx
 const IconUnlink = () => (
-  <span style={{ display: "flex", alignItems: "center", gap: "1px" }}>
-    <svg
-      height="11"
-      viewBox="0 0 16 16"
-      width="11"
-      xmlns="http://www.w3.org/2000/svg"
-    >
-      <path
-        d="M6.9 9.9c-0.2 0-0.4-0.1-0.6-0.2-1.5-1.5-1.5-3.9 0-5.4l3-3c0.7-0.7 1.7-1.1 2.7-1.1s2 0.4 2.7 1.1c1.5 1.5 1.5 3.9 0 5.4l-1.4 1.4c-0.3 0.3-0.8 0.3-1.1 0s-0.3-0.8 0-1.1l1.4-1.4c0.9-0.9 0.9-2.2 0-3.1-0.4-0.4-1-0.6-1.5-0.6s-1.1 0.2-1.5 0.6l-3 3c-0.9 0.9-0.9 2.2 0 3.1 0.3 0.3 0.3 0.8 0 1.1-0.2 0.2-0.4 0.2-0.6 0.2zM4 15.8c-1 0-2-0.4-2.7-1.1-1.5-1.5-1.5-3.9 0-5.4l1.4-1.4c0.3-0.3 0.8-0.3 1.1 0s0.3 0.8 0 1.1l-1.4 1.4c-0.9 0.9-0.9 2.2 0 3.1 0.4 0.4 1 0.6 1.5 0.6s1.1-0.2 1.5-0.6l3-3c0.9-0.9 0.9-2.2 0-3.1-0.3-0.3-0.3-0.8 0-1.1s0.8-0.3 1.1 0c1.5 1.5 1.5 3.9 0 5.4l-3 3c-0.7 0.7-1.7 1.1-2.7 1.1z"
-        fill="currentColor"
-      />
-    </svg>
-    <svg
-      clipRule="evenodd"
-      fillRule="evenodd"
-      height="9"
-      imageRendering="optimizeQuality"
-      shapeRendering="geometricPrecision"
-      textRendering="geometricPrecision"
-      viewBox="0 0 3000 3000"
-      width="9"
-      xmlns="http://www.w3.org/2000/svg"
-    >
-      <path
-        d="M120 120l0 0c159-160 420-160 580 0l729 729c39 39 103 39 142 0l730-729c159-160 420-160 579 0l0 0c160 159 160 420 0 580l-729 729c-39 39-39 103 0 142l730 730c159 159 159 420-1 579l0 1c-159 159-420 159-579 0l-730-730c-39-39-103-39-142 0l-730 730c-159 159-420 159-579-1l-1 0c-159-159-159-420 0-579l730-730c39-39 39-103 0-142l-729-729c-160-160-160-421 0-580z"
-        fill="currentColor"
-      />
-    </svg>
-  </span>
+  <svg
+    fill="currentColor"
+    height="14"
+    viewBox="0 -960 960 960"
+    width="14"
+    xmlns="http://www.w3.org/2000/svg"
+  >
+    <path d="M740.77-329.69 710-360.92q40.77-11 65.38-44.04Q800-438 800-480q0-50.77-35.77-86.92-35.77-36.16-85.77-36.16H533.85v-40h144.61q66.85 0 114.19 47.73Q840-547.62 840-480q0 49.31-27.58 89.23-27.57 39.92-71.65 61.08ZM612.46-460l-40-40h46v40h-6ZM819.69-83.69l-736-736L112-848l736 736-28.31 28.31ZM426.15-316.92H283.08q-67.62 0-115.35-47.73Q120-412.38 120-480q0-64.38 43.92-111.08 43.93-46.69 107.62-50.61H290l38.62 38.61h-45.54q-50.77 0-86.93 36.16Q160-530.77 160-480t36.15 86.92q36.16 36.16 86.93 36.16h143.07v40ZM341.54-460v-40h90.38l39 40H341.54Z" />
+  </svg>
 );
 ```
+
+---
+
+## Canonical inline styles
+
+Use these exact inline style values for the wrapper, toolbar, buttons, and content area. They are derived from the platform design system and match the editor UI.
+
+```jsx
+{
+  /* Outer wrapper */
+}
+<div
+  style={{ border: "1px solid #d1d5db", borderRadius: 6, overflow: "hidden" }}
+>
+  {/* Toolbar */}
+  <div
+    style={{
+      display: "flex",
+      alignItems: "center",
+      gap: 2,
+      padding: "4px 6px",
+      background: "#f9fafb",
+      borderBottom: "1px solid #d1d5db",
+    }}
+    onMouseDown={(e) => e.preventDefault()}
+  >
+    {/* B / I buttons — fontSize: 13 */}
+    <button
+      style={{
+        background: isActive ? "#f57b37" : "transparent",
+        border: "none",
+        borderRadius: 4,
+        color: isActive ? "#fff" : "#374151",
+        cursor: "pointer",
+        fontSize: 13,
+        fontWeight: "bold",
+        lineHeight: "18px",
+        padding: "3px 8px",
+      }}
+      type="button"
+    >
+      B
+    </button>
+
+    {/* X₂ / X² buttons — fontSize: 11 (smaller to fit sub/superscript label) */}
+    <button
+      style={{
+        background: isActive ? "#f57b37" : "transparent",
+        border: "none",
+        borderRadius: 4,
+        color: isActive ? "#fff" : "#374151",
+        cursor: "pointer",
+        fontSize: 11,
+        lineHeight: "18px",
+        padding: "3px 8px",
+      }}
+      type="button"
+    >
+      X<sub>2</sub>
+    </button>
+
+    {/* Icon buttons (link, wand, unlink) — use padding: '3px 6px' */}
+    <button
+      style={{
+        background: "transparent",
+        border: "none",
+        borderRadius: 4,
+        color:
+          "#374151" /* red (#dc2626) when isInLink for the unlink button */,
+        cursor: "pointer",
+        display: "flex",
+        alignItems: "center",
+        lineHeight: "18px",
+        padding: "3px 6px",
+      }}
+      type="button"
+    >
+      <IconLink />
+    </button>
+  </div>
+
+  {/* ContentEditable area */}
+  <div
+    contentEditable
+    suppressContentEditableWarning
+    ref={editorRef}
+    style={{
+      boxSizing: "border-box",
+      fontSize: 13,
+      lineHeight: 1.5,
+      minHeight: 80,
+      outline: "none",
+      padding: "8px 10px",
+      width: "100%",
+    }}
+    onInput={handleInput}
+    onKeyUp={checkSelection}
+    onMouseUp={checkSelection}
+  />
+</div>;
+```
+
+### Style reference table
+
+| Element                           | Key values                                                                                                                                                                   |
+| --------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Wrapper                           | `border: '1px solid #d1d5db'`, `borderRadius: 6`, `overflow: 'hidden'`                                                                                                       |
+| Toolbar                           | `background: '#f9fafb'`, `borderBottom: '1px solid #d1d5db'`, `padding: '4px 6px'`, `gap: 2`                                                                                 |
+| B / I button (inactive)           | `background: 'transparent'`, `color: '#374151'`, `fontSize: 13`, `padding: '3px 8px'`                                                                                        |
+| B / I button (active)             | `background: '#f57b37'`, `color: '#fff'`                                                                                                                                     |
+| X₂ / X² button                    | same as B/I but `fontSize: 11`                                                                                                                                               |
+| Icon buttons (link, wand, unlink) | same inactive/active as B/I, `padding: '3px 6px'`, `display: 'flex'`, `alignItems: 'center'`; unlink button uses `color: '#dc2626'` (instead of `'#374151'`) when `isInLink` |
+| ContentEditable                   | `fontSize: 13`, `lineHeight: 1.5`, `minHeight: 80`, `padding: '8px 10px'`, `outline: 'none'`, `width: '100%'`, `boxSizing: 'border-box'`                                     |
 
 ---
 
