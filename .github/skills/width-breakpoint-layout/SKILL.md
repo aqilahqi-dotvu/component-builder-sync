@@ -1,6 +1,6 @@
 ---
 name: width-breakpoint-layout
-description: 'Add layout stacking based on the component's own measured width, without changing height behavior. Use when a component needs to switch layouts at two configurable width thresholds (tablet and mobile) — different from breakpoint-height which changes RESIZABLE vs CONTENT_BASED height mode.'
+description: 'Add layout stacking based on the component\'s own measured width, without changing height behavior. Use when a component needs to switch layouts at two configurable width thresholds (Breakpoint M and Breakpoint S) — different from breakpoint-height which changes RESIZABLE vs CONTENT_BASED height mode.'
 ---
 
 # Width Breakpoint Layout
@@ -9,8 +9,10 @@ Use this skill when the component needs to change its **layout** (e.g. column co
 
 Two breakpoints are supported:
 
-- **Breakpoint 1 (BP1)** — wider threshold (e.g. 768px, tablet). Mid-width values apply at or below this.
-- **Breakpoint 2 (BP2)** — narrower threshold (e.g. 480px, mobile). Compact values apply at or below this. **Must be lower than BP1** — enforced by an inline validation hint in the editor; the runtime clamps `bp2 = min(bp1 - 1, bp2)` defensively.
+- **Breakpoint M (BP1)** — wider threshold (default 768px). Mid-width values apply at or below this.
+- **Breakpoint S (BP2)** — narrower threshold (default 480px). Compact values apply at or below this. **Must be lower than Breakpoint M** — enforced by an inline validation hint in the editor; the runtime clamps `bp2 = min(bp1 - 1, bp2)` defensively.
+
+The naming is intentionally size-based (L / M / S) rather than device-based (desktop / tablet / mobile) because these thresholds refer to the **component's own rendered width**, not the browser viewport.
 
 > This is different from the `breakpoint-height` skill, which changes the height mode between RESIZABLE and CONTENT_BASED. This pattern keeps height as-is and only drives layout changes.
 
@@ -30,8 +32,8 @@ Add these fields before `...state`:
 
 ```js
 hasWidthBreakpoint: false,
-widthBreakpoint: 768,    // BP1 — tablet/mid threshold
-widthBreakpoint2: 480,   // BP2 — mobile/compact threshold (must be < BP1)
+widthBreakpoint: 768,    // BP1 — Breakpoint M threshold
+widthBreakpoint2: 480,   // BP2 — Breakpoint S threshold (must be < BP1)
 previewWidthInLiveView: false,
 currentComponentWidth: 0,
 ```
@@ -78,64 +80,73 @@ Add these classes alongside the component's existing ScopedStyle block:
 
 Replace `cmp-` with the component's own prefix.
 
-### Dropdown breakpoint switcher pattern
+### Style tab — per-breakpoint column settings
 
-Each breakpoint-sensitive setting uses a local `useState` view selector. When `state.hasWidthBreakpoint` is **false** the dropdown is hidden and the setting behaves normally — no layout change needed. When **true**, a `Dropdown` appears above the input so the user can switch which breakpoint tier they are editing.
-
-**Step 1 — add a view state per setting** (in `Settings`):
-
-```js
-const [columnsBpView, setColumnsBpView] = useState('default')
-```
-
-**Step 2 — derive the active state key**:
-
-```js
-const columnsKey = !state.hasWidthBreakpoint || columnsBpView === 'default'
-  ? 'columns'
-  : columnsBpView === 'Mid' ? 'columnsMid' : 'columnsCompact'
-```
-
-**Step 3 — render the setting**:
+When `state.hasWidthBreakpoint` is **false**, show the setting normally (single value). When **true**, show three sub-section headings — **Breakpoint L**, **Breakpoint M**, **Breakpoint S** — each with its own input.
 
 ```jsx
-<SettingItem>
-  <Label
-    content="Columns"
-    help={state.hasWidthBreakpoint
-      ? 'Select which breakpoint to edit. Desktop applies when the component is wider than Breakpoint 1.'
-      : undefined}
-  />
-  {state.hasWidthBreakpoint && (
-    <Dropdown
-      options={[
-        { value: 'default', text: 'Desktop' },
-        { value: 'Mid', text: `\u2264 ${state.widthBreakpoint || 768}px` },
-        { value: 'Compact', text: `\u2264 ${state.widthBreakpoint2 || 480}px` },
-      ]}
-      value={columnsBpView}
-      onChange={setColumnsBpView}
-    />
-  )}
-  <NumberInput
-    max={6}
-    min={1}
-    value={state[columnsKey]}
-    onChange={(val) => setState({ ...state, [columnsKey]: val })}
-  />
-</SettingItem>
+{
+  !state.hasWidthBreakpoint ? (
+    <SettingItem>
+      <Label content="Columns" />
+      <NumberInput
+        max={6}
+        min={1}
+        value={state.columns}
+        onChange={(val) => setState({ ...state, columns: val })}
+      />
+    </SettingItem>
+  ) : (
+    <>
+      <div className="cmp-settings-subsection-heading">Breakpoint L</div>
+      <SettingItem>
+        <Label
+          content="Columns"
+          help="Applies when the component width is wider than the Breakpoint M threshold."
+        />
+        <NumberInput
+          max={6}
+          min={1}
+          value={state.columns}
+          onChange={(val) => setState({ ...state, columns: val })}
+        />
+      </SettingItem>
+      <div className="cmp-settings-subsection-heading">Breakpoint M</div>
+      <SettingItem>
+        <Label
+          content="Columns"
+          help="Applies when the component width is at or below the Breakpoint M threshold."
+        />
+        <NumberInput
+          max={6}
+          min={1}
+          value={state.columnsMid}
+          onChange={(val) => setState({ ...state, columnsMid: val })}
+        />
+      </SettingItem>
+      <div className="cmp-settings-subsection-heading">Breakpoint S</div>
+      <SettingItem>
+        <Label
+          content="Columns"
+          help="Applies when the component width is at or below the Breakpoint S threshold."
+        />
+        <NumberInput
+          max={6}
+          min={1}
+          value={state.columnsCompact}
+          onChange={(val) => setState({ ...state, columnsCompact: val })}
+        />
+      </SettingItem>
+    </>
+  );
+}
 ```
 
-Apply the same pattern to every other per-breakpoint setting (gap, padding, font size, etc.). Each gets its own `xyzBpView` state variable and derived `xyzKey`.
-
-**Rules for the dropdown switcher:**
-
-- Dropdown options are always `Desktop` · `≤ BP1px` · `≤ BP2px` in that order.
-- The `Label` `help` prop is **conditional** — only provide it when `state.hasWidthBreakpoint` is true, so no tooltip appears when breakpoints are disabled.
-- The dropdown is only rendered when `state.hasWidthBreakpoint` is true; the `SettingItem` wrapper and `Label` are always present.
-- Use `'default'` as the initial view state value so the Desktop tier is active before the user touches anything.
+Apply the same sub-section pattern to every other per-breakpoint setting (gap, padding, font size, etc.).
 
 ### Advanced tab — responsive width section
+
+The breakpoint threshold values and the enable/disable toggle always live in the **Advanced** tab. The per-breakpoint layout values (columns, gaps, etc.) live in the **Style** tab under their own sub-sections.
 
 ```jsx
 <Tab id="advanced" title="Advanced">
@@ -152,8 +163,8 @@ Apply the same pattern to every other per-breakpoint setting (gap, padding, font
       <>
         <SettingItem>
           <Label
-            content="Breakpoint 1 (px)"
-            help="When the component width drops to or below this value, the mid-width values apply."
+            content="Breakpoint M (px)"
+            help="When the component width drops to or below this value, the Breakpoint M values apply."
           />
           <NumberInput
             max={2000}
@@ -165,8 +176,8 @@ Apply the same pattern to every other per-breakpoint setting (gap, padding, font
         </SettingItem>
         <SettingItem>
           <Label
-            content="Breakpoint 2 (px)"
-            help="When the component width drops to or below this value, the compact values apply. Must be lower than Breakpoint 1."
+            content="Breakpoint S (px)"
+            help="When the component width drops to or below this value, the Breakpoint S values apply. Must be lower than Breakpoint M."
           />
           <NumberInput
             max={2000}
@@ -178,7 +189,7 @@ Apply the same pattern to every other per-breakpoint setting (gap, padding, font
         </SettingItem>
         {Number(state.widthBreakpoint2) >= Number(state.widthBreakpoint) && (
           <div className="cmp-bp-hint cmp-bp-hint--error">
-            Must be lower than Breakpoint 1 (
+            Must be lower than Breakpoint M (
             {Number(state.widthBreakpoint) || 768}px)
           </div>
         )}
