@@ -84,17 +84,16 @@ Standard tabs:
 
 Inside each tab, group controls into `<Section>` blocks. Do not leave a tab as one long flat list.
 
-Use a component-prefixed heading class for each meaningful group:
+Use component-prefixed heading classes for groups. Follow the rules in the `settings-section-headings` skill:
 
-```jsx
-<div className="faq-settings-section-heading">typography</div>
-```
+- **SectionHeading**: Rendered in uppercase with wide letter-spacing. Use as the first child of a `<Section>`.
+- **SubSectionHeading**: Rendered with `text-transform: capitalize` and no letter-spacing. Use for internal grouping within long sections.
 
 Use lowercase heading labels such as `copy`, `items`, `typography`, `colors`, `layout`, `shadow`, `responsive width`, and `motion`.
 
 Always load the `settings-section-headings` skill when adding headings to any settings panel. Use the exact CSS and class naming from that skill.
 
-Include this editor scoped style when headings are used:
+Include this editor scoped style:
 
 ```css
 .faq-settings-section-heading {

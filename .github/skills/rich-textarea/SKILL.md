@@ -567,6 +567,67 @@ Use these exact inline style values for the wrapper, toolbar, buttons, and conte
     onKeyUp={checkSelection}
     onMouseUp={checkSelection}
   />
+
+  {/* ✅ ActionSet list — configure Dot.vu actions for links in the text */}
+  {!showSource && linkActions && linkActions.length > 0 && (
+    <div
+      style={{
+        borderTop: "1px solid #d1d5db",
+        background: "#f9fafb",
+        padding: "10px 10px",
+      }}
+    >
+      <div
+        style={{
+          fontSize: 11,
+          fontWeight: 700,
+          textTransform: "uppercase",
+          marginBottom: 8,
+          color: "#6b7280",
+          letterSpacing: "0.05em",
+        }}
+      >
+        Action Links
+      </div>
+      <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
+        {linkActions.map((link) => (
+          <div key={link.id}>
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "space-between",
+                alignItems: "center",
+                marginBottom: 4,
+              }}
+            >
+              <span style={{ fontSize: 13, fontWeight: 500, color: "#111827" }}>
+                {getActionLinkText(value, link.id)}
+              </span>
+              <button
+                style={{
+                  background: "transparent",
+                  border: "none",
+                  borderRadius: 4,
+                  color: "#dc2626",
+                  cursor: "pointer",
+                  fontSize: 11,
+                  padding: "2px 4px",
+                }}
+                type="button"
+                onClick={() => onRemoveActionLink(link.id)}
+              >
+                Remove
+              </button>
+            </div>
+            <ActionSet
+              value={link.actionSet || []}
+              onChange={(actionSet) => onUpdateActionLink(link.id, actionSet)}
+            />
+          </div>
+        ))}
+      </div>
+    </div>
+  )}
 </div>;
 ```
 
@@ -581,6 +642,7 @@ Use these exact inline style values for the wrapper, toolbar, buttons, and conte
 | X₂ / X² button                    | same as B/I but `fontSize: 11`                                                                                                                                               |
 | Icon buttons (link, wand, unlink) | same inactive/active as B/I, `padding: '3px 6px'`, `display: 'flex'`, `alignItems: 'center'`; unlink button uses `color: '#dc2626'` (instead of `'#374151'`) when `isInLink` |
 | ContentEditable                   | `fontSize: 13`, `lineHeight: 1.5`, `minHeight: 80`, `padding: '8px 10px'`, `outline: 'none'`, `width: '100%'`, `boxSizing: 'border-box'`                                     |
+| Action Links Section              | `borderTop: '1px solid #d1d5db'`, `background: '#f9fafb'`, `padding: '10px 10px'`, `display: 'flex'`, `flexDirection: 'column'`, `gap: 12`                                   |
 
 ---
 
@@ -646,4 +708,5 @@ const handleToggleSource = () => {
 - **Never** use hardcoded CSS values in `ScopedStyle` for link colors/decoration when state fields exist — drive them from state so editor settings take effect immediately.
 - **Never** conditionally render the toolbar — it must always be visible above the editor. Control button appearance (highlighted state, disabled) instead of hiding the whole bar.
 - **Always** put `onMouseDown={e => e.preventDefault()}` on the toolbar container div. Without it, clicking a toolbar button blurs the contentEditable and clears the selection before `execCommand` runs, so bold/italic/link have no effect.
+- **Always** render a list of `ActionSet` items inside the component below the editor to configure any `linkActions` detected in the text.
 - Italic (`execCommand('italic')`) does not require DOM unwrapping — toggling it again removes the `<em>`. No special removal handler is needed, unlike links.
