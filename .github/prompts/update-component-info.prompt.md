@@ -20,7 +20,7 @@ The help article lives inside `getSettings` in `editor.js`:
 export function getSettings(state) {
   return {
     settings: {
-      name: "...",
+      name: "Settings",
       Setting: Settings,
       width: 500,
       help: (state) => ({
@@ -36,7 +36,7 @@ Fields to keep in sync:
 
 | Field     | Should match                                  |
 | --------- | --------------------------------------------- |
-| `name`    | The component's display name                  |
+| `name`    | Always `"Settings"`                           |
 | `title`   | `"{name} Help"`                               |
 | `content` | Current tabs, sections, actions, and triggers |
 
