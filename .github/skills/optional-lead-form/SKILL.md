@@ -41,7 +41,47 @@ leadFormSkipped: false,
 fields: ensureSystemFields([]),
 ```
 
-Include the `ensureSystemFields` helper in `common.js` to handle defaults for `name`, `email`, `phone`, and `terms`.
+### System Fields Helper (common.js)
+
+Include this helper to manage standard fields (Name, Email, Phone, Terms):
+
+```js
+const SYSTEM_FIELD_DEFAULTS = {
+  name: { id: 'name', type: 'text', isSystem: true, label: 'Full Name', placeholder: 'John Doe', required: true, enabled: true },
+  email: { id: 'email', type: 'email', isSystem: true, label: 'Email Address', placeholder: 'john@example.com', required: true, enabled: true },
+  phone: { id: 'phone', type: 'phone', isSystem: true, label: 'Phone Number', placeholder: '+1 234 567 8900', required: true, enabled: true },
+  terms: { id: 'terms', type: 'checkbox', isSystem: true, label: 'I agree to the', linkText: 'Terms & Conditions', linkUrl: '#', required: true, enabled: true }
+};
+
+export function ensureSystemFields(fields) {
+  const input = Array.isArray(fields) ? fields : [];
+  const map = new Map();
+  input.forEach(f => {
+    if (f && f.id) {
+      if (SYSTEM_FIELD_DEFAULTS[f.id]) {
+        map.set(f.id, { ...SYSTEM_FIELD_DEFAULTS[f.id], ...f, isSystem: true });
+      } else {
+        map.set(f.id, { ...f, isSystem: false });
+      }
+    }
+  });
+
+  const next = [
+    map.get('name') || { ...SYSTEM_FIELD_DEFAULTS.name },
+    map.get('email') || { ...SYSTEM_FIELD_DEFAULTS.email },
+    map.get('phone') || { ...SYSTEM_FIELD_DEFAULTS.phone },
+    map.get('terms') || { ...SYSTEM_FIELD_DEFAULTS.terms }
+  ];
+
+  input.forEach(f => {
+    if (f && f.id && !SYSTEM_FIELD_DEFAULTS[f.id]) {
+      next.push(map.get(f.id));
+    }
+  });
+
+  return next;
+}
+```
 
 ---
 
@@ -51,8 +91,81 @@ Always place lead form settings in a dedicated **Lead Form** tab.
 
 - **Enable Toggle:** `isLeadFormEnabled` (Checkbox).
 - **Position:** `leadFormPosition` (Dropdown: "Before Start", "Before Results").
-- **Fields Management:** Use a `TableContainer` with columns for "Enabled", "Label", "Placeholder", and "Required".
+- **Fields Management:** Use a `TableContainer` with columns for "Field Label", "Type", "Required", and "Status".
+
+### Field Table Pattern
+
+Use this structure to allow users to manage system and custom fields:
+
+```jsx
+<SettingItem>
+  <Label content="Form Fields" help="Control which fields are visible, which are required, and manage custom fields." />
+  <div style={{ display: "flex", justifyContent: "flex-end", marginBottom: 8 }}>
+    <OptionsMenuRootButton
+      icon={addIcon}
+      options={[
+        { text: "Add Text Input", type: "onClick", onClick: () => handleAddField("text") },
+        { text: "Add Checkbox", type: "onClick", onClick: () => handleAddField("checkbox") },
+      ]}
+    />
+  </div>
+
+  <TableContainer
+    emptyMessage="No fields."
+    columns={[
+      { content: "Field Label" },
+      { content: "Type" },
+      { content: "Required", compact: true },
+      { content: "Status" },
+      { content: "", compact: true },
+    ]}
+    rows={ensureSystemFields(state.fields).map((f, i) => {
+      const canMoveUp = i > 0 && !f.isSystem && !ensureSystemFields(state.fields)[i - 1]?.isSystem;
+      const canMoveDown = i < ensureSystemFields(state.fields).length - 1 && !f.isSystem && !ensureSystemFields(state.fields)[i + 1]?.isSystem;
+
+      return [
+        <div key={`${f.id}-lbl`} style={{ fontSize: 13, display: "flex", flexDirection: "column" }}>
+          <span style={{ fontWeight: 500, opacity: f.enabled ? 1 : 0.5 }}>{f.label}</span>
+          {f.isSystem && <span style={{ fontSize: 10, opacity: 0.5, marginTop: 2 }}>System</span>}
+        </div>,
+        <div key={`${f.id}-type`} style={{ minWidth: 80, display: "inline-flex", justifyContent: "flex-start" }}>
+          <span style={{ fontSize: 11, color: "#64748b", textTransform: "uppercase", background: "#f1f5f9", padding: "4px 10px", borderRadius: 4, border: "1px solid #e2e8f0", fontWeight: 600 }}>{f.type}</span>
+        </div>,
+        <div key={`${f.id}-req-wrap`} style={{ display: "flex", justifyContent: "center" }}>
+          <Checkbox key={`${f.id}-req`} value={!!f.required} onChange={checked => updateField(f.id, "required", checked)} />
+        </div>,
+        <div
+          key={`${f.id}-status`}
+          onClick={() => updateField(f.id, "enabled", !f.enabled)}
+          style={{
+            cursor: "pointer", display: "inline-flex", alignItems: "center", justifyContent: "center",
+            padding: "4px 14px", borderRadius: "999px", fontSize: "11px", fontWeight: 600, minWidth: 90,
+            backgroundColor: f.enabled ? "#dcfce7" : "#f1f5f9", color: f.enabled ? "#166534" : "#64748b",
+            transition: "all 0.2s", border: `1px solid ${f.enabled ? "#bbf7d0" : "#e2e8f0"}`, userSelect: "none"
+          }}
+        >
+          {f.enabled ? "Active" : "Disabled"}
+        </div>,
+        <OptionsMenuRootButton
+          key={`${f.id}-actions`}
+          options={[
+            { text: "Edit Field", icon: editIcon, type: "onClick", onClick: () => { setEditingFieldId(f.id); setLeadFormFieldDrawerOpen(true); } },
+            { text: f.isSystem ? "Cannot delete system field" : "Delete Field", icon: deleteIcon, type: "onClick", onClick: () => !f.isSystem && handleDeleteField(i) },
+            { text: "Move Up", icon: arrowUpIcon, type: "onClick", onClick: () => canMoveUp && handleMoveField(i, i - 1), disabled: !canMoveUp },
+            { text: "Move Down", icon: arrowDownIcon, type: "onClick", onClick: () => canMoveDown && handleMoveField(i, i + 1), disabled: !canMoveDown },
+          ]}
+        />,
+      ];
+    })}
+  />
+</SettingItem>
+```
+
 - **Skip Logic:** `allowSkip` (Checkbox) and `leadFormSkipButtonText` (TextInput).
+
+### Field Edit Drawer
+
+Use a `Drawer` and a separate `LeadFormFieldDrawer` sub-component to edit field details (Label, Placeholder, Default Value, etc.).
 
 ---
 
