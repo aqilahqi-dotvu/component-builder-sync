@@ -33,9 +33,9 @@ For actions that don't require user input (like "Start Animation", "Play Video")
 export function getActions(_state) {
   return {
     startAnimation: {
-      name: 'Start Animation'
-    }
-  }
+      name: "Start Animation",
+    },
+  };
 }
 ```
 
@@ -45,12 +45,12 @@ export function getActions(_state) {
 export function getActionHandlers({ setState }) {
   return {
     async startAnimation({ setComponentState }) {
-      setComponentState(prev => ({
+      setComponentState((prev) => ({
         ...prev,
-        _animationRevision: (Number(prev._animationRevision) || 0) + 1
-      }))
-    }
-  }
+        _animationRevision: (Number(prev._animationRevision) || 0) + 1,
+      }));
+    },
+  };
 }
 ```
 
@@ -66,22 +66,27 @@ For actions that require the user to configure parameters (like "Update Target N
 export function getActions(_state) {
   return {
     updateTargetNumber: {
-      name: 'Update Target Number',
-      info: { text: 'Updates the number to count up to' },
-      state: { targetNumber: createDynamicValue('number', 5000) },
+      name: "Update Target Number",
+      info: { text: "Updates the number to count up to" },
+      state: { targetNumber: createDynamicValue("number", 5000) },
       Setting({ actionState, setActionState }) {
         return (
           <SettingItem>
-            <Label content="Target Number" help="Provide a number to animate to." />
+            <Label
+              content="Target Number"
+              help="Provide a number to animate to."
+            />
             <DynamicValueInput
               value={actionState.targetNumber}
-              onChange={val => setActionState({ ...actionState, targetNumber: val })}
+              onChange={(val) =>
+                setActionState({ ...actionState, targetNumber: val })
+              }
             />
           </SettingItem>
-        )
-      }
-    }
-  }
+        );
+      },
+    },
+  };
 }
 ```
 
@@ -91,10 +96,13 @@ export function getActions(_state) {
 export function getActionHandlers({ setState }) {
   return {
     async updateTargetNumber({ actionState, setComponentState }) {
-      const newTarget = await resolveDynamicValue(actionState.targetNumber)
-      setComponentState(prev => ({ ...prev, targetNumber: Number(newTarget) || 0 }))
-    }
-  }
+      const newTarget = await resolveDynamicValue(actionState.targetNumber);
+      setComponentState((prev) => ({
+        ...prev,
+        targetNumber: Number(newTarget) || 0,
+      }));
+    },
+  };
 }
 ```
 
@@ -112,7 +120,9 @@ export function getActionHandlers({ setState }) {
 When the action requires user input, define a `state` object with default values:
 
 ```javascript
-state: { targetNumber: createDynamicValue('number', 5000) }
+state: {
+  targetNumber: createDynamicValue("number", 5000);
+}
 ```
 
 This becomes `actionState` in the `Setting` component, allowing the user to configure the action each time it's called.
@@ -124,6 +134,7 @@ Only define a `Setting` component if the action requires user input. Simple acti
 ### 4. Action handler signature
 
 Handler functions receive:
+
 - `actionState` — the user's configured values (from the `state` object)
 - `setComponentState` — function to update component state
 
@@ -136,12 +147,12 @@ For actions to appear in the studio, **both `getActions` and `getActionHandlers`
 ```javascript
 // editor.js
 export function getActions(_state) {
-  return {} // even if empty
+  return {}; // even if empty
 }
 
 // live.js
 export function getActionHandlers({ setState }) {
-  return {} // even if empty
+  return {}; // even if empty
 }
 ```
 
@@ -149,14 +160,14 @@ export function getActionHandlers({ setState }) {
 
 ## Common use cases
 
-| Use case | Action type | Handler updates |
-| --- | --- | --- |
-| Play/pause animation | Simple | `_animationRevision` counter |
-| Update displayed text | Configured | Component text field |
-| Reset form | Simple | Form state fields |
-| Navigate to URL | Configured | Trigger internal navigation |
-| Update counter/number | Configured | Component number field |
-| Toggle visibility | Simple | `isVisible` or similar flag |
+| Use case              | Action type | Handler updates              |
+| --------------------- | ----------- | ---------------------------- |
+| Play/pause animation  | Simple      | `_animationRevision` counter |
+| Update displayed text | Configured  | Component text field         |
+| Reset form            | Simple      | Form state fields            |
+| Navigate to URL       | Configured  | Trigger internal navigation  |
+| Update counter/number | Configured  | Component number field       |
+| Toggle visibility     | Simple      | `isVisible` or similar flag  |
 
 ---
 
