@@ -354,6 +354,70 @@ In both shapes the first compact column is the drag handle and the last compact 
 
 ---
 
+## Accordion/Dropdown Alternative
+
+**Use this pattern when list items have minimal settings (fewer than 5 fields)** and opening a separate drawer would feel over-engineered.
+
+Instead of a `Drawer`, expand each row inline below its header to reveal settings. This keeps the edit UI directly visible in the list and reduces navigation friction.
+
+### State
+
+```js
+const [expandedId, setExpandedId] = useState(null);
+```
+
+### Row header structure
+
+- **Drag handle** (left): Grip icon button with draggable prop.
+- **Preview/thumbnail** (optional): Small image or icon to identify the item.
+- **Label/title**: Text summary of the item.
+- **Edit button** (right): Icon button with edit icon that toggles `expandedId`. Highlight it (e.g., `is-active` class) when the row is expanded.
+- **Delete button** (right): Icon button with trash icon for quick delete.
+
+### Expanded row body
+
+When `expandedId === item.id`, render settings below the header in a scoped `<div>` with a distinct background color (`#fafafa` or similar) and `border-top`:
+
+```jsx
+{isExpanded && (
+  <div className="accordion-body">
+    <SettingItem>
+      <Label content="Field 1" help="..." />
+      <Control value={item.field1} onChange={(val) => update(item.id, { field1: val })} />
+    </SettingItem>
+    <SettingItem>
+      <Label content="Field 2" help="..." />
+      <Control value={item.field2} onChange={(val) => update(item.id, { field2: val })} />
+    </SettingItem>
+    {/* Keep to 3–4 fields max */}
+  </div>
+)}
+```
+
+### CSS guidelines
+
+- Row container: `border: 1px solid #e5e7eb; border-radius: 8px; overflow: hidden;`
+- Row header: Flexbox, `padding: 8px 10px`, centered vertically.
+- Accordion body: `border-top: 1px solid #e5e7eb; padding: 12px 14px; background: #fafafa;` Display as flex column with `gap: 10px`.
+- Drag handle: `cursor: grab`; on active, `cursor: grabbing`.
+- Icon buttons: `width: 28px; height: 28px; border: 1px solid #e5e7eb; border-radius: 6px;` Hover: lighter background and darker text.
+- Edit button when active (`is-active` class): `background: #fff7f3; color: #f57b37; border-color: #f57b37;`.
+
+### Benefits
+
+- Minimal cognitive load: settings are always visible when expanded.
+- Compact: no modal overhead for 3–4 fields.
+- Preserves list context: user remains aware of the full list while editing.
+
+### When to use Drawer instead
+
+Use a `Drawer` when:
+- Settings exceed 5 fields.
+- Settings are complex (nested lists, multi-step workflows).
+- Multiple items need side-by-side editing.
+
+---
+
 ## Live rendering
 
 - Render items in the same order as `state.items`.
